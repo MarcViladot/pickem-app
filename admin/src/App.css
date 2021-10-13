@@ -1,0 +1,26 @@
+.router-content {
+    height: calc(100% - 64px);
+    width: 100%;
+    padding: 10px 10px 10px 74px;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+}
+
+.match-grid {
+    display: grid;
+    grid-template-columns: 1fr 350px 1fr;
+}
+
+.result-field {
+    width: 40px;
+    height: 60px;
+}
+
+.MuiInputBase-input {
+    display: flex !important;
+    align-items: center;
+}
+.MuiSelect-root {
+    height: 100% !important;
+}

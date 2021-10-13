@@ -1,0 +1,14 @@
+{
+    "type": "mysql",
+    "host": "localhost",
+    "port": 8888,
+    "username": "test",
+    "password": "test",
+    "database": "pickem",
+    "entities": ["entity/*.js"],
+    "migrationsTableName": "custom_migration_table",
+    "migrations": ["migration/*.js"],
+    "cli": {
+        "migrationsDir": "migration"
+    }
+}
