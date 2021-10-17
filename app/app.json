@@ -1,0 +1,7 @@
+{
+  "expo": {
+    "name": "My app",
+    "slug": "app",
+    "orientation": "portrait"
+  }
+}

@@ -1,0 +1,126 @@
+import React, { useState } from "react";
+import { StyleSheet, Text, View } from "react-native";
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
+import LoginScreen from "./src/app/components/auth/LoginScreen";
+import DrawerNavigator from "./src/app/components/DrawerNavigator";
+import SignupScreen from "./src/app/components/auth/SignupScreen";
+import { useSelector } from "react-redux";
+import { RootState } from "./src/app/reducers";
+import Toast from 'react-native-toast-message';
+
+
+export type LoginStackParamList = {
+  Login: undefined;
+  Signup: undefined;
+};
+const LoginStack = createStackNavigator<LoginStackParamList>();
+
+const App = () => {
+
+  const isLogged = useSelector((state: RootState) => state.user.isLoggedIn);
+  const [loading, setLoading] = useState(false);
+
+  /*useEffect(() => { // TRY LOGIN
+        async function tryLogin() {
+            try {
+                const token = await AsyncStorage.getItem('token');
+                if (token) {
+                    try {
+                        const res = await auth.loginAuto() as ResponseApi<IUserLoginApi>;
+                        if (!res.IsError) {
+                            // dispatch(setUser(res.Result));
+                            dispatch(getWarehouseToken(res.Result));
+                            setLoading(false);
+                        } else {
+                            setLoading(false);
+                            dispatch(showApiErrorToast(res));
+                        }
+                    } catch (e) {
+                        setLoading(false);
+                    }
+                } else {
+                    // NOT LOGGED
+                    setLoading(false);
+                }
+            } catch (e) {
+                setLoading(false);
+            }
+        }
+
+        if (!isLogged) {
+            tryLogin();
+        } else {
+            setLoading(false);
+        }
+    }, []);*/
+
+  if (loading) {
+    return <Text>LOADING</Text>;
+  }
+
+  const toastConfig = {
+    apiError: ({text}: {text: string}) => (
+      <View style={[styles.toastContainer, styles.toastError]}>
+        <Text style={styles.toastText}>{text}</Text>
+      </View>
+    ),
+    serverError: ({text}: {text: string}) => (
+      <View style={[styles.toastContainer, styles.toastError]}>
+          <Text style={styles.toastText}>{text}</Text>
+      </View>
+    ),
+    success: ({text}: {text: string}) => (
+      <View style={[styles.toastContainer, styles.toastSuccess]}>
+          <Text style={styles.toastText}>{text}</Text>
+      </View>
+    ),
+  };
+
+  return (
+    <>
+      <NavigationContainer>
+        {
+          !isLogged ?
+            <LoginStack.Navigator screenOptions={{
+              animationTypeForReplace: "pop",
+              headerShown: false
+            }}>
+              <LoginStack.Screen name={"Login"} component={LoginScreen} />
+              <LoginStack.Screen name={"Signup"} component={SignupScreen} />
+            </LoginStack.Navigator>
+            :
+            <DrawerNavigator />
+        }
+      </NavigationContainer>
+      <Toast config={toastConfig} ref={(ref) => Toast.setRef(ref)}/>
+    </>
+
+  );
+};
+
+const styles = StyleSheet.create({
+  toastContainer: {
+    width: '90%',
+    backgroundColor: '#FFF',
+    elevation: 2,
+    padding: 10,
+    borderRadius: 10,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  toastText: {
+    flex: 1,
+    marginRight: 10,
+    color: '#FFF',
+    fontSize: 14,
+  },
+  toastError: {
+    backgroundColor: '#FF1E44'
+  },
+  toastSuccess: {
+    backgroundColor: '#38b174'
+  }
+});
+
+export default App;
