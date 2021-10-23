@@ -1,11 +1,11 @@
-import {ResponseApi, WebApiCodesTranslationMap, WebApiErrorCode} from './IResponse';
+import {ResponseApi, WebApiErrorCode} from './IResponse';
 
 
 export class ErrorTools {
 
     public static getApiErrorMsg(errorCode: number, params: string[]) {
-        const error = WebApiCodesTranslationMap.get(errorCode) || 'ERRORS.UNEXPECTED_ERROR';
-        const paramsToTranslate = {};
+        const error = `ERRORS.${WebApiErrorCode[errorCode] || 'Unexpected'}`;
+        const paramsToTranslate: any = {};
         if (params) {
             params.forEach((param, i) => paramsToTranslate[`p${i + 1}`] = param);
         }

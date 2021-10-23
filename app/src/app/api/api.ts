@@ -17,7 +17,6 @@ const Api: AxiosInstance = axios.create({
   }
 });
 
-const { dispatch } = store; // direct access to redux store.
 
 Api.interceptors.request.use(async (config: any) => {
     // dispatch(showLoading());

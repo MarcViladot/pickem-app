@@ -8,14 +8,14 @@ interface ButtonInterface {
 
 export const StyledButton = styled.TouchableOpacity<ButtonInterface>`
   background-color: ${props => props.disabled ? "#CCCCCC" : backgroundColors.get(props.color)};
-  padding: 15px;
+  height: 40px;
   justify-content: center;
   align-items: center;
-  border-radius: 2px;
+  border-radius: 50px;
 `;
 
 const backgroundColors = new Map([
-  ["primary", "#004C9C"],
+  ["primary", "#000"],
   ["warn", "#BC1C61"],
   ["success", "#38D99C"],
   ["cancel", "#666"]

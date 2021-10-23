@@ -1,3 +1,18 @@
 {
-
+  "AUTH": {
+    "SIGN_IN": "Sign in",
+    "USE_EMAIL": "Use your email to sign in",
+    "EMAIL": "Email",
+    "PASSWORD": "Password",
+    "ACCOUNT_YET": "Do not have an account yet?",
+    "ACCOUNT_ALREADY": "Already have an account?",
+    "SIGN_UP": "Sign up",
+    "CREATE_ACCOUNT": "Create an account",
+    "USERNAME": "User"
+  },
+  "ERRORS": {
+    "ServerConnectionError": "Server connection error",
+    "Unexpected": "Unexpected error",
+    "UserIncorrectCredentials": "Incorrect user email or password"
+  }
 }

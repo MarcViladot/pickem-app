@@ -26,6 +26,11 @@ export interface UserCredentials {
   password: string;
 }
 
+export interface CreateUser {
+  email: string;
+  password: string;
+}
+
 export enum UserRole {
   MEMBER = 0,
   ADMIN = 1

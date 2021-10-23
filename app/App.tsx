@@ -8,7 +8,14 @@ import SignupScreen from "./src/app/components/auth/SignupScreen";
 import { useSelector } from "react-redux";
 import { RootState } from "./src/app/reducers";
 import Toast from 'react-native-toast-message';
+import {setCustomText} from 'react-native-global-props';
 
+
+setCustomText({
+  style: {
+    fontFamily: 'calibri-regular',
+  },
+});
 
 export type LoginStackParamList = {
   Login: undefined;
@@ -60,19 +67,19 @@ const App = () => {
   }
 
   const toastConfig = {
-    apiError: ({text}: {text: string}) => (
+    apiError: ({text1}: {text1: string}) => (
       <View style={[styles.toastContainer, styles.toastError]}>
-        <Text style={styles.toastText}>{text}</Text>
+        <Text style={styles.toastText}>{text1}</Text>
       </View>
     ),
-    serverError: ({text}: {text: string}) => (
+    serverError: ({text1}: {text1: string}) => (
       <View style={[styles.toastContainer, styles.toastError]}>
-          <Text style={styles.toastText}>{text}</Text>
+          <Text style={styles.toastText}>{text1}</Text>
       </View>
     ),
-    success: ({text}: {text: string}) => (
+    success: ({text1}: {text1: string}) => (
       <View style={[styles.toastContainer, styles.toastSuccess]}>
-          <Text style={styles.toastText}>{text}</Text>
+          <Text style={styles.toastText}>{text1}</Text>
       </View>
     ),
   };
@@ -95,7 +102,6 @@ const App = () => {
       </NavigationContainer>
       <Toast config={toastConfig} ref={(ref) => Toast.setRef(ref)}/>
     </>
-
   );
 };
 

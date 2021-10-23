@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { FC, useState } from "react";
 import {ActivityIndicator, Image, StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native';
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -9,9 +9,20 @@ import { StyledButton } from "../common/StyledButton";
 import auth from "../../api/auth";
 import { setUser } from "../../actions/auth/setUser";
 import { showApiErrorToast } from "../../actions/utils/showApiErrorToast";
+import { StyledTextField } from "../common/StylesTextField";
+import { RouteProp } from "@react-navigation/native";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { LoginStackParamList } from "../../../../App";
 
+type ScreenNavigationProps = StackNavigationProp<LoginStackParamList, 'Login'>;
+type ScreenRouteProp = RouteProp<LoginStackParamList, 'Login'>;
 
-const LoginScreen = () => {
+interface Props {
+  navigation: ScreenNavigationProps;
+  route: ScreenRouteProp;
+}
+
+const LoginScreen: FC<Props> = ({navigation, route}) => {
 
 
   const {t} = useTranslation();
@@ -32,7 +43,6 @@ const LoginScreen = () => {
   const login = async (credentials: UserCredentials) => {
     setLoading(true);
     const res = await auth.login(credentials);
-    console.warn(JSON.stringify(res));
     if (!res.IsError) {
       dispatch(setUser(res.Result));
     } else {
@@ -44,10 +54,10 @@ const LoginScreen = () => {
   return (
     <View style={styles.mainContainer}>
       <View style={styles.form}>
-        <View style={{alignItems: 'center'}}>
+        {/*<View style={{alignItems: 'center'}}>
           <Image source={{ uri: 'https://via.placeholder.com/300x100.png' }} style={styles.logo}/>
-        </View>
-        <Text style={styles.mainText}>{t('AUTH.SIGN_IN')}</Text>
+        </View>*/}
+        <Text style={styles.mainText}>{t('AUTH.USE_EMAIL')}</Text>
         <Formik
           initialValues={{
             email: '',
@@ -56,31 +66,34 @@ const LoginScreen = () => {
           validateOnMount={true}
           validationSchema={loginSchema}
           onSubmit={values => {
-            dispatch(login(values));
+            login(values);
           }}
         >
           {({handleChange, handleBlur, handleSubmit, values, isValid}) => (
             <View>
-              <TextInput
-                style={styles.textField}
+              <StyledTextField
                 onChangeText={handleChange('email')}
                 onBlur={handleBlur('email')}
-                placeholder={t('AUTH.USERNAME')}
+                placeholder={t('AUTH.EMAIL')}
                 value={values.email}
+                placeholderTextColor={'#B5B9CA'}
               />
-              <TextInput
-                style={styles.textField}
+              <StyledTextField
                 onChangeText={handleChange('password')}
                 onBlur={handleBlur('password')}
                 placeholder={t('AUTH.PASSWORD')}
                 value={values.password}
+                placeholderTextColor={'#B5B9CA'}
               />
               <StyledButton activeOpacity={.8} onPress={handleSubmit} disabled={loading || !isValid} color="primary">
                 {!loading ? <Text style={styles.buttonText}>{t('AUTH.SIGN_IN')}</Text>
                   :
-                  <ActivityIndicator size="small" color="#0000ff"/>
+                  <ActivityIndicator size="small" color="#000"/>
                 }
               </StyledButton>
+              <TouchableOpacity disabled={false} activeOpacity={.7} style={{marginTop: 20}} onPress={() => navigation.navigate('Signup')}>
+                <Text style={styles.bottomText}>{t('AUTH.ACCOUNT_YET')}</Text>
+              </TouchableOpacity>
             </View>
           )}
         </Formik>
@@ -90,25 +103,18 @@ const LoginScreen = () => {
 };
 
 const styles = StyleSheet.create({
-  // SHEET
-  warehouseItem: {
-    padding: 10,
-    paddingLeft: 15,
-    borderBottomWidth: .3,
-    borderColor: '#bdbdbd',
-  },
   // LOGIN
   logo: {
     width: 250,
     height: 50,
   },
   mainContainer: {
-    marginTop: -20,
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
     height: '100%',
+    backgroundColor: '#FFF'
   },
   form: {
     minWidth: 320,
@@ -119,31 +125,19 @@ const styles = StyleSheet.create({
     height: 70,
   },
   mainText: {
-    color: '#004C9C',
+    color: '#000',
+    fontSize: 25,
     textAlign: 'center',
-    fontSize: 40,
-    marginBottom: 60,
-    marginTop: 60,
+    marginBottom: 40,
+    // marginTop: 60,
   },
-  textField: {
-    minWidth: '100%',
-    maxWidth: '100%',
-    marginBottom: 20,
-    borderWidth: 1,
-    fontSize: 20,
-    borderColor: 'gray',
-    paddingLeft: 10,
-    height: 50,
-    borderRadius: 4,
-  },
-  submitButton: {
-    height: 50,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#005EAD',
+  bottomText: {
+    color: '#3CBC79',
+    textAlign: "center",
+    fontWeight: "bold"
   },
   buttonText: {
-    fontSize: 20,
+    fontSize: 17,
     color: 'white',
   },
   errorAlert: {

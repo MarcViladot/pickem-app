@@ -10,7 +10,6 @@ export const showApiErrorToast = (res: ResponseApiError) => {
         text1: i18next.t(translation.error, translation.paramsToTranslate),
         type: res.ErrorCode !== -2 ? 'apiError' : 'serverError',
         position: 'bottom',
-        autoHide: false,
         props: res
     });
     return {
