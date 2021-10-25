@@ -60,8 +60,8 @@ const LoginScreen: FC<Props> = ({navigation, route}) => {
         <Text style={styles.mainText}>{t('AUTH.USE_EMAIL')}</Text>
         <Formik
           initialValues={{
-            email: '',
-            password: '',
+            email: 'john@email.com',
+            password: 'changeme',
           }}
           validateOnMount={true}
           validationSchema={loginSchema}

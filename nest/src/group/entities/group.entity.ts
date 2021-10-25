@@ -13,8 +13,11 @@ export class Group {
   @Column({nullable: true})
   photo: string;
 
+  @Column({default: false})
+  isContest: boolean;
+
   @Column({nullable: true, unique: true})
-  invitationCode: string
+  invitationCode: string;
 
   @OneToMany(() => UserGroup, userGroup => userGroup.group)
   userGroups: UserGroup[];

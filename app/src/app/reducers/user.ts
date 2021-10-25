@@ -1,11 +1,16 @@
 import {SET_USER} from '../actions/auth/setUser';
 import {LOGOUT} from '../actions/auth/logout';
 import { AnyAction } from "redux";
+import { User } from "../interfaces/user.interface";
 
-const initialState = {
+export interface State {
+    isLoggedIn: false;
+    currentUser: User;
+}
+
+const initialState: State = {
     isLoggedIn: false,
     currentUser: null,
-    loginError: ''
 };
 
 export default (state = initialState, action: AnyAction) => {
