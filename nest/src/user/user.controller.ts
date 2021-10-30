@@ -1,20 +1,20 @@
-import { Body, Controller, Get, Param, Post, Req, UseGuards } from '@nestjs/common';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UserService } from './user.service';
-import { User, UserRole } from './entities/user.entity';
-import { JwtAuthGuard, RequestWithUser } from '../auth/guards/jwt/jwt-auth.guard';
-import { Roles } from '../auth/decorators/roles.decorator';
-import { RolesGuard } from '../auth/guards/roles.guard';
-import { ResponseApi, ResponseApiEmpty, ResponseApiSuccess, WebApiResponseCode } from '../utils/ResponseApi';
-import { WebApiException } from '../utils/WebApiException';
+import { Body, Controller, Get, Param, Post, Req, UseGuards } from "@nestjs/common";
+import { CreateUserDto } from "./dto/create-user.dto";
+import { UserService } from "./user.service";
+import { User, UserRole } from "./entities/user.entity";
+import { JwtAuthGuard, RequestWithUser } from "../auth/guards/jwt/jwt-auth.guard";
+import { Roles } from "../auth/decorators/roles.decorator";
+import { RolesGuard } from "../auth/guards/roles.guard";
+import { ResponseApi, ResponseApiEmpty, ResponseApiSuccess, WebApiResponseCode } from "../utils/ResponseApi";
+import { WebApiException } from "../utils/WebApiException";
 
-@Controller('user')
+@Controller("user")
 export class UserController {
 
     constructor(private userService: UserService) {
     }
 
-    @Post('create')
+    @Post("create")
     async createUser(@Body() userDto: CreateUserDto): Promise<ResponseApiEmpty> {
         try {
             await this.userService.createUser(userDto);
@@ -24,7 +24,7 @@ export class UserController {
         }
     }
 
-    @Get(':id')
+    @Get(":id")
     @UseGuards(JwtAuthGuard, RolesGuard)
     @Roles(UserRole.ADMIN)
     async getUserById(@Param() id: number, @Req() req: RequestWithUser): Promise<ResponseApi<User>> {

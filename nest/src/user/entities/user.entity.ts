@@ -34,4 +34,5 @@ export class User {
   @OneToMany(() => Prediction, prediction => prediction.user)
   predictions: Prediction[];
 
+  token: string;
 }

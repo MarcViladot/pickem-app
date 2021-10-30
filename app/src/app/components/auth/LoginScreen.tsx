@@ -13,6 +13,7 @@ import { StyledTextField } from "../common/StylesTextField";
 import { RouteProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { LoginStackParamList } from "../../../../App";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 type ScreenNavigationProps = StackNavigationProp<LoginStackParamList, 'Login'>;
 type ScreenRouteProp = RouteProp<LoginStackParamList, 'Login'>;
@@ -44,6 +45,10 @@ const LoginScreen: FC<Props> = ({navigation, route}) => {
     setLoading(true);
     const res = await auth.login(credentials);
     if (!res.IsError) {
+      try {
+        await AsyncStorage.setItem('pickem_token', res.Result.token);
+      } catch (e) {
+      }
       dispatch(setUser(res.Result));
     } else {
       dispatch(showApiErrorToast(res));

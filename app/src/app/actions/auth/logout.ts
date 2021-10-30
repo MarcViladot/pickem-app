@@ -5,7 +5,7 @@ export const LOGOUT = "LOGOUT";
 export const logout = () => {
     return async (dispatch: Dispatch) => {
         try {
-            await AsyncStorage.removeItem('token');
+            await AsyncStorage.removeItem('pickem_token');
             dispatch({
                 type: LOGOUT
             });

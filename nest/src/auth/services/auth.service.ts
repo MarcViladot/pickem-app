@@ -6,6 +6,7 @@ import * as bcrypt from 'bcrypt';
 import { RequestWithUser } from '../guards/jwt/jwt-auth.guard';
 import { WebApiException } from '../../utils/WebApiException';
 import { WebApiResponseCode } from '../../utils/ResponseApi';
+import { CurrentUser } from "../../user/entities/CurrentUser";
 
 export interface ITokenPayload {
   userId: number;
@@ -28,7 +29,7 @@ export class AuthService {
     return null;
   }
 
-  async login(email: string, password: string) {
+  async login(email: string, password: string): Promise<User> {
     const user: User = await this.validateUser(email, password);
     if (!user) {
       throw new WebApiException(WebApiResponseCode.UserIncorrectCredentials, []);
@@ -49,7 +50,11 @@ export class AuthService {
   }
 
   async getCurrentUser(req: RequestWithUser) {
-    return this.usersService.getUserWithGroups(req.user.userId);
+    return this.usersService.getCurrentUser(req.user.userId);
+  }
+
+  async getCurrentUserAdmin(req: RequestWithUser) {
+    return this.usersService.getCurrentUserAdmin(req.user.userId);
   }
 
 }

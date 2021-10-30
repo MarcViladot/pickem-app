@@ -1,14 +1,18 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import LoginScreen from "./src/app/components/auth/LoginScreen";
 import DrawerNavigator from "./src/app/components/DrawerNavigator";
 import SignupScreen from "./src/app/components/auth/SignupScreen";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "./src/app/reducers";
 import Toast from 'react-native-toast-message';
 import {setCustomText} from 'react-native-global-props';
+import auth from "./src/app/api/auth";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { showApiErrorToast } from "./src/app/actions/utils/showApiErrorToast";
+import { setUser } from "./src/app/actions/auth/setUser";
 
 
 setCustomText({
@@ -25,19 +29,19 @@ const LoginStack = createStackNavigator<LoginStackParamList>();
 
 const App = () => {
 
+  const dispatch = useDispatch();
   const isLogged = useSelector((state: RootState) => state.user.isLoggedIn);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
-  /*useEffect(() => { // TRY LOGIN
+  useEffect(() => { // TRY LOGIN
         async function tryLogin() {
             try {
-                const token = await AsyncStorage.getItem('token');
+                const token = await AsyncStorage.getItem('pickem_token');
                 if (token) {
                     try {
-                        const res = await auth.loginAuto() as ResponseApi<IUserLoginApi>;
+                        const res = await auth.autoLogin();
                         if (!res.IsError) {
-                            // dispatch(setUser(res.Result));
-                            dispatch(getWarehouseToken(res.Result));
+                            dispatch(setUser(res.Result));
                             setLoading(false);
                         } else {
                             setLoading(false);
@@ -60,10 +64,10 @@ const App = () => {
         } else {
             setLoading(false);
         }
-    }, []);*/
+    }, []);
 
   if (loading) {
-    return <Text>LOADING</Text>;
+    return <></>;
   }
 
   const toastConfig = {

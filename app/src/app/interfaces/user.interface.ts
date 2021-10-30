@@ -6,12 +6,20 @@ export interface User {
   token: string;
   userRole: UserRole;
   userGroups?: UserGroup[];
+  groups?: UserGroup[];
 }
 
 export interface UserGroup {
   id: number;
   userRole: UserGroupRole;
   group: Group;
+  leagues: LeagueType[]
+}
+
+export interface LeagueType {
+  id: number;
+  name: string;
+  logo: string;
 }
 
 export interface Group {

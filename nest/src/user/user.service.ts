@@ -26,7 +26,18 @@ export class UserService {
     return this.userRepository.findOne(userId);
   }
 
-  async getUserWithGroups(userId: number): Promise<User> {
+  async getCurrentUser(userId: number): Promise<User> {
+    return this.userRepository.createQueryBuilder('user')
+      .where('user.id = :userId', {userId})
+      .leftJoinAndSelect('user.userGroups', 'userGroup', 'userGroup.userId = :userId', {userId})
+      .leftJoinAndSelect('userGroup.group', 'group', 'userGroup.groupId = group.id')
+      .leftJoinAndSelect('userGroup.leagues', 'leagueType')
+      // .leftJoinAndSelect('leagueType.league', 'league')
+      .getOne()
+  }
+
+
+  async getCurrentUserAdmin(userId: number): Promise<User> {
     return this.userRepository.findOne(userId, {
       relations: ['userGroups', 'userGroups.group'],
     });
