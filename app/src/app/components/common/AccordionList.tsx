@@ -23,9 +23,7 @@ const AccordionList: FC<Props> = ({name, listItems, openByDefault}) => {
       </View>
       { open &&
         <View style={styles.listContent}>
-          {listItems.map((item) => (
-            <>{item}</>
-          ))}
+          {listItems.map((item) => item)}
         </View>
       }
     </View>
@@ -38,8 +36,8 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     padding: 10,
-    paddingRight: 15,
-    paddingLeft: 15
+    paddingRight: 12,
+    paddingLeft: 12
   },
   listName: {
     fontSize: 14,

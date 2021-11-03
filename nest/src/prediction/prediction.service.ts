@@ -14,13 +14,13 @@ export class PredictionService {
               @InjectRepository(Match) private matchRepository: Repository<Match>) {
   }
 
-  async createPrediction(createPredictionDto: CreatePredictionDto, user: User): Promise<Prediction> {
+  async createPrediction(createPredictionDto: CreatePredictionDto, userId: number): Promise<Prediction> {
     const match = await this.matchRepository.findOne(createPredictionDto.matchId);
     const prediction = await this.predictionRepository.create({
       localTeamResult: createPredictionDto.localTeamResult,
       awayTeamResult: createPredictionDto.awayTeamResult,
       match,
-      user,
+      userId,
       points: 0
     });
     return this.predictionRepository.save(prediction);

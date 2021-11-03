@@ -1,5 +1,5 @@
-import { UserGroup } from './user-group.entity';
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import { UserGroup } from "./user-group.entity";
+import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
 export class Group {
@@ -10,15 +10,19 @@ export class Group {
   @Column()
   name: string;
 
-  @Column({nullable: true})
+  @Column({ nullable: true })
   photo: string;
 
-  @Column({default: false})
+  @Column({ default: false })
   isContest: boolean;
 
-  @Column({nullable: true, unique: true})
+  @Column({ nullable: true, unique: true })
   invitationCode: string;
+
+  @CreateDateColumn()
+  createdAt: Date;
 
   @OneToMany(() => UserGroup, userGroup => userGroup.group)
   userGroups: UserGroup[];
+
 }

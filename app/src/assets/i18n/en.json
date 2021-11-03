@@ -10,6 +10,12 @@
     "CREATE_ACCOUNT": "Create an account",
     "USERNAME": "User"
   },
+  "LEAGUE": {
+    "TABLE": "Table",
+    "HOME": "Home",
+    "ROUNDS": "Rounds",
+    "MORE": "More"
+  },
   "ERRORS": {
     "ServerConnectionError": "Server connection error",
     "Unexpected": "Unexpected error",

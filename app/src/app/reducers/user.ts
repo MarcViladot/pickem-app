@@ -10,14 +10,14 @@ export interface State {
 
 const initialState: State = {
     isLoggedIn: false,
-    currentUser: null,
+    currentUser: null
 };
 
 export default (state = initialState, action: AnyAction) => {
     if (action.type === SET_USER) {
         return {
             ...state,
-            currentUser: action.payload,
+            currentUser: action.payload ,
             isLoggedIn: true
         };
     } else if (action.type === LOGOUT) {

@@ -18,8 +18,7 @@ export class PredictionController {
   @UseGuards(JwtAuthGuard)
   async createPrediction(@Body() createPredictionDto: CreatePredictionDto, @Req() req: RequestWithUser): Promise<ResponseApi<Prediction>> {
     try {
-      const user = await this.authService.getUserFromRequest(req);
-      const prediction = this.predictionService.createPrediction(createPredictionDto, user);
+      const prediction = this.predictionService.createPrediction(createPredictionDto, req.user.userId);
       return new ResponseApiSuccess(prediction);
     } catch (error) {
       throw new WebApiException(WebApiResponseCode.Unexpected, [], error);

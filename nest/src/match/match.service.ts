@@ -92,6 +92,7 @@ export class MatchService {
       const newRoundResult = this.roundResultRepository.create({
         user,
         round,
+        leagueTypeId: round.leagueTypeId,
         points: +totalPoints,
       });
       return this.roundResultRepository.save(newRoundResult);

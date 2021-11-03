@@ -13,7 +13,7 @@ export class CurrentUser {
   constructor(api: User) {
     this.name = api.name;
     this.email = api.email;
-    this.photo = api.photo ? api.photo : `https://eu.ui-avatars.com/api/?background=random&name=${this.name.split(' ').slice(0, 2).join('+')}`;
+    this.photo = api.photo;
     this.userRole = api.userRole;
     this.token = api.token;
     this.groups = api.userGroups.filter(userGroup => userGroup.userRole !== GroupRole.PENDING)

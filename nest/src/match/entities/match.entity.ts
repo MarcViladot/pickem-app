@@ -18,6 +18,9 @@ export class Match {
   @Column({ default: false })
   doublePoints: boolean;
 
+  @Column({default: false})
+  cancelled: boolean;
+
   @ManyToOne(() => Round, round => round.id)
   @JoinColumn({ name: 'roundId' })
   round: Round;

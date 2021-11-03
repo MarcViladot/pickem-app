@@ -1,8 +1,8 @@
 import { createLeagueTypeDto } from '../league-type/dto/create-league-type.dto';
 import { LeagueType } from '../league-type/entities/LeagueType.entity';
-import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Req, UseGuards } from "@nestjs/common";
 import { LeagueTypeService } from './league-type.service';
-import { JwtAuthGuard } from '../auth/guards/jwt/jwt-auth.guard';
+import { JwtAuthGuard, RequestWithUser } from "../auth/guards/jwt/jwt-auth.guard";
 import { RolesGuard } from '../auth/guards/roles.guard';
 import { Roles } from '../auth/decorators/roles.decorator';
 import { UserRole } from '../user/entities/user.entity';
@@ -30,6 +30,19 @@ export class LeagueTypeController {
             throw new WebApiException(WebApiResponseCode.LeagueNotFound, [id]);
         }
         return new ResponseApiSuccess(league);
+    }
+
+    @Get('getGroupLeague/:groupId/:leagueId')
+    @UseGuards(JwtAuthGuard)
+    async getGroupLeague(@Req() req: RequestWithUser, @Param() params: {groupId: number, leagueId: number}): Promise<ResponseApi<LeagueType>> {
+        const leagueInfo = await this.leagueService.getGroupLeague(params.leagueId, req.user.userId);
+        const groupInfo = await this.leagueService.getGroupInfo(params.groupId, params.leagueId);
+        const data = {
+            leagueInfo,
+            groupInfo,
+            totalPoints: this.leagueService.calculateUserTotalPoints(groupInfo, req.user.userId)
+        }
+        return new ResponseApiSuccess(data);
     }
 
 

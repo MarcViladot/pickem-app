@@ -24,6 +24,9 @@ export class Round {
   @JoinColumn({name: 'leagueTypeId'})
   league: LeagueType;
 
+  @Column()
+  leagueTypeId: number;
+
   @OneToMany(() => Match, match => match.round)
   matches: Match[];
 

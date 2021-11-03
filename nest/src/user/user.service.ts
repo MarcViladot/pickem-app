@@ -32,7 +32,6 @@ export class UserService {
       .leftJoinAndSelect('user.userGroups', 'userGroup', 'userGroup.userId = :userId', {userId})
       .leftJoinAndSelect('userGroup.group', 'group', 'userGroup.groupId = group.id')
       .leftJoinAndSelect('userGroup.leagues', 'leagueType')
-      // .leftJoinAndSelect('leagueType.league', 'league')
       .getOne()
   }
 
