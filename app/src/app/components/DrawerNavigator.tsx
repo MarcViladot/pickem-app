@@ -74,7 +74,7 @@ const CustomDrawerContent: FC<DrawerContentComponentProps> = ({ navigation }) =>
             <TouchableOpacity activeOpacity={.4} disabled={loading} onPress={() => loadLeague(userGroup.group.id, league.id)} style={styles.leagueButton}
                               key={league.id}>
               <Image source={{ uri: league.logo }} style={styles.leagueLogo} />
-              <Text style={{ color: "#000", fontSize: 11 }}>{league.name.toUpperCase()}</Text>
+              <Text style={{ color: "#000", fontSize: 11 }}>{league.name}</Text>
             </TouchableOpacity>
           ))} />
         ))}

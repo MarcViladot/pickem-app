@@ -2,8 +2,10 @@ import { createLeagueTypeDto } from "./dto/create-league-type.dto";
 import { LeagueType } from "./entities/LeagueType.entity";
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { In, Repository } from "typeorm";
 import { Group } from "../group/entities/group.entity";
+import { UserGroup } from "../group/entities/user-group.entity";
+import { RoundResult } from "../match/entities/round-result.entity";
 
 @Injectable()
 export class LeagueTypeService {
@@ -11,6 +13,7 @@ export class LeagueTypeService {
     constructor(@InjectRepository(LeagueType) private leagueTypeRepository: Repository<LeagueType>,
                 @InjectRepository(Group) private groupRepository: Repository<Group>) {
     }
+
 
     async getLeagueTypeById(id: number): Promise<LeagueType> {
         return this.leagueTypeRepository.findOne(id);
@@ -36,12 +39,28 @@ export class LeagueTypeService {
           .leftJoinAndSelect('league.rounds', 'round')
           .orderBy('round.startingDate', 'ASC')
           .leftJoinAndSelect('round.matches', 'match', 'match.roundId = round.id')
+          .orderBy('match.startDate', 'ASC')
           .leftJoinAndSelect('match.predictions', 'prediction', 'prediction.userId = :userId', {userId})
           .leftJoinAndSelect('match.teams', 'teamMatch')
           .orderBy('teamMatch.teamPosition', 'ASC')
           .leftJoinAndSelect('teamMatch.team', 'team', 'team.id = teamMatch.teamId')
           .getOne()
     }
+
+   /* async getGroupTable(leagueId: number, groupId: number): Promise<RoundResult[]> {
+        const userGroups: UserGroup[] = await this.userGroupRepository.find({
+            where: {
+                groupId: groupId,
+            }
+        });
+        const userIds = userGroups.map(userGroup => userGroup.userId);
+        return this.roundResultRepository.find({
+            where: {
+                leagueId: leagueId,
+                userId: In(userIds)
+            }
+        });
+    }*/
 
     getGroupInfo(groupId: number, leagueId: number): Promise<Group> {
         return this.groupRepository.createQueryBuilder('group')

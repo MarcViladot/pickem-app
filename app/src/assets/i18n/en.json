@@ -14,7 +14,11 @@
     "TABLE": "Table",
     "HOME": "Home",
     "ROUNDS": "Rounds",
-    "MORE": "More"
+    "MORE": "More",
+    "INVITE_FRIENDS": "Invite friends",
+    "INVITATION_CODE": "Invitation code: {{code}}",
+    "REMOVE_ADS": "Remove ads",
+    "LEAVE_GROUP": "Leave Group"
   },
   "ERRORS": {
     "ServerConnectionError": "Server connection error",

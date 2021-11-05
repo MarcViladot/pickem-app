@@ -144,23 +144,7 @@ const styles = StyleSheet.create({
   buttonText: {
     fontSize: 17,
     color: 'white',
-  },
-  errorAlert: {
-    marginTop: 30,
-    backgroundColor: '#f8d7da',
-    borderRadius: 10,
-    minWidth: '100%',
-    maxWidth: '100%',
-    minHeight: 50,
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  errorAlertText: {
-    fontSize: 18,
-    textAlign: 'center',
-    color: '#721c24',
-  },
+  }
 });
 
 

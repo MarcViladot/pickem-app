@@ -18,6 +18,7 @@ import { setUser } from "./src/app/actions/auth/setUser";
 setCustomText({
   style: {
     fontFamily: 'ProximaNova-Bold',
+    color: '#000'
   },
 });
 

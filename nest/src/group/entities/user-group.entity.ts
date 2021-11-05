@@ -28,6 +28,9 @@ export class UserGroup {
   @JoinColumn({ name: "userId" })
   user: User;
 
+  @Column()
+  userId: number;
+
   @ManyToOne(() => Group, (group) => group.id)
   @JoinColumn({ name: "groupId" })
   group: Group;

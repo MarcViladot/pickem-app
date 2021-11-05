@@ -27,12 +27,15 @@ export type TabsStackParamList = {
   TabHomeScreen: undefined;
   TabRoundsScreen: undefined;
   TabTableScreen: undefined;
-  TabMoreScreen: undefined;
+  TabMoreScreen: {
+    leagueInfo: LeagueInfo
+  };
 };
 const Tab = createBottomTabNavigator<TabsStackParamList>();
 
 const GroupLeagueScreen: FC<Props> = ({ navigation, route }) => {
   const { t } = useTranslation();
+  const { leagueInfo } = route.params;
   return (
     <Tab.Navigator initialRouteName={"TabHomeScreen"} screenOptions={{
       headerShown: false,
@@ -55,7 +58,7 @@ const GroupLeagueScreen: FC<Props> = ({ navigation, route }) => {
       <Tab.Screen name="TabMoreScreen" component={TabMoreScreen} options={{
         tabBarIcon: ({ focused, color }) => <FontAwesomeIcon icon={faBars} size={14} />,
         tabBarLabel: t("LEAGUE.MORE")
-      }} />
+      }} initialParams={{ leagueInfo }} />
     </Tab.Navigator>
   );
 };
