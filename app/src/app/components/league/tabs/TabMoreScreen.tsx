@@ -23,7 +23,8 @@ const TabMoreScreen: FC<Props> = ({ navigation, route }) => {
   const { t } = useTranslation();
   const tabBarHeight = useBottomTabBarHeight();
   const { leagueInfo } = route.params;
-  const [showRoundIndex, setShowRoundIndex] = React.useState(0);
+  const currentRoundIndex = leagueInfo.leagueInfo.rounds.findIndex(round => new Date() > new Date(round.startingDate) && !round.finished);
+  const [showRoundIndex, setShowRoundIndex] = React.useState(currentRoundIndex === -1 ? 0 : currentRoundIndex);
 
   const incrementRoundIndex = () => {
     setShowRoundIndex(prevState => {
@@ -64,12 +65,12 @@ const TabMoreScreen: FC<Props> = ({ navigation, route }) => {
               <View style={styles.roundHeader}>
                 <TouchableOpacity activeOpacity={.5} disabled={i === 0} onPress={() => decrementRoundIndex()}
                                   style={styles.chevronButton}>
-                  <FontAwesomeIcon icon={faChevronLeft} color={"#252525"} size={12} />
+                  <FontAwesomeIcon icon={faChevronLeft} color={"#252525"} size={16} />
                 </TouchableOpacity>
-                <Text>{round.name}</Text>
+                <Text style={{fontSize: 17}}>{round.name}</Text>
                 <TouchableOpacity activeOpacity={.5} disabled={i === leagueInfo.leagueInfo.rounds.length - 1}
                                   onPress={() => incrementRoundIndex()} style={styles.chevronButton}>
-                  <FontAwesomeIcon icon={faChevronRight} color={"#252525"} size={12} />
+                  <FontAwesomeIcon icon={faChevronRight} color={"#252525"} size={16} />
                 </TouchableOpacity>
               </View>
               <View style={styles.matchesContainer}>
@@ -81,19 +82,19 @@ const TabMoreScreen: FC<Props> = ({ navigation, route }) => {
         <View>
           <View style={styles.textContainer}>
             <TouchableOpacity activeOpacity={.5}>
-              <FontAwesomeIcon icon={faPlusCircle} color={"#96A6B6"} style={{ marginRight: 10 }} size={30} />
+              <FontAwesomeIcon icon={faPlusCircle} color={"#96A6B6"} style={{ marginRight: 10 }} size={35} />
             </TouchableOpacity>
             <View style={{ flexDirection: "column" }}>
-              <Text>{t("LEAGUE.INVITE_FRIENDS")}</Text>
+              <Text style={{fontSize: 17}}>{t("LEAGUE.INVITE_FRIENDS")}</Text>
               <Text
-                style={{ fontSize: 10 }}>{t("LEAGUE.INVITATION_CODE", { code: leagueInfo.groupInfo.invitationCode })}</Text>
+                style={{ fontSize: 13 }}>{t("LEAGUE.INVITATION_CODE", { code: leagueInfo.groupInfo.invitationCode })}</Text>
             </View>
           </View>
           <View style={styles.textContainer}>
-            <Text style={{ color: "#4544CB", fontSize: 10 }}>{t("LEAGUE.REMOVE_ADS")}</Text>
+            <Text style={{ color: "#4544CB", fontSize: 15 }}>{t("LEAGUE.REMOVE_ADS")}</Text>
           </View>
           <View style={styles.textContainer}>
-            <Text style={{ color: "#BE2560", fontSize: 10 }}>{t("LEAGUE.LEAVE_GROUP")}</Text>
+            <Text style={{ color: "#BE2560", fontSize: 15 }}>{t("LEAGUE.LEAVE_GROUP")}</Text>
           </View>
         </View>
       </View>
@@ -110,8 +111,8 @@ const styles = StyleSheet.create({
   chevronButton: {
     borderWidth: 1,
     borderColor: "#C7C8CA",
-    width: 22,
-    height: 22,
+    width: 30,
+    height: 30,
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 50
@@ -126,17 +127,17 @@ const styles = StyleSheet.create({
     width: "49%",
     marginBottom: 10,
     backgroundColor: "#FFF",
-    height: 35,
+    height: 45,
     borderRadius: 50,
     paddingVertical: 5,
-    paddingHorizontal: 10,
+    paddingHorizontal: 15,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center"
   },
   teamCrest: {
-    height: 15,
-    width: 15,
+    height: 20,
+    width: 20,
     resizeMode: "stretch"
   },
   matchResult: {

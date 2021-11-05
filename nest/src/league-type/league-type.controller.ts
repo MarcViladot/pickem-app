@@ -8,6 +8,9 @@ import { Roles } from "../auth/decorators/roles.decorator";
 import { UserRole } from "../user/entities/user.entity";
 import { ResponseApi, ResponseApiSuccess, WebApiResponseCode } from "../utils/ResponseApi";
 import { WebApiException } from "../utils/WebApiException";
+import { RoundResult } from "../match/entities/round-result.entity";
+
+
 
 @Controller("league")
 export class LeagueTypeController {
@@ -38,25 +41,14 @@ export class LeagueTypeController {
         const leagueInfo = await this.leagueService.getGroupLeague(params.leagueId, req.user.userId);
         const groupInfo = await this.leagueService.getGroupInfo(params.groupId, params.leagueId);
         const table = groupInfo.userGroups.map((userGroup) => userGroup.user.roundResults);
-        // group table arrays by roundId
-        const groupTable = table.reduce((acc, cur) => {
-            const roundId = cur[0].roundId;
-            if (!acc[roundId]) {
-                acc[roundId] = [];
-            }
-            acc[roundId].push(cur);
-            return acc;
-        }, {});
-
         const data = {
+            totalPoints: this.leagueService.calculateUserTotalPoints(groupInfo, req.user.userId),
             leagueInfo,
             groupInfo,
-            table: groupTable,
-            totalPoints: this.leagueService.calculateUserTotalPoints(groupInfo, req.user.userId)
+            table: this.leagueService.getClassificationTableInfo(table)
         };
         return new ResponseApiSuccess(data);
     }
-
 
     @Post("createLeagueType")
     @UseGuards(JwtAuthGuard, RolesGuard)

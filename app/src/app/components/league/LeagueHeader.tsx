@@ -42,8 +42,8 @@ const styles = StyleSheet.create({
     alignItems: "center"
   },
   userImage: {
-    width: 30,
-    height: 30,
+    width: 35,
+    height: 35,
     borderRadius: 50
   },
   chip: {
@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold"
   },
   leagueName: {
-    fontSize: 15,
+    fontSize: 17,
     color: "#000",
     marginLeft: 12
   }

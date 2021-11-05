@@ -16,6 +16,9 @@ export class RoundResult {
   @JoinColumn({ name: "userId" })
   user: User;
 
+  @Column()
+  userId: number;
+
   @ManyToOne(() => Round, round => round.id)
   @JoinColumn({ name: "roundId" })
   round: Round;

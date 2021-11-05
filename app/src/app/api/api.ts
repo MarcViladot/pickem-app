@@ -20,7 +20,7 @@ const Api: AxiosInstance = axios.create({
 
 Api.interceptors.request.use(async (config: any) => {
     // dispatch(showLoading());
-    const token = await AsyncStorage.getItem("token");
+    const token = await AsyncStorage.getItem("pickem_token");
     config.headers["Authorization"] = token ? `Bearer ${token}` : "";
     return config;
   }, (error: any) => {

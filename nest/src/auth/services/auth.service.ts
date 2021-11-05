@@ -29,16 +29,17 @@ export class AuthService {
     return null;
   }
 
-  async login(email: string, password: string): Promise<User> {
+  async login(email: string, password: string): Promise<CurrentUser> {
     const user: User = await this.validateUser(email, password);
     if (!user) {
       throw new WebApiException(WebApiResponseCode.UserIncorrectCredentials, []);
     }
     const payload: ITokenPayload = {email, userId: user.id, role: user.userRole};
-    return {
-        ...user,
-        token: this.jwtService.sign(payload),
-    };
+    const currentUser = await this.usersService.getCurrentUser(user.id);
+    return new CurrentUser({
+      ...currentUser,
+      token: this.jwtService.sign(payload)
+    })
   }
 
   async isCorrectPassword(hashedPassword: string, plainPassword: string): Promise<boolean> {

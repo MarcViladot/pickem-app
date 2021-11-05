@@ -123,7 +123,7 @@ const styles = StyleSheet.create({
   },
   form: {
     minWidth: 320,
-    width: '60%',
+    width: '70%',
   },
   upperLogo: {
     width: '100%',

@@ -18,7 +18,7 @@ const AccordionList: FC<Props> = ({name, listItems, openByDefault}) => {
       <View style={styles.listHeader}>
         <Text style={styles.listName}>{name}</Text>
         <Pressable onPress={() => setOpen(prevState => !prevState)}>
-          <FontAwesomeIcon icon={open ?  faChevronUp : faChevronDown} color={'gray'} size={12} />
+          <FontAwesomeIcon icon={open ?  faChevronUp : faChevronDown} color={'gray'} size={14} />
         </Pressable>
       </View>
       { open &&
@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
     paddingLeft: 12
   },
   listName: {
-    fontSize: 14,
+    fontSize: 16,
     fontWeight: 'bold',
     color: '#000'
   },

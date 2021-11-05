@@ -2,6 +2,7 @@ import { UserGroup, UserRole as GroupRole } from "../../group/entities/user-grou
 import { User, UserRole } from "./user.entity";
 
 export class CurrentUser {
+  id: number;
   name: string;
   email: string;
   photo: string;
@@ -11,6 +12,7 @@ export class CurrentUser {
   invitations: UserGroup[];
 
   constructor(api: User) {
+    this.id = api.id;
     this.name = api.name;
     this.email = api.email;
     this.photo = api.photo;

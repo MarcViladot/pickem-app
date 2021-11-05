@@ -5,7 +5,19 @@ export interface LeagueInfo {
     leagueInfo: League;
     groupInfo: Group;
     totalPoints: number;
+    table: ClassificationTableInfo;
 }
+
+export interface ClassificationTableInfo {
+    byRounds: any;
+    global: GroupedTableByUser[];
+}
+
+export interface GroupedTableByUser {
+    userId: number;
+    totalPoints: number;
+}
+
 
 export interface League {
     id: number;

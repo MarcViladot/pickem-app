@@ -2,7 +2,7 @@ import React, { FC, useState } from "react";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import HomeScreen from "./HomeScreen";
 import Foo from "./league/GroupLeagueScreen";
-import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { DrawerContentComponentProps } from "@react-navigation/drawer/src/types";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../reducers";
@@ -32,7 +32,7 @@ const DrawerNavigator = () => {
                       drawerContent={(props) => <CustomDrawerContent {...props} />}
                       drawerStyle={{
                         backgroundColor: "#c6cbef",
-                        width: 220
+                        width: 230
                       }}>
       <Drawer.Screen name="Home" component={HomeScreen} />
       <Drawer.Screen name="GroupLeague" component={GroupLeagueScreen} options={{
@@ -65,20 +65,20 @@ const CustomDrawerContent: FC<DrawerContentComponentProps> = ({ navigation }) =>
           <UserImage user={user} styles={styles.userPhoto} />
           <Text style={styles.userName}>{user.name}</Text>
         </View>
-        <FontAwesomeIcon icon={faCog} style={{ color: "gray" }} size={15} />
+        <FontAwesomeIcon icon={faCog} style={{ color: "gray" }} size={17} />
       </View>
-      <View>
+      <ScrollView>
         {user.groups.map((userGroup: UserGroup, i) => (
-          <AccordionList key={userGroup.id} openByDefault={user.groups.length === 1 && i === 0}
-                         name={userGroup.group.name} listItems={userGroup.leagues.map((league) => (
-            <TouchableOpacity activeOpacity={.4} disabled={loading} onPress={() => loadLeague(userGroup.group.id, league.id)} style={styles.leagueButton}
-                              key={league.id}>
-              <Image source={{ uri: league.logo }} style={styles.leagueLogo} />
-              <Text style={{ color: "#000", fontSize: 11 }}>{league.name}</Text>
-            </TouchableOpacity>
-          ))} />
+            <AccordionList key={userGroup.id} openByDefault={user.groups.length === 1 && i === 0}
+                           name={userGroup.group.name} listItems={userGroup.leagues.map((league) => (
+              <TouchableOpacity activeOpacity={.4} disabled={loading} onPress={() => loadLeague(userGroup.group.id, league.id)} style={styles.leagueButton}
+                                key={league.id}>
+                <Image source={{ uri: league.logo }} style={styles.leagueLogo} />
+                <Text style={{ color: "#000", fontSize: 13 }}>{league.name}</Text>
+              </TouchableOpacity>
+            ))} />
         ))}
-      </View>
+      </ScrollView>
     </View>
   );
 };
@@ -96,7 +96,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "white",
     borderBottomWidth: 1,
-    borderColor: "#EEEEF3"
+    borderColor: "#EEEEF3",
+    marginBottom: 10
   },
   userInfo: {
     flexDirection: "row",
@@ -105,13 +106,13 @@ const styles = StyleSheet.create({
   },
   userName: {
     color: "#000",
-    fontSize: 12,
+    fontSize: 16,
     flex: 1,
     flexWrap: "wrap"
   },
   userPhoto: {
-    width: 35,
-    height: 35,
+    width: 37,
+    height: 37,
     borderRadius: 50,
     marginRight: 10
   },

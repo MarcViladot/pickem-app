@@ -12,6 +12,8 @@ export interface User {
 export interface UserGroup {
   id: number;
   userRole: UserGroupRole;
+  user: User;
+  userId: number;
   group: Group;
   leagues: LeagueType[]
 }
@@ -27,6 +29,7 @@ export interface Group {
   name: string;
   photo: string;
   invitationCode: string;
+  userGroups: UserGroup[];
 }
 
 export interface UserCredentials {

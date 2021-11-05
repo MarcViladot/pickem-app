@@ -26,7 +26,9 @@ interface Props {
 export type TabsStackParamList = {
   TabHomeScreen: undefined;
   TabRoundsScreen: undefined;
-  TabTableScreen: undefined;
+  TabTableScreen: {
+    leagueInfo: LeagueInfo
+  };
   TabMoreScreen: {
     leagueInfo: LeagueInfo
   };
@@ -44,19 +46,19 @@ const GroupLeagueScreen: FC<Props> = ({ navigation, route }) => {
       tabBarIconStyle: styles.tabBarIconStyle
     }}>
       <Tab.Screen name="TabHomeScreen" component={TabHomeScreen} options={{
-        tabBarIcon: ({ focused, color }) => <FontAwesomeIcon icon={faHome} size={14} />,
+        tabBarIcon: ({ focused, color }) => <FontAwesomeIcon icon={faHome} size={15} />,
         tabBarLabel: t("LEAGUE.HOME")
       }} />
       <Tab.Screen name="TabRoundsScreen" component={TabRoundsScreen} options={{
-        tabBarIcon: ({ focused, color }) => <FontAwesomeIcon icon={faClock} size={14} />,
+        tabBarIcon: ({ focused, color }) => <FontAwesomeIcon icon={faClock} size={15} />,
         tabBarLabel: t("LEAGUE.ROUNDS")
       }} />
       <Tab.Screen name="TabTableScreen" component={TabTableScreen} options={{
-        tabBarIcon: ({ focused, color }) => <FontAwesomeIcon icon={faTrophy} size={14} />,
+        tabBarIcon: ({ focused, color }) => <FontAwesomeIcon icon={faTrophy} size={15} />,
         tabBarLabel: t("LEAGUE.TABLE")
-      }} />
+      }} initialParams={{ leagueInfo }} />
       <Tab.Screen name="TabMoreScreen" component={TabMoreScreen} options={{
-        tabBarIcon: ({ focused, color }) => <FontAwesomeIcon icon={faBars} size={14} />,
+        tabBarIcon: ({ focused, color }) => <FontAwesomeIcon icon={faBars} size={15} />,
         tabBarLabel: t("LEAGUE.MORE")
       }} initialParams={{ leagueInfo }} />
     </Tab.Navigator>
@@ -76,11 +78,11 @@ const styles = StyleSheet.create({
       width: 0, height: 0 // for iOS
     },
     shadowRadius: 0,
-    height: 35
+    height: 40
   },
   tabBarLabelStyle: {
-    marginVertical: 2,
-    fontSize: 8
+    marginVertical: 4,
+    fontSize: 12
   },
   tabBarIconStyle: {
     marginTop: 5
