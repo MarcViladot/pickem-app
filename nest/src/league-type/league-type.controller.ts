@@ -1,6 +1,6 @@
 import { createLeagueTypeDto } from "./dto/create-league-type.dto";
 import { LeagueType } from "./entities/LeagueType.entity";
-import { Body, Controller, Get, Param, Post, Req, UseGuards } from "@nestjs/common";
+import { Body, ConsoleLogger, Controller, Get, Param, Post, Req, UseGuards } from "@nestjs/common";
 import { LeagueTypeService } from "./league-type.service";
 import { JwtAuthGuard, RequestWithUser } from "../auth/guards/jwt/jwt-auth.guard";
 import { RolesGuard } from "../auth/guards/roles.guard";
@@ -40,7 +40,7 @@ export class LeagueTypeController {
     async getGroupLeague(@Req() req: RequestWithUser, @Param() params: { groupId: number, leagueId: number }): Promise<ResponseApi<LeagueType>> {
         const leagueInfo = await this.leagueService.getGroupLeague(params.leagueId, req.user.userId);
         const groupInfo = await this.leagueService.getGroupInfo(params.groupId, params.leagueId);
-        const table = groupInfo.userGroups.map((userGroup) => userGroup.user.roundResults);
+        const table = groupInfo.userGroups.map((userGroup) => userGroup.user);
         const data = {
             totalPoints: this.leagueService.calculateUserTotalPoints(groupInfo, req.user.userId),
             leagueInfo,

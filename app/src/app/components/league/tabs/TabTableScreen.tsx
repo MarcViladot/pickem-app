@@ -13,8 +13,8 @@ import DropDownPicker, { ItemType } from "react-native-dropdown-picker";
 import { Round } from "../../../interfaces/league.interface";
 import user from "../../../reducers/user";
 
-type ScreenNavigationProps = StackNavigationProp<TabsStackParamList, "TabTableScreen">;
-type ScreenRouteProp = RouteProp<TabsStackParamList, "TabTableScreen">;
+type ScreenNavigationProps = StackNavigationProp<TabsStackParamList, "TabTable">;
+type ScreenRouteProp = RouteProp<TabsStackParamList, "TabTable">;
 
 interface Props {
   navigation: ScreenNavigationProps;
@@ -76,11 +76,10 @@ const TabTableScreen: FC<Props> = ({ navigation, route }) => {
     });
 
     const getTableFromRoundId = (roundId: number) => {
-      const classification = leagueInfo.table.byRounds[`${roundId}`];
+      const classification = leagueInfo.table.byRounds ? leagueInfo.table.byRounds[`${roundId}`] : null;
       if (classification) {
         setClassification(classification);
       } else {
-
         const userList = leagueInfo.groupInfo.userGroups.map(userGroup => {
           return {
             userId: userGroup.userId,

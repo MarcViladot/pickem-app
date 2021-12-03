@@ -31,7 +31,7 @@ export class UserService {
       .where('user.id = :userId', {userId})
       .leftJoinAndSelect('user.userGroups', 'userGroup', 'userGroup.userId = :userId', {userId})
       .leftJoinAndSelect('userGroup.group', 'group', 'userGroup.groupId = group.id')
-      .leftJoinAndSelect('userGroup.leagues', 'leagueType')
+      .leftJoinAndSelect('group.leagues', 'leagueType')
       .getOne()
   }
 

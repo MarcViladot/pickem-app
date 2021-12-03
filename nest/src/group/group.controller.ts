@@ -19,8 +19,7 @@ export class GroupController {
     @UseGuards(JwtAuthGuard)
     async createGroup(@Body() createGroupDto: CreateGroupDto, @Req() req: RequestWithUser): Promise<ResponseApi<UserGroup>> {
         try {
-            const user = await this.authService.getUserFromRequest(req);
-            const group = await this.groupService.createGroup(createGroupDto, user);
+            const group = await this.groupService.createGroup(createGroupDto, req.user.userId);
             return new ResponseApiSuccess(group);
         } catch (e) {
             throw new WebApiException(WebApiResponseCode.Unexpected, [], e);
@@ -30,7 +29,7 @@ export class GroupController {
     @Post('add-league')
     async addLeague(@Body() addLeagueDto: AddLeagueDto): Promise<ResponseApi<UserGroup>> {
         try {
-            const group = await this.groupService.addLeagueToGroup(addLeagueDto.userGroupId, addLeagueDto.leagueTypeId);
+            const group = await this.groupService.addLeagueToGroup(addLeagueDto.groupId, addLeagueDto.leagueTypeId);
             return new ResponseApiSuccess(group);
         } catch (e) {
             throw new WebApiException(WebApiResponseCode.Unexpected, [], e);

@@ -1,8 +1,8 @@
-import { Body, Controller, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Put, Req, UseGuards } from "@nestjs/common";
 import { RoundService } from './round.service';
 import { CreateRoundDto } from './dto/create-round.dto';
 import { Round } from './entities/round.entity';
-import { JwtAuthGuard } from '../auth/guards/jwt/jwt-auth.guard';
+import { JwtAuthGuard, RequestWithUser } from "../auth/guards/jwt/jwt-auth.guard";
 import { RolesGuard } from '../auth/guards/roles.guard';
 import { Roles } from '../auth/decorators/roles.decorator';
 import { UserRole } from '../user/entities/user.entity';
@@ -56,6 +56,17 @@ export class RoundController {
     } catch (error) {
       throw new WebApiException(WebApiResponseCode.Unexpected, [], error);
     }
+  }
+
+  @Get('pendingRounds')
+  @UseGuards(JwtAuthGuard)
+  @Roles(UserRole.ADMIN)
+  async getPendingRounds(@Req() req: RequestWithUser): Promise<ResponseApi<Round[]>> {
+    const rounds = await this.roundService.getPendingRounds(req.user.userId);
+    if (!rounds) {
+      throw new WebApiException(WebApiResponseCode.Unexpected, []);
+    }
+    return new ResponseApiSuccess(rounds);
   }
 
   @Get(':id')

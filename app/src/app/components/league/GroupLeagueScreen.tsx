@@ -3,7 +3,7 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import { RouteProp } from "@react-navigation/native";
 import { DrawerStackParamList } from "../DrawerNavigator";
 import TabHomeScreen from "./tabs/TabHomeScreen";
-import TabRoundsScreen from "./tabs/TabRoundsScreen";
+import TabRoundsScreen from "./tabs/Rounds/TabRoundsScreen";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faBars, faTrophy } from "@fortawesome/free-solid-svg-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -24,12 +24,16 @@ interface Props {
 }
 
 export type TabsStackParamList = {
-  TabHomeScreen: undefined;
-  TabRoundsScreen: undefined;
-  TabTableScreen: {
+  TabHome: {
+    leagueInfo: LeagueInfo
+  },
+  TabTable: {
     leagueInfo: LeagueInfo
   };
-  TabMoreScreen: {
+  TabMore: {
+    leagueInfo: LeagueInfo
+  };
+  TabRounds: {
     leagueInfo: LeagueInfo
   };
 };
@@ -39,25 +43,25 @@ const GroupLeagueScreen: FC<Props> = ({ navigation, route }) => {
   const { t } = useTranslation();
   const { leagueInfo } = route.params;
   return (
-    <Tab.Navigator initialRouteName={"TabHomeScreen"} screenOptions={{
+    <Tab.Navigator initialRouteName={"TabHome"} screenOptions={{
       headerShown: false,
       tabBarStyle: styles.tabBarStyle,
       tabBarLabelStyle: styles.tabBarLabelStyle,
       tabBarIconStyle: styles.tabBarIconStyle
     }}>
-      <Tab.Screen name="TabHomeScreen" component={TabHomeScreen} options={{
+      <Tab.Screen name="TabHome" component={TabHomeScreen} options={{
         tabBarIcon: ({ focused, color }) => <FontAwesomeIcon icon={faHome} size={15} />,
         tabBarLabel: t("LEAGUE.HOME")
-      }} />
-      <Tab.Screen name="TabRoundsScreen" component={TabRoundsScreen} options={{
+      }} initialParams={{ leagueInfo }} />
+      <Tab.Screen name="TabRounds" component={TabRoundsScreen} options={{
         tabBarIcon: ({ focused, color }) => <FontAwesomeIcon icon={faClock} size={15} />,
         tabBarLabel: t("LEAGUE.ROUNDS")
-      }} />
-      <Tab.Screen name="TabTableScreen" component={TabTableScreen} options={{
+      }} initialParams={{ leagueInfo }} />
+      <Tab.Screen name="TabTable" component={TabTableScreen} options={{
         tabBarIcon: ({ focused, color }) => <FontAwesomeIcon icon={faTrophy} size={15} />,
         tabBarLabel: t("LEAGUE.TABLE")
       }} initialParams={{ leagueInfo }} />
-      <Tab.Screen name="TabMoreScreen" component={TabMoreScreen} options={{
+      <Tab.Screen name="TabMore" component={TabMoreScreen} options={{
         tabBarIcon: ({ focused, color }) => <FontAwesomeIcon icon={faBars} size={15} />,
         tabBarLabel: t("LEAGUE.MORE")
       }} initialParams={{ leagueInfo }} />

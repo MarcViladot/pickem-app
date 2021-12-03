@@ -8,7 +8,7 @@ import { LeagueType } from "../../league-type/entities/LeagueType.entity";
 export class Prediction {
 
   @PrimaryGeneratedColumn()
-  id: number;
+  id?: number;
 
   @Column()
   localTeamResult: number;
@@ -17,14 +17,14 @@ export class Prediction {
   awayTeamResult: number;
 
   @Column({nullable: true})
-  correct: boolean;
+  correct?: boolean;
 
   @Column({default: 0})
-  points: number;
+  points?: number;
 
   @ManyToOne(() => User, user => user.id)
   @JoinColumn({name: 'userId'})
-  user: User;
+  user?: User;
 
   @Column()
   userId: number;
@@ -33,7 +33,10 @@ export class Prediction {
     onDelete: 'CASCADE',
   })
   @JoinColumn({name: 'matchId'})
-  match: Match;
+  match?: Match;
+
+  @Column()
+  matchId: number;
 
 
 }

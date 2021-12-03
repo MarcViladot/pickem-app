@@ -49,7 +49,7 @@ const CreateMatchForm: FC<Props> = ({roundDetail, setRoundDetail, newMatchDialog
         initialValues: {
             localTeamId: -1,
             awayTeamId: -1,
-            date: new Date(),
+            date: new Date(roundDetail.startingDate),
             doublePoints: false
         },
         validationSchema: Yup.object({

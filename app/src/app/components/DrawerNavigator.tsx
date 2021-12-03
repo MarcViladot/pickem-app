@@ -14,14 +14,17 @@ import league from "../api/league";
 import { showApiErrorToast } from "../actions/utils/showApiErrorToast";
 import GroupLeagueScreen from "./league/GroupLeagueScreen";
 import UserImage from "./common/UserImage";
-import LeagueHeader from "./league/LeagueHeader";
+import LeagueHeader, {HomeHeader} from "./league/LeagueHeader";
 import { LeagueInfo } from "../interfaces/league.interface";
+import {DrawerHeaderProps} from '@react-navigation/drawer/lib/typescript/src/types';
+import NotificationsScreen from './NotificationsScreen';
 
 export type DrawerStackParamList = {
   Home: undefined;
   GroupLeague: {
     leagueInfo: LeagueInfo
   };
+  Notifications: undefined;
 };
 const Drawer = createDrawerNavigator<DrawerStackParamList>();
 
@@ -34,7 +37,14 @@ const DrawerNavigator = () => {
                         backgroundColor: "#c6cbef",
                         width: 230
                       }}>
-      <Drawer.Screen name="Home" component={HomeScreen} />
+      <Drawer.Screen name="Home" component={HomeScreen} options={{
+        header: (props) => <HomeHeader {...props} />,
+        headerShown: true
+      }}/>
+      <Drawer.Screen name="Notifications" component={NotificationsScreen} options={{
+        header: (props) => <HomeHeader {...props} />,
+        headerShown: true
+      }}/>
       <Drawer.Screen name="GroupLeague" component={GroupLeagueScreen} options={{
         header: (props) => <LeagueHeader {...props} />,
         headerShown: true
@@ -42,6 +52,8 @@ const DrawerNavigator = () => {
     </Drawer.Navigator>
   );
 };
+
+
 
 const CustomDrawerContent: FC<DrawerContentComponentProps> = ({ navigation }) => {
 
@@ -70,7 +82,7 @@ const CustomDrawerContent: FC<DrawerContentComponentProps> = ({ navigation }) =>
       <ScrollView>
         {user.groups.map((userGroup: UserGroup, i) => (
             <AccordionList key={userGroup.id} openByDefault={user.groups.length === 1 && i === 0}
-                           name={userGroup.group.name} listItems={userGroup.leagues.map((league) => (
+                           name={userGroup.group.name} listItems={userGroup.group.leagues.map((league) => (
               <TouchableOpacity activeOpacity={.4} disabled={loading} onPress={() => loadLeague(userGroup.group.id, league.id)} style={styles.leagueButton}
                                 key={league.id}>
                 <Image source={{ uri: league.logo }} style={styles.leagueLogo} />

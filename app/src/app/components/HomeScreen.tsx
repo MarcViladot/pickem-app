@@ -5,8 +5,7 @@ const HomeScreen = ({navigation}) => {
 
   return (
     <View style={{backgroundColor: 'red'}}>
-      <Button title={"toggle"} onPress={() => navigation.toggleDrawer()} />
-      <Text>Bar</Text>
+      <Text>Home</Text>
     </View>
   );
 };

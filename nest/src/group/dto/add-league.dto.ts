@@ -4,7 +4,7 @@ import { ApiProperty } from "@nestjs/swagger";
 export class AddLeagueDto {
 
   @ApiProperty()
-  userGroupId: number;
+  groupId: number;
 
   @ApiProperty()
   leagueTypeId: number;

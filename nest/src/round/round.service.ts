@@ -6,6 +6,7 @@ import { Repository } from 'typeorm';
 import { LeagueTypeService } from '../league-type/league-type.service';
 import { ChangeVisibilityDto } from './dto/change-visibility.dto';
 import { UpdateRoundDto } from './dto/update-round.dto';
+import { Prediction } from "../prediction/entities/prediction.entity";
 
 @Injectable()
 export class RoundService {
@@ -65,5 +66,22 @@ export class RoundService {
       finished: updateRoundDto.finished
     }
     return this.roundRepository.save(updatedRound);
+  }
+
+  async getPendingRounds(userId: number): Promise<Round[]> {
+    return this.roundRepository.createQueryBuilder('round')
+      .where('round.finished = false')
+      .andWhere('round.visible = true')
+      .innerJoin('round.matches', 'match')
+      .andWhere(qb => {
+        const subQuery = qb.subQuery()
+          .select('prediction.matchId')
+          .from(Prediction, 'prediction')
+          .where('prediction.userId = :userId', {userId: userId})
+          .getQuery();
+        return 'match.id NOT IN ' + subQuery;
+      })
+      .leftJoinAndSelect('round.league', 'league', 'round.leagueTypeId = league.id')
+      .getMany();
   }
 }

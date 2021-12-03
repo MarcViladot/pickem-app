@@ -2,6 +2,7 @@ import { UserGroup } from "../../group/entities/user-group.entity";
 import { Column, Entity, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { Round } from "../../round/entities/round.entity";
 import { RoundResult } from "../../match/entities/round-result.entity";
+import { Group } from "src/group/entities/group.entity";
 
 @Entity()
 export class LeagueType {
@@ -15,7 +16,7 @@ export class LeagueType {
   @Column({ unique: true })
   name: string;
 
-  @ManyToMany(() => UserGroup)
+  @ManyToMany(() => Group)
   @JoinTable()
   groups: [];
 

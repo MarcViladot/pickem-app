@@ -5,6 +5,7 @@ export interface User {
   name: string;
   token: string;
   userRole: UserRole;
+  invitations?: UserGroup[];
   userGroups?: UserGroup[];
   groups?: UserGroup[];
 }
@@ -15,7 +16,6 @@ export interface UserGroup {
   user: User;
   userId: number;
   group: Group;
-  leagues: LeagueType[]
 }
 
 export interface LeagueType {
@@ -30,6 +30,7 @@ export interface Group {
   photo: string;
   invitationCode: string;
   userGroups: UserGroup[];
+  leagues: LeagueType[]
 }
 
 export interface UserCredentials {

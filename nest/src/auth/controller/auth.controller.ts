@@ -26,7 +26,7 @@ export class AuthController {
 
     @Post('login')
     async login(@Body() body): Promise<ResponseApi<CurrentUser>> {
-      const user = await this.authService.login(body.email, body.password);
-      return new ResponseApiSuccess(user);
+      const currentUser = await this.authService.login(body.email, body.password);
+      return new ResponseApiSuccess(currentUser);
     }
 }

@@ -40,10 +40,4 @@ export class UserGroup {
 
   @CreateDateColumn()
   createdAt: Date;
-
-  @ManyToMany(() => LeagueType, (leagueType) => leagueType.groups, {
-    eager: true
-  })
-  @JoinTable()
-  leagues: LeagueType[];
 }

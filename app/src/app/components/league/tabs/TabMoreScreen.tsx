@@ -10,8 +10,8 @@ import { Match } from "../../../interfaces/league.interface";
 import { useTranslation } from "react-i18next";
 import {format} from 'date-fns';
 
-type ScreenNavigationProps = StackNavigationProp<TabsStackParamList, "TabMoreScreen">;
-type ScreenRouteProp = RouteProp<TabsStackParamList, "TabMoreScreen">;
+type ScreenNavigationProps = StackNavigationProp<TabsStackParamList, "TabMore">;
+type ScreenRouteProp = RouteProp<TabsStackParamList, "TabMore">;
 
 interface Props {
   navigation: ScreenNavigationProps;
@@ -52,7 +52,7 @@ const TabMoreScreen: FC<Props> = ({ navigation, route }) => {
       ) : (
         <Text style={styles.matchDate}>{format(new Date(match.startDate), 'dd/MM hh:mm')}</Text>
       )}
-      <Image source={{ uri: match.teams[0].team.crest }} style={styles.teamCrest} />
+      <Image source={{ uri: match.teams[1].team.crest }} style={styles.teamCrest} />
     </View>
   );
 

@@ -1,6 +1,7 @@
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { LeagueType } from '../../league-type/entities/LeagueType.entity';
 import { Match } from '../../match/entities/match.entity';
+import { RoundResult } from "../../match/entities/round-result.entity";
 
 @Entity()
 export class Round {
@@ -29,5 +30,8 @@ export class Round {
 
   @OneToMany(() => Match, match => match.round)
   matches: Match[];
+
+  @OneToMany(() => RoundResult, roundResult => roundResult.round)
+  roundResults: RoundResult[];
 
 }

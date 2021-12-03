@@ -28,8 +28,8 @@ import { DashboardModule } from './dashboard/dashboard.module';
   imports: [
     TypeOrmModule.forRoot({
       type: 'mysql',
-      host: 'localhost',
-      port: 8888,
+      host: '127.0.0.1',
+      port: 8889,
       username: 'root',
       password: 'root',
       database: 'pickem',

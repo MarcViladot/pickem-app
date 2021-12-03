@@ -16,26 +16,25 @@ export class GroupService {
               @InjectRepository(UserGroup) private userGroupRepository: Repository<UserGroup>) {
   }
 
-  async createGroup(createGroupDto: CreateGroupDto, user: User): Promise<Group | undefined> {
+  async createGroup(createGroupDto: CreateGroupDto, userId: number): Promise<Group | undefined> {
     const invitationCode = ArrayTools.generateRandomString(6);
-    const group = await this.groupRepository.create({
+    const group = await this.groupRepository.save({
       name: createGroupDto.name,
       invitationCode,
     });
-    await this.groupRepository.save(createGroupDto);
     const joinGroup = {
-      group: group,
-      user,
+      group,
+      userId,
       userRole: UserRole.OWNER,
     };
     await this.userGroupRepository.save(joinGroup);
     return group;
   }
 
-  async addLeagueToGroup(userGroupId: number, leagueTypeId: number): Promise<UserGroup | undefined> {
-    const userGroup = await this.userGroupRepository.findOne(userGroupId);
+  async addLeagueToGroup(groupId: number, leagueTypeId: number): Promise<Group | undefined> {
+    const group = await this.groupRepository.findOne(groupId);
     const league = await this.leagueService.getLeagueTypeById(leagueTypeId);
-    userGroup.leagues.push(league);
-    return this.userGroupRepository.save(userGroup);
+    group.leagues.push(league);
+    return this.groupRepository.save(group);
   }
 }

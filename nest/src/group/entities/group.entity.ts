@@ -1,5 +1,6 @@
 import { UserGroup } from "./user-group.entity";
-import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { LeagueType } from "src/league-type/entities/LeagueType.entity";
 
 @Entity()
 export class Group {
@@ -24,5 +25,11 @@ export class Group {
 
   @OneToMany(() => UserGroup, userGroup => userGroup.group)
   userGroups: UserGroup[];
+
+  @ManyToMany(() => LeagueType, (leagueType) => leagueType.groups, {
+    eager: true
+  })
+  @JoinTable()
+  leagues: LeagueType[];
 
 }

@@ -6,6 +6,11 @@ import { Repository } from "typeorm";
 import { Group } from "../group/entities/group.entity";
 import { RoundResult } from "../match/entities/round-result.entity";
 import { ClassificationTableInfo, GroupedTableByUser } from "./interfaces/league.interface";
+import { User } from "src/user/entities/user.entity";
+
+interface GroupedRounds {
+    [roundId: string]: RoundResult[]
+}
 
 @Injectable()
 export class LeagueTypeService {
@@ -37,6 +42,7 @@ export class LeagueTypeService {
         return this.leagueTypeRepository.createQueryBuilder("league")
           .where("league.id = :leagueId", { leagueId })
           .leftJoinAndSelect("league.rounds", "round")
+          .leftJoinAndSelect('round.roundResults', 'roundResult', 'roundResult.roundId = round.id AND roundResult.userId = :userId', { userId })
           .where('round.visible = 1')
           .orderBy("round.startingDate", "ASC")
           .leftJoinAndSelect("round.matches", "match", "match.roundId = round.id")
@@ -63,33 +69,62 @@ export class LeagueTypeService {
     }
 
     // Get classification table
-    getClassificationTableInfo(roundResultsMatrix: RoundResult[][]): ClassificationTableInfo {
-        const groupTable = this.getRoundResultsGrouped(roundResultsMatrix);
+    getClassificationTableInfo(users: User[]): ClassificationTableInfo {
+        const roundResultsMatrix: RoundResult[][] = users.map(user => user.roundResults);
+        const rounds = this.getRoundResultsGrouped(roundResultsMatrix);
+        const parsedWithAllUsers = this.getRoundResultsWithAllUsers(rounds, users.map(r => r.id));
         return {
-            byRounds: groupTable,
-            global: this.getRoundGlobalTable(roundResultsMatrix)
+            byRounds: parsedWithAllUsers,
+            global: this.getGlobalTable(roundResultsMatrix, users)
         };
     }
 
-    private getRoundGlobalTable(tableGroupedByUsers: RoundResult[][]): GroupedTableByUser[] {
-        const arr: GroupedTableByUser[] = tableGroupedByUsers.map((roundResultsOfUser) => this.getGroupedTableByUser(roundResultsOfUser));
+    private getRoundResultsWithAllUsers(groupedRounds: GroupedRounds, userIds: number[]): GroupedRounds {
+        return groupedRounds ? Object.keys(groupedRounds).reduce((acc, roundId) => {
+            const users = groupedRounds[roundId].map(r => r.userId);
+            const missingUsers = userIds.filter(userId => !users.includes(userId));
+            const newRoundResults: RoundResult[] = missingUsers.map(userId => ({
+                id: null,
+                roundId: +roundId,
+                leagueTypeId: null,
+                userId,
+                points: 0,
+                user: null,
+                round: null,
+                league: null
+            }));
+            acc[roundId] = acc[roundId].concat(newRoundResults)
+            return acc;
+        }, groupedRounds) : null;
+    }
+
+    private getGlobalTable(tableGroupedByUsers: RoundResult[][], users: User[]): GroupedTableByUser[] {
+        const arr: GroupedTableByUser[] = tableGroupedByUsers.map((roundResultsOfUser, i) => this.getGroupedTableByUser(roundResultsOfUser, users[i]));
         return arr.sort((a, b) => b.totalPoints - a.totalPoints);
     }
 
-    private getGroupedTableByUser(roundResults: RoundResult[]): GroupedTableByUser {
+    private getGroupedTableByUser(roundResults: RoundResult[], user: User): GroupedTableByUser {
+        if (roundResults.length === 0) {
+            return {
+                userId: user.id,
+                totalPoints: 0,
+            }
+        }
         return {
             userId: roundResults[0].userId,
             totalPoints: roundResults.reduce((acc, curr) => acc + curr.points, 0)
         };
     };
 
-    private getRoundResultsGrouped(roundResults: RoundResult[][]): any {
+    private getRoundResultsGrouped(roundResults: RoundResult[][]): GroupedRounds {
         return roundResults.reduce((acc, roundResults) => {
-            const roundId = roundResults[0].roundId;
-            if (!acc[roundId]) {
-                acc[roundId] = [];
+            if (roundResults.length > 0) {
+                const roundId = roundResults[0].roundId;
+                if (!acc[roundId]) {
+                    acc[roundId] = [];
+                }
+                return this.addAndSort(acc, roundResults, roundId);
             }
-            return this.addAndSort(acc, roundResults, roundId);
         }, {});
     }
 

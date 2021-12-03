@@ -41,6 +41,16 @@ export interface Match {
     finished: boolean;
     doublePoints: boolean;
     teams: TeamMatch[];
+    predictions: Prediction[];
+}
+
+export interface Prediction {
+    id: number;
+    localTeamResult: number;
+    awayTeamResult: number;
+    correct: boolean;
+    points: number;
+    userId: number;
 }
 
 export interface TeamMatch {
