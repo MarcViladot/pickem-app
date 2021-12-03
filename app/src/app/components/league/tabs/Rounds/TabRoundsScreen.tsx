@@ -1,15 +1,10 @@
 import React, {FC} from "react";
-import {ScrollView, StyleSheet, Text, TouchableOpacity, View} from "react-native";
-import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
+import {StyleSheet, View} from "react-native";
+import {useBottomTabBarHeight} from "@react-navigation/bottom-tabs";
 import {createStackNavigator, StackNavigationProp} from '@react-navigation/stack';
 import {TabsStackParamList} from '../../GroupLeagueScreen';
 import {RouteProp} from '@react-navigation/native';
 import {LeagueInfo, Round} from '../../../../interfaces/league.interface';
-import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import {faFlagCheckered, faHourglassHalf} from '@fortawesome/free-solid-svg-icons';
-import {faCheckSquare, faEdit} from '@fortawesome/free-regular-svg-icons';
-import LoginScreen from '../../../auth/LoginScreen';
-import SignupScreen from '../../../auth/SignupScreen';
 import RoundListScreen from './RoundListScreen';
 import RoundDetailScreen from './RoundDetailScreen';
 
@@ -34,23 +29,22 @@ const RoundsStack = createStackNavigator<RoundsStackParamList>();
 
 const TabRoundsScreen: FC<Props> = ({navigation, route}) => {
 
-  const tabBarHeight = useBottomTabBarHeight();
-  const {leagueInfo} = route.params;
+    const tabBarHeight = useBottomTabBarHeight();
+    const {leagueInfo} = route.params;
 
-  return (
-    <View style={{marginTop: tabBarHeight, backgroundColor: '#F3F4F9', height: '100%'}}>
-        <RoundsStack.Navigator screenOptions={{
-            animationTypeForReplace: "pop",
-            headerShown: false
-        }} initialRouteName={"RoundList"}>
-            <RoundsStack.Screen name={"RoundList"} component={RoundListScreen} initialParams={{leagueInfo}} />
-            <RoundsStack.Screen name={"RoundDetail"} component={RoundDetailScreen} />
-        </RoundsStack.Navigator>
-    </View>
-  );
+    return (
+        <View style={{marginTop: tabBarHeight, backgroundColor: '#F3F4F9', height: '100%'}}>
+            <RoundsStack.Navigator screenOptions={{
+                animationTypeForReplace: "pop",
+                headerShown: false
+            }} initialRouteName={"RoundList"}>
+                <RoundsStack.Screen name={"RoundList"} component={RoundListScreen} initialParams={{leagueInfo}}/>
+                <RoundsStack.Screen name={"RoundDetail"} component={RoundDetailScreen}/>
+            </RoundsStack.Navigator>
+        </View>
+    );
 };
 
-const styles = StyleSheet.create({
-})
+const styles = StyleSheet.create({})
 
 export default TabRoundsScreen;

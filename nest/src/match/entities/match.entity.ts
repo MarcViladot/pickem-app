@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 import { Round } from '../../round/entities/round.entity';
 import { TeamMatch } from './team-match.entity';
 import { Prediction } from '../../prediction/entities/prediction.entity';
@@ -37,4 +37,8 @@ export class Match {
     onDelete: 'CASCADE',
   })
   predictions: Prediction[];
+
+  @UpdateDateColumn()
+  updatedAt: Date;
+  
 }

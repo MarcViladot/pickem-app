@@ -38,8 +38,8 @@ const MatchComponent: FC<MatchProps> = ({match, setRoundDetail, disableDeleteMat
 
     const formik = useFormik({
         initialValues: {
-            localResult: match.teams[0].finalResult || "",
-            awayResult: match.teams[1].finalResult || ""
+            localResult: match.teams[0].finalResult >= 0 ? match.teams[0].finalResult : "",
+            awayResult: match.teams[1].finalResult >= 0 ? match.teams[1].finalResult : "",
         },
         validationSchema: Yup.object({
             localResult: Yup.number(),

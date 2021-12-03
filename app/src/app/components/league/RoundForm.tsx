@@ -1,10 +1,10 @@
-import React, {FC} from 'react';
+import React, {FC, useState} from 'react';
 import {View, Text, Image, TextInput, StyleSheet, TouchableOpacity} from 'react-native';
 import {Match, Round} from '../../interfaces/league.interface';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faCheck, faMinus, faPlus} from '@fortawesome/free-solid-svg-icons';
 import {Formik} from 'formik';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {showApiErrorToast} from '../../actions/utils/showApiErrorToast';
 import styled from 'styled-components/native';
 import {format} from 'date-fns';
@@ -12,12 +12,15 @@ import {StyledButton} from '../common/StyledButton';
 import {CreateRoundPredictionDto} from '../../interfaces/round.interface';
 import prediction from '../../api/prediction';
 import {faCheckSquare, faEdit} from '@fortawesome/free-regular-svg-icons';
+import {RootState} from '../../reducers';
+import {showSuccessToast} from '../../actions/utils/showSuccessToast';
 
 interface Props {
     round: Round;
     canEdit: boolean;
     canSubmit: boolean;
     hasStarted: boolean;
+    onSubmit: () => void;
 }
 
 interface MatchForm {
@@ -30,28 +33,36 @@ interface MatchForm {
 interface TextField {
     correct?: boolean;
     finished?: boolean;
+    editing?: boolean;
 }
 
 interface TouchableOpacityProps {
     disabled: boolean;
 }
 
-const RoundForm: FC<Props> = ({round, canEdit, canSubmit, hasStarted}) => {
+const RoundForm: FC<Props> = ({round, canEdit, canSubmit, hasStarted, onSubmit}) => {
 
     const dispatch = useDispatch();
+    const [loading, setLoading] = useState(false);
     const matchForms: MatchForm[] = round.matches.map((match: Match) => {
+        const local = match.predictions[0]?.localTeamResult;
+        const away = match.predictions[0]?.awayTeamResult;
         return {
             match,
-            localTeamPrediction: match.predictions[0]?.localTeamResult || -1,
-            awayTeamPrediction: match.predictions[0]?.awayTeamResult || -1,
+            localTeamPrediction: local >= 0 ? local : -1,
+            awayTeamPrediction: away >= 0 ? away : -1,
             editing: canSubmit
         }
     });
     const totalPoints = round.matches.reduce((acc, match) => acc + (match.predictions[0]?.points || 0), 0)
 
     const createRoundPrediction = async (data: CreateRoundPredictionDto[]) => {
+        setLoading(true);
         const res = await prediction.createRoundPrediction(data);
+        setLoading(false);
         if (!res.IsError) {
+            dispatch(showSuccessToast('Predictions saved'));
+            onSubmit();
         } else {
             dispatch(showApiErrorToast(res));
         }
@@ -64,7 +75,7 @@ const RoundForm: FC<Props> = ({round, canEdit, canSubmit, hasStarted}) => {
       font-weight: bold;
       font-size: 18px;
       border: 1px solid #A6A6A6;
-      margin: ${props => props.finished ? '0' : '0 10px'};
+      margin: ${props => props.finished || !props.editing ? '0' : '0 10px'};
       width: 30px;
       height: 40px;
     `;
@@ -106,7 +117,7 @@ const RoundForm: FC<Props> = ({round, canEdit, canSubmit, hasStarted}) => {
                             </View>
                             {!canEdit && canSubmit &&
                             <StyledButton style={{width: 100}} activeOpacity={.8} onPress={handleSubmit}
-                                          disabled={!isValid} color="accent">
+                                          disabled={!isValid || loading} color="accent">
                                 <Text style={styles.buttonText}>Submit</Text>
                             </StyledButton>
                             }
@@ -116,8 +127,13 @@ const RoundForm: FC<Props> = ({round, canEdit, canSubmit, hasStarted}) => {
                             {values.matches.map((matchForm: MatchForm, index) => (
                                 <View key={index} style={styles.match}>
                                     <View style={styles.matchHeader}>
-                                        <Text style={styles.matchDate}>AT {format(new Date(matchForm.match.startDate), 'dd/MM hh:mm')}</Text>
-                                        {canEdit && (!matchForm.editing ?
+                                        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                                        <Text style={styles.matchDate}>
+                                            AT {format(new Date(matchForm.match.startDate), 'dd/MM hh:mm')}
+                                        </Text>
+                                            {matchForm.match.doublePoints && <Text style={styles.doublePoints}>x2</Text>}
+                                        </View>
+                                        {canEdit && !canSubmit && (!matchForm.editing ?
                                                 <TouchableOpacity
                                                     onPress={() => setFieldValue(`matches[${index}].editing`, true)}>
                                                     <FontAwesomeIcon icon={faEdit}/>
@@ -148,9 +164,11 @@ const RoundForm: FC<Props> = ({round, canEdit, canSubmit, hasStarted}) => {
                                                     <>
                                                         {matchForm.match.finished &&
                                                         <PredictionTextField editable={false}
-                                                                             value={`${matchForm.match.teams[0].finalResult || ''}`}/>
+                                                                             editing={true}
+                                                                             value={`${matchForm.match.teams[0].finalResult >= 0 ? matchForm.match.teams[0].finalResult : ''}`}/>
                                                         }
                                                         <PredictionTextField editable={false}
+                                                                             editing={false}
                                                                              finished={matchForm.match.finished}
                                                                              correct={matchForm.match.teams[0].finalResult === matchForm.localTeamPrediction}
                                                                              value={`${matchForm.localTeamPrediction !== -1 ? matchForm.localTeamPrediction : '-'}`}/>
@@ -192,9 +210,11 @@ const RoundForm: FC<Props> = ({round, canEdit, canSubmit, hasStarted}) => {
                                                     <>
                                                         {matchForm.match.finished &&
                                                         <PredictionTextField editable={false}
-                                                                             value={`${matchForm.match.teams[1].finalResult || ''}`}/>
+                                                                             editing={true}
+                                                                             value={`${matchForm.match.teams[1].finalResult >= 0 ? matchForm.match.teams[1].finalResult : ''}`}/>
                                                         }
                                                         <PredictionTextField editable={false}
+                                                                             editing={false}
                                                                              finished={matchForm.match.finished}
                                                                              correct={matchForm.match.teams[1].finalResult === matchForm.awayTeamPrediction}
                                                                              value={`${matchForm.awayTeamPrediction !== -1 ? matchForm.awayTeamPrediction : '-'}`}/>
@@ -307,6 +327,10 @@ const styles = StyleSheet.create({
         fontSize: 20,
         color: '#000',
         marginRight: 5,
+    },
+    doublePoints: {
+        color: '#144fff',
+        marginLeft: 10
     }
 })
 

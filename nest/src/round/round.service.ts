@@ -36,10 +36,25 @@ export class RoundService {
       .leftJoinAndSelect('round.matches', 'match', 'match.roundId = round.id')
       .orderBy("match.startDate", "ASC")
       .leftJoinAndSelect('match.teams', 'teamMatch', 'teamMatch.matchId = match.id')
-      .orderBy('teamMatch.teamPosition', "ASC")
+      .addOrderBy('teamMatch.teamPosition', "ASC")
       .leftJoinAndSelect("teamMatch.team", 'team', 'teamMatch.teamId = team.id')
       .where('round.id = :id', {id: id})
       .getOne();
+  }
+
+  async getRoundDetail(id: number, userId: number): Promise<Round | undefined> {
+    return this.roundRepository.createQueryBuilder('round')
+        .where('round.id = :id', {id: id})
+        .leftJoinAndSelect('round.roundResults', 'roundResult', 'roundResult.roundId = round.id AND roundResult.userId = :userId', { userId })
+        .andWhere('round.visible = 1')
+        .orderBy("round.startingDate", "ASC")
+        .leftJoinAndSelect("round.matches", "match", "match.roundId = round.id")
+        .addOrderBy("match.startDate", "ASC")
+        .leftJoinAndSelect("match.predictions", "prediction", "prediction.userId = :userId", { userId })
+        .leftJoinAndSelect("match.teams", "teamMatch")
+        .addOrderBy("teamMatch.teamPosition", "ASC")
+        .leftJoinAndSelect("teamMatch.team", "team", "team.id = teamMatch.teamId")
+        .getOne();
   }
 
   async changeVisibilityOfRound(changeVisibilityDto: ChangeVisibilityDto): Promise<Round> {

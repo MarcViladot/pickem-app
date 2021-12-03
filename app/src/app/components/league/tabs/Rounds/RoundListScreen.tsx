@@ -8,6 +8,9 @@ import {StackNavigationProp} from '@react-navigation/stack';
 import {TabsStackParamList} from '../../GroupLeagueScreen';
 import {RouteProp} from '@react-navigation/native';
 import {RoundsStackParamList} from './TabRoundsScreen';
+import {useDispatch} from 'react-redux';
+import {showApiErrorToast} from '../../../../actions/utils/showApiErrorToast';
+import league from '../../../../api/league';
 
 interface RoundProps {
     round: Round;
@@ -23,9 +26,10 @@ interface Props {
 
 const RoundListScreen: FC<Props> = ({navigation, route}) => {
 
+    const dispatch = useDispatch();
     const {leagueInfo} = route.params;
 
-    const RoundCom: FC<RoundProps> = ({round}) => {
+    const RoundItem: FC<RoundProps> = ({round}) => {
 
         const isPending = round.matches.some(match => match.predictions.length === 0);
         const isLive = !round.finished && new Date() > new Date(round.startingDate);
@@ -55,8 +59,17 @@ const RoundListScreen: FC<Props> = ({navigation, route}) => {
             });
         };
 
+        const getRoundDetail = async (id: number) => {
+            const res = await league.getRoundDetail(id);
+            if (!res.IsError) {
+                navigation.navigate('RoundDetail', {round: res.Result});
+            } else {
+                dispatch(showApiErrorToast(res));
+            }
+        }
+
         return (
-            <TouchableOpacity activeOpacity={.7} style={styles.round} onPress={() => navigation.navigate('RoundDetail', {round, isPending})}>
+            <TouchableOpacity activeOpacity={.7} style={styles.round} onPress={() => getRoundDetail(round.id)}>
                 <Text style={styles.roundName}>{round.name}</Text>
                 <Animated.View style={{opacity: isLive ? fadeAnim : 1}}>
                     <FontAwesomeIcon
@@ -70,7 +83,7 @@ const RoundListScreen: FC<Props> = ({navigation, route}) => {
 
     return (
         <ScrollView style={styles.container}>
-            {leagueInfo.leagueInfo.rounds.map((round, i) => <RoundCom round={round} key={i}/>)}
+            {leagueInfo.leagueInfo.rounds.map((round, i) => <RoundItem round={round} key={i}/>)}
         </ScrollView>
     );
 

@@ -125,6 +125,7 @@ export class LeagueTypeService {
                 }
                 return this.addAndSort(acc, roundResults, roundId);
             }
+            return acc;
         }, {});
     }
 

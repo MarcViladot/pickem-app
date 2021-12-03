@@ -43,7 +43,7 @@ export default {
     },
 
     getRoundWithMatches(id: string) {
-        return API.get(`round/${id}`)
+        return API.get(`round/withMatches/${id}`)
             .then((r: AxiosResponse<ResponseApi<League>>) => {
                 return r.data
             }, (err: AxiosError) => {
