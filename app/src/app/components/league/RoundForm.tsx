@@ -75,7 +75,7 @@ const RoundForm: FC<Props> = ({round, canEdit, canSubmit, hasStarted, onSubmit})
         if (pred.localTeamResult !== matchForm.localTeamPrediction || pred.awayTeamResult !== matchForm.awayTeamPrediction) {
             setLoading(true);
             const res = await prediction.updatePrediction({
-                id: ogMatch.id,
+                id: pred.id,
                 localTeamResult: matchForm.localTeamPrediction,
                 awayTeamResult: matchForm.awayTeamPrediction
             });
