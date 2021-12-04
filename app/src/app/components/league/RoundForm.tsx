@@ -14,6 +14,7 @@ import prediction from '../../api/prediction';
 import {faCheckSquare, faEdit} from '@fortawesome/free-regular-svg-icons';
 import {RootState} from '../../reducers';
 import {showSuccessToast} from '../../actions/utils/showSuccessToast';
+import {ResponseApiError} from '../../utils/IResponse';
 
 interface Props {
     round: Round;
@@ -68,6 +69,28 @@ const RoundForm: FC<Props> = ({round, canEdit, canSubmit, hasStarted, onSubmit})
         }
     }
 
+    const editPrediction = async (matchForm: MatchForm, index: number, setFieldValue: (field: string, value: any, shouldValidate?: boolean) => void) => {
+        const ogMatch = round.matches.find(match => match.id === matchForm.match.id);
+        const pred = ogMatch.predictions[0];
+        if (pred.localTeamResult !== matchForm.localTeamPrediction || pred.awayTeamResult !== matchForm.awayTeamPrediction) {
+            setLoading(true);
+            const res = await prediction.updatePrediction({
+                id: ogMatch.id,
+                localTeamResult: matchForm.localTeamPrediction,
+                awayTeamResult: matchForm.awayTeamPrediction
+            });
+            setLoading(false);
+            if (!res.IsError) {
+                dispatch(showSuccessToast('Prediction saved'));
+                setFieldValue(`matches[${index}].editing`, false);
+            } else {
+                dispatch(showApiErrorToast(res));
+            }
+        } else {
+            setFieldValue(`matches[${index}].editing`, false);
+        }
+    }
+
     const PredictionTextField = styled.TextInput<TextField>`
       background-color: #FFF;
       text-align: center;
@@ -116,10 +139,10 @@ const RoundForm: FC<Props> = ({round, canEdit, canSubmit, hasStarted, onSubmit})
                                     AT {format(new Date(round.startingDate), 'dd/MM hh:mm')}</Text>
                             </View>
                             {!canEdit && canSubmit &&
-                            <StyledButton style={{width: 100}} activeOpacity={.8} onPress={handleSubmit}
-                                          disabled={!isValid || loading} color="accent">
-                                <Text style={styles.buttonText}>Submit</Text>
-                            </StyledButton>
+                                <StyledButton style={{width: 100}} activeOpacity={.8} onPress={handleSubmit}
+                                              disabled={!isValid || loading} color="accent">
+                                    <Text style={styles.buttonText}>Submit</Text>
+                                </StyledButton>
                             }
                             {hasStarted && <Text style={styles.totalPointsText}>{totalPoints} pts</Text>}
                         </View>
@@ -128,10 +151,11 @@ const RoundForm: FC<Props> = ({round, canEdit, canSubmit, hasStarted, onSubmit})
                                 <View key={index} style={styles.match}>
                                     <View style={styles.matchHeader}>
                                         <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                                        <Text style={styles.matchDate}>
-                                            AT {format(new Date(matchForm.match.startDate), 'dd/MM hh:mm')}
-                                        </Text>
-                                            {matchForm.match.doublePoints && <Text style={styles.doublePoints}>x2</Text>}
+                                            <Text style={styles.matchDate}>
+                                                AT {format(new Date(matchForm.match.startDate), 'dd/MM hh:mm')}
+                                            </Text>
+                                            {matchForm.match.doublePoints &&
+                                                <Text style={styles.doublePoints}>x2</Text>}
                                         </View>
                                         {canEdit && !canSubmit && (!matchForm.editing ?
                                                 <TouchableOpacity
@@ -140,16 +164,17 @@ const RoundForm: FC<Props> = ({round, canEdit, canSubmit, hasStarted, onSubmit})
                                                 </TouchableOpacity>
                                                 :
                                                 <TouchableOpacity
-                                                    onPress={() => setFieldValue(`matches[${index}].editing`, true)}>
+                                                    disabled={loading}
+                                                    onPress={() => editPrediction(matchForm, index, setFieldValue)}>
                                                     <FontAwesomeIcon icon={faCheckSquare} color={'#38b174'}/>
                                                 </TouchableOpacity>
                                         )}
                                         {matchForm.match.finished &&
-                                        <View
-                                            style={[styles.predictionPointsContainer, {backgroundColor: matchForm.match.predictions[0]?.correct ? '#38b174' : '#FF1E44'}]}>
-                                            <Text
-                                                style={styles.predictionText}>{matchForm.match.predictions[0]?.points || 0} Pts</Text>
-                                        </View>
+                                            <View
+                                                style={[styles.predictionPointsContainer, {backgroundColor: matchForm.match.predictions[0]?.correct ? '#38b174' : '#FF1E44'}]}>
+                                                <Text
+                                                    style={styles.predictionText}>{matchForm.match.predictions[0]?.points || 0} Pts</Text>
+                                            </View>
                                         }
                                     </View>
                                     <View style={[styles.teamRow, {marginBottom: 2}]}>
@@ -163,9 +188,9 @@ const RoundForm: FC<Props> = ({round, canEdit, canSubmit, hasStarted, onSubmit})
                                                 (
                                                     <>
                                                         {matchForm.match.finished &&
-                                                        <PredictionTextField editable={false}
-                                                                             editing={true}
-                                                                             value={`${matchForm.match.teams[0].finalResult >= 0 ? matchForm.match.teams[0].finalResult : ''}`}/>
+                                                            <PredictionTextField editable={false}
+                                                                                 editing={true}
+                                                                                 value={`${matchForm.match.teams[0].finalResult >= 0 ? matchForm.match.teams[0].finalResult : ''}`}/>
                                                         }
                                                         <PredictionTextField editable={false}
                                                                              editing={false}
@@ -177,22 +202,28 @@ const RoundForm: FC<Props> = ({round, canEdit, canSubmit, hasStarted, onSubmit})
                                                 :
                                                 (
                                                     <>
-                                                        <IconButton activeOpacity={.6}
-                                                                    disabled={matchForm.localTeamPrediction <= 0 || !matchForm.editing}
-                                                                    onPress={() => {
-                                                                        setFieldValue(`matches[${index}].localTeamPrediction`, matchForm.localTeamPrediction === -1 ? 0 : matchForm.localTeamPrediction - 1);
-                                                                    }}>
-                                                            <FontAwesomeIcon icon={faMinus} color={'#464646'}
-                                                                             size={12}/>
-                                                        </IconButton>
+                                                        {matchForm.editing &&
+                                                            <IconButton activeOpacity={.6}
+                                                                        disabled={matchForm.localTeamPrediction <= 0 || !matchForm.editing}
+                                                                        onPress={() => {
+                                                                            setFieldValue(`matches[${index}].localTeamPrediction`, matchForm.localTeamPrediction === -1 ? 0 : matchForm.localTeamPrediction - 1);
+                                                                        }}>
+                                                                <FontAwesomeIcon icon={faMinus} color={'#464646'}
+                                                                                 size={12}/>
+                                                            </IconButton>
+                                                        }
                                                         <PredictionTextField editable={false}
+                                                                             editing={matchForm.editing}
                                                                              value={`${matchForm.localTeamPrediction !== -1 ? matchForm.localTeamPrediction : '-'}`}/>
-                                                        <IconButton disabled={!matchForm.editing}
-                                                                    activeOpacity={.6} onPress={() => {
-                                                            setFieldValue(`matches[${index}].localTeamPrediction`, matchForm.localTeamPrediction === -1 ? 0 : matchForm.localTeamPrediction + 1);
-                                                        }}>
-                                                            <FontAwesomeIcon icon={faPlus} color={'#464646'} size={12}/>
-                                                        </IconButton>
+                                                        {matchForm.editing &&
+                                                            <IconButton disabled={!matchForm.editing}
+                                                                        activeOpacity={.6} onPress={() => {
+                                                                setFieldValue(`matches[${index}].localTeamPrediction`, matchForm.localTeamPrediction === -1 ? 0 : matchForm.localTeamPrediction + 1);
+                                                            }}>
+                                                                <FontAwesomeIcon icon={faPlus} color={'#464646'}
+                                                                                 size={12}/>
+                                                            </IconButton>
+                                                        }
                                                     </>
                                                 )
                                             }
@@ -209,9 +240,9 @@ const RoundForm: FC<Props> = ({round, canEdit, canSubmit, hasStarted, onSubmit})
                                                 (
                                                     <>
                                                         {matchForm.match.finished &&
-                                                        <PredictionTextField editable={false}
-                                                                             editing={true}
-                                                                             value={`${matchForm.match.teams[1].finalResult >= 0 ? matchForm.match.teams[1].finalResult : ''}`}/>
+                                                            <PredictionTextField editable={false}
+                                                                                 editing={true}
+                                                                                 value={`${matchForm.match.teams[1].finalResult >= 0 ? matchForm.match.teams[1].finalResult : ''}`}/>
                                                         }
                                                         <PredictionTextField editable={false}
                                                                              editing={false}
@@ -223,22 +254,28 @@ const RoundForm: FC<Props> = ({round, canEdit, canSubmit, hasStarted, onSubmit})
                                                 :
                                                 (
                                                     <>
-                                                        <IconButton activeOpacity={.6}
-                                                                    disabled={matchForm.awayTeamPrediction <= 0 || !matchForm.editing}
-                                                                    onPress={() => {
-                                                                        setFieldValue(`matches[${index}].awayTeamPrediction`, matchForm.awayTeamPrediction === -1 ? 0 : matchForm.awayTeamPrediction - 1);
-                                                                    }}>
-                                                            <FontAwesomeIcon icon={faMinus} color={'#464646'}
-                                                                             size={12}/>
-                                                        </IconButton>
+                                                        {matchForm.editing &&
+                                                            <IconButton activeOpacity={.6}
+                                                                        disabled={matchForm.awayTeamPrediction <= 0 || !matchForm.editing}
+                                                                        onPress={() => {
+                                                                            setFieldValue(`matches[${index}].awayTeamPrediction`, matchForm.awayTeamPrediction === -1 ? 0 : matchForm.awayTeamPrediction - 1);
+                                                                        }}>
+                                                                <FontAwesomeIcon icon={faMinus} color={'#464646'}
+                                                                                 size={12}/>
+                                                            </IconButton>
+                                                        }
                                                         <PredictionTextField editable={false}
+                                                                             editing={matchForm.editing}
                                                                              value={`${matchForm.awayTeamPrediction !== -1 ? matchForm.awayTeamPrediction : '-'}`}/>
-                                                        <IconButton disabled={!matchForm.editing} activeOpacity={.6}
-                                                                    onPress={() => {
-                                                                        setFieldValue(`matches[${index}].awayTeamPrediction`, matchForm.awayTeamPrediction === -1 ? 0 : matchForm.awayTeamPrediction + 1);
-                                                                    }}>
-                                                            <FontAwesomeIcon icon={faPlus} color={'#464646'} size={12}/>
-                                                        </IconButton>
+                                                        {matchForm.editing &&
+                                                            <IconButton disabled={!matchForm.editing} activeOpacity={.6}
+                                                                        onPress={() => {
+                                                                            setFieldValue(`matches[${index}].awayTeamPrediction`, matchForm.awayTeamPrediction === -1 ? 0 : matchForm.awayTeamPrediction + 1);
+                                                                        }}>
+                                                                <FontAwesomeIcon icon={faPlus} color={'#464646'}
+                                                                                 size={12}/>
+                                                            </IconButton>
+                                                        }
                                                     </>
                                                 )
                                             }

@@ -3,3 +3,9 @@ export interface CreateRoundPredictionDto {
     localTeamResult: number;
     awayTeamResult: number;
 }
+
+export interface UpdatePredictionDto {
+    id: number;
+    localTeamResult: number;
+    awayTeamResult: number;
+}
