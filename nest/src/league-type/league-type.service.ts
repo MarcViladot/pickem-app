@@ -127,7 +127,7 @@ export class LeagueTypeService {
             }
             return acc;
         }, {});
-    }
+    };
 
     private addAndSort(acc: any, cur: RoundResult[], roundId: number): any {
         const group = Object.assign({}, acc);
