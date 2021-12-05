@@ -114,7 +114,7 @@ export class LeagueTypeService {
             userId: roundResults[0].userId,
             totalPoints: roundResults.reduce((acc, curr) => acc + curr.points, 0)
         };
-    }
+    };
 
     private getRoundResultsGrouped(roundResults: RoundResult[][]): GroupedRounds {
         return roundResults.reduce((acc, roundResults) => {
@@ -127,7 +127,7 @@ export class LeagueTypeService {
             }
             return acc;
         }, {});
-    };
+    }
 
     private addAndSort(acc: any, cur: RoundResult[], roundId: number): any {
         const group = Object.assign({}, acc);
