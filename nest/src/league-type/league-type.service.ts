@@ -114,7 +114,7 @@ export class LeagueTypeService {
             userId: roundResults[0].userId,
             totalPoints: roundResults.reduce((acc, curr) => acc + curr.points, 0)
         };
-    };
+    }
 
     private getRoundResultsGrouped(roundResults: RoundResult[][]): GroupedRounds {
         return roundResults.reduce((acc, roundResults) => {
