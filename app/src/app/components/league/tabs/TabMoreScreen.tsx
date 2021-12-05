@@ -9,6 +9,7 @@ import { faChevronLeft, faChevronRight, faPlusCircle } from "@fortawesome/free-s
 import { Match } from "../../../interfaces/league.interface";
 import { useTranslation } from "react-i18next";
 import {format} from 'date-fns';
+import styled from 'styled-components/native';
 
 type ScreenNavigationProps = StackNavigationProp<TabsStackParamList, "TabMore">;
 type ScreenRouteProp = RouteProp<TabsStackParamList, "TabMore">;
@@ -56,6 +57,16 @@ const TabMoreScreen: FC<Props> = ({ navigation, route }) => {
     </View>
   );
 
+  const IconButton = styled.TouchableOpacity<{disabled: boolean}>`
+      opacity: ${props => props.disabled ? '0.5' : '1'};
+      border: 1px solid #C7C8CA;
+      width: 30px;
+      height: 30px;
+      justify-content: center;
+      align-items: center;
+      border-radius: 50px;
+    `;
+
   return (
     <View style={{ marginTop: tabBarHeight, backgroundColor: "#F3F4F9", flex: 1 }}>
       <View style={{ padding: 10, paddingTop: 20, flex: 1, justifyContent: "space-between" }}>
@@ -63,15 +74,14 @@ const TabMoreScreen: FC<Props> = ({ navigation, route }) => {
           showRoundIndex === i && (
             <View key={i}>
               <View style={styles.roundHeader}>
-                <TouchableOpacity activeOpacity={.5} disabled={i === 0} onPress={() => decrementRoundIndex()}
-                                  style={styles.chevronButton}>
+                <IconButton activeOpacity={.5} disabled={i === 0} onPress={() => decrementRoundIndex()}>
                   <FontAwesomeIcon icon={faChevronLeft} color={"#252525"} size={16} />
-                </TouchableOpacity>
+                </IconButton>
                 <Text style={{fontSize: 17}}>{round.name}</Text>
-                <TouchableOpacity activeOpacity={.5} disabled={i === leagueInfo.leagueInfo.rounds.length - 1}
-                                  onPress={() => incrementRoundIndex()} style={styles.chevronButton}>
+                <IconButton activeOpacity={.5} disabled={i === leagueInfo.leagueInfo.rounds.length - 1}
+                                  onPress={() => incrementRoundIndex()}>
                   <FontAwesomeIcon icon={faChevronRight} color={"#252525"} size={16} />
-                </TouchableOpacity>
+                </IconButton>
               </View>
               <View style={styles.matchesContainer}>
                 {round.matches.map((match, j) => <MatchComponent match={match} key={j} />)}
@@ -107,15 +117,6 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     flexDirection: "row",
     alignItems: "center"
-  },
-  chevronButton: {
-    borderWidth: 1,
-    borderColor: "#C7C8CA",
-    width: 30,
-    height: 30,
-    justifyContent: "center",
-    alignItems: "center",
-    borderRadius: 50
   },
   matchesContainer: {
     paddingTop: 20,
