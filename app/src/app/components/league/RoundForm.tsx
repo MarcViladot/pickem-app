@@ -12,15 +12,14 @@ import {StyledButton} from '../common/StyledButton';
 import {CreateRoundPredictionDto} from '../../interfaces/round.interface';
 import prediction from '../../api/prediction';
 import {faCheckSquare, faEdit} from '@fortawesome/free-regular-svg-icons';
-import {RootState} from '../../reducers';
 import {showSuccessToast} from '../../actions/utils/showSuccessToast';
-import {ResponseApiError} from '../../utils/IResponse';
 
 interface Props {
     round: Round;
     canEdit: boolean;
     canSubmit: boolean;
     hasStarted: boolean;
+    onlyView: boolean;
     onSubmit: () => void;
 }
 
@@ -51,7 +50,7 @@ interface TeamRowProps extends MatchHeaderProps {
     local: boolean;
 }
 
-const RoundForm: FC<Props> = ({round, canEdit, canSubmit, hasStarted, onSubmit}) => {
+const RoundForm: FC<Props> = ({round, canEdit, canSubmit, hasStarted, onSubmit, onlyView}) => {
 
     const dispatch = useDispatch();
     const [loading, setLoading] = useState(false);
@@ -150,7 +149,7 @@ const RoundForm: FC<Props> = ({round, canEdit, canSubmit, hasStarted, onSubmit})
             <View style={styles.teamRow}>
                 <TeamInfo />
                 <View style={styles.row}>
-                    {hasStarted ? <MatchStarted/> :
+                    {(hasStarted || onlyView) ? <MatchStarted/> :
                         (
                             <>
                                 {matchForm.editing &&

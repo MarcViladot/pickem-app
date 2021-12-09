@@ -15,8 +15,8 @@ export default {
       })
   },
 
-  getRoundDetail(roundId: number) {
-    return Api.get(`round/${roundId}`)
+  getRoundDetail(roundId: number, userId: number) {
+    return Api.get(`round/${roundId}/${userId}`)
       .then((r: AxiosResponse<ResponseApi<Round>>) => {
         return r.data
       }, (err: AxiosError) => {

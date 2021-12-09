@@ -11,7 +11,7 @@ import { StyleSheet } from "react-native";
 import { faHome } from "@fortawesome/free-solid-svg-icons/faHome";
 import { useTranslation } from "react-i18next";
 import { faClock } from "@fortawesome/free-regular-svg-icons";
-import TabTableScreen from "./tabs/TabTableScreen";
+import TabTableScreen from "./tabs/Table/TabTableScreen";
 import TabMoreScreen from "./tabs/TabMoreScreen";
 import { LeagueInfo } from "../../interfaces/league.interface";
 

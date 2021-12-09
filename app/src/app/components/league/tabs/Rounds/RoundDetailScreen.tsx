@@ -23,7 +23,7 @@ const RoundDetailScreen: FC<Props> = ({navigation, route}) => {
 
     return (
         <ScrollView>
-            <RoundForm round={round} canEdit={canEdit} canSubmit={canSubmit} hasStarted={hasStarted} onSubmit={() => navigation.goBack()} />
+            <RoundForm onlyView={false} round={round} canEdit={canEdit} canSubmit={canSubmit} hasStarted={hasStarted} onSubmit={() => navigation.goBack()} />
         </ScrollView>
     );
 };

@@ -69,11 +69,11 @@ export class RoundController {
     return new ResponseApiSuccess(rounds);
   }
 
-  @Get(':id')
+  @Get(':id/:userId')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRole.ADMIN)
-  async getRoundDetail(@Param() params: { id: number }, @Req() req: RequestWithUser): Promise<ResponseApi<Round>> {
-    const round = await this.roundService.getRoundDetail(params.id, req.user.userId);
+  async getRoundDetail(@Param() params: { id: number, userId: number}): Promise<ResponseApi<Round>> {
+    const round = await this.roundService.getRoundDetail(params.id, params.userId);
     if (!round) {
       throw new WebApiException(WebApiResponseCode.RoundNotFound, [params.id]);
     }

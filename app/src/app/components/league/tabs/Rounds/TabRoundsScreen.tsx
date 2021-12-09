@@ -45,6 +45,4 @@ const TabRoundsScreen: FC<Props> = ({navigation, route}) => {
     );
 };
 
-const styles = StyleSheet.create({})
-
 export default TabRoundsScreen;

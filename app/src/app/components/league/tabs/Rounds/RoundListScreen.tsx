@@ -8,9 +8,10 @@ import {StackNavigationProp} from '@react-navigation/stack';
 import {TabsStackParamList} from '../../GroupLeagueScreen';
 import {RouteProp} from '@react-navigation/native';
 import {RoundsStackParamList} from './TabRoundsScreen';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {showApiErrorToast} from '../../../../actions/utils/showApiErrorToast';
 import league from '../../../../api/league';
+import {RootState} from '../../../../reducers';
 
 interface RoundProps {
     round: Round;
@@ -28,6 +29,7 @@ const RoundListScreen: FC<Props> = ({navigation, route}) => {
 
     const dispatch = useDispatch();
     const {leagueInfo} = route.params;
+    const currentUser = useSelector((state: RootState) => state.user.currentUser);
 
     const RoundItem: FC<RoundProps> = ({round}) => {
 
@@ -60,7 +62,7 @@ const RoundListScreen: FC<Props> = ({navigation, route}) => {
         };
 
         const getRoundDetail = async (id: number) => {
-            const res = await league.getRoundDetail(id);
+            const res = await league.getRoundDetail(id, currentUser.id);
             if (!res.IsError) {
                 navigation.navigate('RoundDetail', {round: res.Result});
             } else {
