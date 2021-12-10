@@ -39,8 +39,8 @@ export interface UserCredentials {
 }
 
 export interface CreateUser {
-  email: string;
-  password: string;
+  name: string;
+  uid: string;
 }
 
 export enum UserRole {

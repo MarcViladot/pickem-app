@@ -3,6 +3,7 @@ import store from "../../../store";
 // import {hideLoading} from '../actions/utils/hideLoading';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { AxiosInstance } from "axios";
+import firebaseAuth from '@react-native-firebase/auth';
 
 const pkg = require("../../../package.json");
 const axios = require("axios");
@@ -20,8 +21,12 @@ const Api: AxiosInstance = axios.create({
 
 Api.interceptors.request.use(async (config: any) => {
     // dispatch(showLoading());
-    const token = await AsyncStorage.getItem("pickem_token");
-    config.headers["Authorization"] = token ? `Bearer ${token}` : "";
+    // const token = await AsyncStorage.getItem("pickem_token");
+    const user = firebaseAuth().currentUser;
+    if (user) {
+        const token = await user.getIdToken();
+        config.headers["Authorization"] = token ? `Bearer ${token}` : "";
+    }
     return config;
   }, (error: any) => {
     // dispatch(hideLoading());

@@ -5,6 +5,7 @@ import App from "./App";
 import store from "./store";
 import { Provider } from "react-redux";
 import './i18n';
+import './firebase';
 
 LogBox.ignoreLogs(["Reanimated 2"]);
 

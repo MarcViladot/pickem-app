@@ -9,10 +9,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "./src/app/reducers";
 import Toast from 'react-native-toast-message';
 import {setCustomText} from 'react-native-global-props';
-import auth from "./src/app/api/auth";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { showApiErrorToast } from "./src/app/actions/utils/showApiErrorToast";
-import { setUser } from "./src/app/actions/auth/setUser";
+import firebaseAuth, {FirebaseAuthTypes} from '@react-native-firebase/auth';
+import auth  from "./src/app/api/auth";
+import {showApiErrorToast} from './src/app/actions/utils/showApiErrorToast';
+import {ResponseApi} from './src/app/utils/IResponse';
+import {User } from './src/app/interfaces/user.interface';
+import {setUser} from './src/app/actions/auth/setUser';
 
 
 setCustomText({
@@ -34,7 +36,36 @@ const App = () => {
   const isLogged = useSelector((state: RootState) => state.user.isLoggedIn);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => { // TRY LOGIN
+  useEffect(() => {
+    const subscriber = firebaseAuth().onAuthStateChanged((user) => {
+      console.warn(`login state change: ${!!user ? 'logged' : 'not logged'}`);
+      if (user && !isLogged) { // USER IS LOGGED BUT NO INFORMATION IS LOADED
+        console.log(user.metadata)
+        if (user.metadata.lastSignInTime !== user.metadata.creationTime) {
+          getCurrentUser();
+        }
+      } else {
+        setLoading(false);
+      }
+    });
+    return subscriber; // unsubscribe on unmount
+  }, []);
+
+  const getCurrentUser = async () => {
+    const res = await auth.autoLogin() as ResponseApi<User>;
+    if (!res.IsError) {
+      if (!!res.Result) {
+        await firebaseAuth().signInWithCustomToken(res.Result.token);
+        dispatch(setUser(res.Result));
+      }
+      setLoading(false);
+    } else {
+      setLoading(false);
+      dispatch(showApiErrorToast(res));
+    }
+  };
+
+  /*useEffect(() => { // TRY LOGIN
         async function tryLogin() {
             try {
                 const token = await AsyncStorage.getItem('pickem_token');
@@ -65,7 +96,7 @@ const App = () => {
         } else {
             setLoading(false);
         }
-    }, []);
+    }, []);*/
 
   if (loading) {
     return <></>;

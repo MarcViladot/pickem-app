@@ -7,6 +7,7 @@ import { jwtConstants } from './constants';
 import { AuthController } from './controller/auth.controller';
 import { JwtStrategy } from './guards/jwt/jwt.strategy';
 import { JwtAuthGuard } from './guards/jwt/jwt-auth.guard';
+import { FirebaseAuthService } from "./services/firebase-auth.service";
 
 @Module({
   imports: [UserModule,
@@ -14,7 +15,7 @@ import { JwtAuthGuard } from './guards/jwt/jwt-auth.guard';
     JwtModule.register({
       secret: jwtConstants.secret
     }),],
-  providers: [AuthService, JwtStrategy],
+  providers: [AuthService, JwtStrategy, FirebaseAuthService],
   exports: [AuthService],
   controllers: [AuthController]
 })

@@ -147,7 +147,7 @@ const RoundForm: FC<Props> = ({round, canEdit, canSubmit, hasStarted, onSubmit, 
 
         return (
             <View style={styles.teamRow}>
-                <TeamInfo />
+                <TeamInfo/>
                 <View style={styles.row}>
                     {(hasStarted || onlyView) ? <MatchStarted/> :
                         (
@@ -256,11 +256,11 @@ const RoundForm: FC<Props> = ({round, canEdit, canSubmit, hasStarted, onSubmit, 
                             {values.matches.map((matchForm: MatchForm, index) => (
                                 <View key={index} style={styles.match}>
                                     <MatchHeader index={index} matchForm={matchForm}
-                                                 setFieldValue={setFieldValue} />
+                                                 setFieldValue={setFieldValue}/>
                                     <TeamRow index={index} local={true} matchForm={matchForm}
-                                             setFieldValue={setFieldValue} />
+                                             setFieldValue={setFieldValue}/>
                                     <TeamRow index={index} local={false} matchForm={matchForm}
-                                             setFieldValue={setFieldValue} />
+                                               setFieldValue={setFieldValue}/>
                                 </View>
                             ))}
                         </View>
@@ -320,6 +320,7 @@ const styles = StyleSheet.create({
         marginBottom: 12,
     },
     teamRow: {
+        marginBottom: 1,
         height: 50,
         flexDirection: 'row',
         justifyContent: 'space-between',

@@ -2,7 +2,6 @@ import { UserGroup } from '../../group/entities/user-group.entity';
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany, CreateDateColumn } from "typeorm";
 import { Prediction } from '../../prediction/entities/prediction.entity';
 import { RoundResult } from "../../match/entities/round-result.entity";
-import { Expose } from 'class-transformer';
 
 export enum UserRole {
   MEMBER = 0,
@@ -15,17 +14,14 @@ export class User {
   @PrimaryGeneratedColumn()
   id: number;
 
+  @Column({unique: true})
+  uid: string;
+
   @Column()
   name: string;
 
-  @Column({unique: true})
-  email: string;
-
   @Column({default: ''})
   photo: string;
-
-  @Column({select: false})
-  password: string;
 
   @CreateDateColumn()
   createdAt: Date;

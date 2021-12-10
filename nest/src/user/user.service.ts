@@ -3,7 +3,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { User } from './entities/user.entity';
-import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UserService {
@@ -12,24 +11,24 @@ export class UserService {
   constructor(@InjectRepository(User) private userRepository: Repository<User>) {
   }
 
-  async findUserByEmailWithPass(email: string): Promise<User | undefined> {
-    // return this.userRepository.findOne({email});
-    return this.userRepository.createQueryBuilder('user').where("user.email = :email", { email }).addSelect('user.password').getOne();
+  async createUser(createUserDto: CreateUserDto): Promise<User> {
+    return this.userRepository.save({ ...createUserDto });
   }
 
-  async createUser(createUserDto: CreateUserDto): Promise<User | undefined> {
-    const password = await bcrypt.hash(createUserDto.password, 10);
-    return this.userRepository.save({ ...createUserDto, password });
+  async updateUserPhoto(userId: number, photoUrl: string): Promise<User> {
+    const user = await this.userRepository.findOne(userId);
+    user.photo = photoUrl;
+    return this.userRepository.save(user);
   }
 
   async findUserById(userId: number): Promise<User | undefined> {
     return this.userRepository.findOne(userId);
   }
 
-  async getCurrentUser(userId: number): Promise<User> {
+  async getCurrentUser(uid: string): Promise<User> {
     return this.userRepository.createQueryBuilder('user')
-      .where('user.id = :userId', {userId})
-      .leftJoinAndSelect('user.userGroups', 'userGroup', 'userGroup.userId = :userId', {userId})
+      .where('user.uid = :uid', {uid})
+      .leftJoinAndSelect('user.userGroups', 'userGroup', 'userGroup.userId = user.id')
       .leftJoinAndSelect('userGroup.group', 'group', 'userGroup.groupId = group.id')
       .leftJoinAndSelect('group.leagues', 'leagueType')
       .getOne()
