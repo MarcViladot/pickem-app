@@ -15,6 +15,7 @@ import {StackNavigationProp} from "@react-navigation/stack";
 import {LoginStackParamList} from "../../../../App";
 import firebaseAuth from '@react-native-firebase/auth';
 import {ResponseApiError, WebApiErrorCode} from '../../utils/IResponse';
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
 type ScreenNavigationProps = StackNavigationProp<LoginStackParamList, 'Login'>;
 type ScreenRouteProp = RouteProp<LoginStackParamList, 'Login'>;
@@ -42,18 +43,6 @@ const LoginScreen: FC<Props> = ({navigation, route}) => {
     });
 
     const login = async (credentials: UserCredentials) => {
-        /*setLoading(true);
-        const res = await auth.login(credentials);
-        if (!res.IsError) {
-          try {
-            await AsyncStorage.setItem('pickem_token', res.Result.token);
-          } catch (e) {
-          }
-          dispatch(setUser(res.Result));
-        } else {
-          dispatch(showApiErrorToast(res));
-        }
-        setLoading(false);*/
         setLoading(true);
         try {
             await firebaseAuth().signInWithEmailAndPassword(credentials.email, credentials.password)
@@ -63,12 +52,16 @@ const LoginScreen: FC<Props> = ({navigation, route}) => {
         setLoading(false);
     }
 
+    const loginGoogle = () => {
+
+    }
+
     return (
         <View style={styles.mainContainer}>
             <View style={styles.form}>
                 {/*<View style={{alignItems: 'center'}}>
-          <Image source={{ uri: 'https://via.placeholder.com/300x100.png' }} style={styles.logo}/>
-        </View>*/}
+                  <Image source={{ uri: 'https://via.placeholder.com/300x100.png' }} style={styles.logo}/>
+                </View>*/}
                 <Text style={styles.mainText}>{t('AUTH.USE_EMAIL')}</Text>
                 <Formik
                     initialValues={{
@@ -104,6 +97,11 @@ const LoginScreen: FC<Props> = ({navigation, route}) => {
                                     <ActivityIndicator size="small" color="#000"/>
                                 }
                             </StyledButton>
+                            {/*<StyledButton activeOpacity={.8} onPress={() => loginGoogle()} disabled={loading || !isValid}
+                                          color="gray" style={{marginTop: 20}}>
+                                <FontAwesomeIcon icon={faGoogle} size={20} color="#fff"/>
+                                <Text style={[styles.buttonText, {color: '#000'}]}>{t('AUTH.SIGN_IN_GOOGLE')}</Text>
+                            </StyledButton>*/}
                             <TouchableOpacity disabled={false} activeOpacity={.7} style={{marginTop: 20}}
                                               onPress={() => navigation.navigate('Signup')}>
                                 <Text style={styles.bottomText}>{t('AUTH.ACCOUNT_YET')}</Text>

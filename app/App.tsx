@@ -16,7 +16,6 @@ import {ResponseApi} from './src/app/utils/IResponse';
 import {User } from './src/app/interfaces/user.interface';
 import {setUser} from './src/app/actions/auth/setUser';
 
-
 setCustomText({
   style: {
     fontFamily: 'ProximaNova-Bold',
@@ -37,11 +36,12 @@ const App = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    setLoading(false);
+    const isNewUser = (user) => user.metadata.lastSignInTime === user.metadata.creationTime;
     const subscriber = firebaseAuth().onAuthStateChanged((user) => {
-      console.warn(`login state change: ${!!user ? 'logged' : 'not logged'}`);
-      if (user && !isLogged) { // USER IS LOGGED BUT NO INFORMATION IS LOADED
-        console.log(user.metadata)
-        if (user.metadata.lastSignInTime !== user.metadata.creationTime) {
+      // console.warn(`login state change: ${!!user ? 'logged' : 'not logged'}`);
+      if (user && !isLogged) {
+        if (!isNewUser(user)) {
           getCurrentUser();
         }
       } else {
@@ -60,43 +60,11 @@ const App = () => {
       }
       setLoading(false);
     } else {
+      firebaseAuth().signOut();
       setLoading(false);
       dispatch(showApiErrorToast(res));
     }
   };
-
-  /*useEffect(() => { // TRY LOGIN
-        async function tryLogin() {
-            try {
-                const token = await AsyncStorage.getItem('pickem_token');
-                if (token) {
-                    try {
-                        const res = await auth.autoLogin();
-                        if (!res.IsError) {
-                            dispatch(setUser(res.Result));
-                            setLoading(false);
-                        } else {
-                            setLoading(false);
-                            dispatch(showApiErrorToast(res));
-                        }
-                    } catch (e) {
-                        setLoading(false);
-                    }
-                } else {
-                    // NOT LOGGED
-                    setLoading(false);
-                }
-            } catch (e) {
-                setLoading(false);
-            }
-        }
-
-        if (!isLogged) {
-            tryLogin();
-        } else {
-            setLoading(false);
-        }
-    }, []);*/
 
   if (loading) {
     return <></>;

@@ -1,6 +1,7 @@
 {
   "AUTH": {
     "SIGN_IN": "Sign in",
+    "SIGN_IN_GOOGLE": "Continue with Google",
     "USE_EMAIL": "Use your email to sign in",
     "EMAIL": "Email",
     "PASSWORD": "Password",

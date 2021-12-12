@@ -21,7 +21,6 @@ const Api: AxiosInstance = axios.create({
 
 Api.interceptors.request.use(async (config: any) => {
     // dispatch(showLoading());
-    // const token = await AsyncStorage.getItem("pickem_token");
     const user = firebaseAuth().currentUser;
     if (user) {
         const token = await user.getIdToken();
