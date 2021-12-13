@@ -1,7 +1,5 @@
 import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {showBar} from "../../../actions/utils/showBar";
-import {hideBar} from "../../../actions/utils/hideBar";
 import league from "../../../api/league";
 import {useParams} from "react-router-dom";
 import {Match, Round} from "../../../interfaces/League";
@@ -21,7 +19,6 @@ interface ParamProps {
 
 const RoundDetail = () => {
 
-    const dispatch = useDispatch();
     const loading = useSelector((state: RootState) => state.utils.showProgressBar);
     const {roundId} = useParams<ParamProps>();
     const [roundDetail, setRoundDetail] = useState<Round>();
@@ -35,9 +32,7 @@ const RoundDetail = () => {
     }, []);
 
     const loadRoundDetail = async () => {
-        dispatch(showBar());
         const res = await league.getRoundWithMatches(roundId);
-        dispatch(hideBar());
         if (!res.IsError) {
             setRoundDetail(res.Result);
         } else {

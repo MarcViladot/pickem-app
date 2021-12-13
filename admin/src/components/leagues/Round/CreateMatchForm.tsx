@@ -2,9 +2,7 @@ import React, {Dispatch, FC, SetStateAction, useEffect} from 'react';
 import {CreateMatch, Round} from '../../../interfaces/League';
 import {useFormik} from 'formik';
 import * as Yup from 'yup';
-import {showBar} from '../../../actions/utils/showBar';
 import league from '../../../api/league';
-import {hideBar} from '../../../actions/utils/hideBar';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
@@ -68,13 +66,11 @@ const CreateMatchForm: FC<Props> = ({roundDetail, setRoundDetail, newMatchDialog
     });
 
     const createMatch = async (values: CreateMatch) => {
-        dispatch(showBar());
         const res = await league.createMatch(values);
         if (!res.IsError) {
             closeDialog();
             setRoundDetail(res.Result);
         }
-        dispatch(hideBar());
     };
 
     const closeDialog = () => {

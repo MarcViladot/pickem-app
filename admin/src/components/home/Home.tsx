@@ -1,27 +1,16 @@
-import React, { FC } from "react";
-import {
-  AppBar,
-  Drawer,
-  IconButton,
-  LinearProgress,
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
-  Toolbar,
-  Tooltip,
-} from "@mui/material";
+import React, {FC} from "react";
+import {AppBar, Drawer, IconButton, LinearProgress, List, ListItem, Toolbar, Tooltip,} from "@mui/material";
 import Icon from "@mui/material/Icon";
-import { makeStyles } from "@material-ui/styles";
-import { User } from "../../interfaces/User";
-import { useDispatch, useSelector } from "react-redux";
-import { logout } from "../../actions/auth/logout";
-import { RootState } from "../../reducers";
+import {makeStyles} from "@material-ui/styles";
+import {User} from "../../interfaces/User";
+import {useDispatch, useSelector} from "react-redux";
+import {logout} from "../../actions/auth/logout";
+import {RootState} from "../../reducers";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import logo from "../../logo.svg";
 import clsx from "clsx";
-import { GroupTools } from "../../utils/GroupTools";
-import { Route, Switch, useHistory, useParams } from "react-router-dom";
+import {GroupTools} from "../../utils/GroupTools";
+import {Route, Switch, useHistory} from "react-router-dom";
 import "../../App.css";
 import Dashboard from "../dashboard/Dashboard";
 import Users from "../users/Users";
@@ -29,7 +18,6 @@ import Leagues from "../leagues/Leagues";
 import TeamsList from "../teams/TeamsList";
 import LeagueDetail from "../leagues/LeagueDetail";
 import RoundDetail from '../leagues/Round/RoundDetail';
-import {DefaultTheme} from '@material-ui/styles/defaultTheme';
 
 const useStyles = makeStyles ({
   root: {

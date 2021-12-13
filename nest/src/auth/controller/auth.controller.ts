@@ -2,7 +2,7 @@ import { AuthService } from "src/auth/services/auth.service";
 import { Body, Controller, Get, Post, Req, UseGuards } from "@nestjs/common";
 import { User, UserRole } from "src/user/entities/user.entity";
 import { JwtAuthGuard, RequestWithUid, RequestWithUser } from "../guards/jwt/jwt-auth.guard";
-import { ResponseApi, ResponseApiEmpty, ResponseApiSuccess, WebApiResponseCode } from "../../utils/ResponseApi";
+import { ResponseApi, ResponseApiEmpty, ResponseApiError, ResponseApiSuccess, WebApiResponseCode } from "../../utils/ResponseApi";
 import { CurrentUser } from "../../user/entities/CurrentUser";
 import { WebApiException } from "../../utils/WebApiException";
 import { FirebaseAuthService } from "../services/firebase-auth.service";
@@ -22,6 +22,26 @@ export class AuthController {
     try {
       const user = await this.authService.getCurrentUser(req.user.user_id);
       if (user) {
+        const token = await this.firebaseAuth.createToken(user.uid, user.id, user.userRole);
+        const currentUser = new CurrentUser(user, token);
+        return new ResponseApiSuccess(currentUser);
+      }
+      return new ResponseApiSuccess(null);
+    } catch (e) {
+      throw new WebApiException(WebApiResponseCode.Unexpected, [], e);
+    }
+  }
+
+  @Get("loginAuthAdmin")
+  @UseGuards(JwtAuthGuard)
+  async loginAuthAdmin(@Req() req: RequestWithUid): Promise<ResponseApi<CurrentUser>> {
+    try {
+      console.log(req);
+      const user = await this.authService.getCurrentUser(req.user.user_id);
+      if (user) {
+        if (user.userRole !== UserRole.ADMIN) {
+          return new ResponseApiError(WebApiResponseCode.UserNotAdmin, [], '');
+        }
         const token = await this.firebaseAuth.createToken(user.uid, user.id, user.userRole);
         const currentUser = new CurrentUser(user, token);
         return new ResponseApiSuccess(currentUser);

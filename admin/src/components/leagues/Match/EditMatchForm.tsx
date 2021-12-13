@@ -5,9 +5,7 @@ import {loadTeams} from '../../../actions/teams/loadTeams';
 import {useFormik} from 'formik';
 import * as Yup from 'yup';
 import {Match, UpdateMatch} from '../../../interfaces/League';
-import {showBar} from '../../../actions/utils/showBar';
 import league from '../../../api/league';
-import {hideBar} from '../../../actions/utils/hideBar';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
@@ -37,13 +35,11 @@ const EditMatchForm: FC<Props> = ({match, editMatchDialogVisible, setEditMatchDi
     }, [])
 
     const deleteMatch = async () => {
-        dispatch(showBar());
         const res = await league.deleteMatch(match.id);
         if (!res.IsError) {
             onMatchDeleted(match.id);
             closeDialog();
         }
-        dispatch(hideBar());
     };
 
     const formik = useFormik({
@@ -67,7 +63,6 @@ const EditMatchForm: FC<Props> = ({match, editMatchDialogVisible, setEditMatchDi
     });
 
     const editMatch = async (values: UpdateMatch) => {
-        dispatch(showBar());
         const res = await league.updateMatch(values);
         if (!res.IsError) {
             /*const newMatch = res.Result;
@@ -79,7 +74,6 @@ const EditMatchForm: FC<Props> = ({match, editMatchDialogVisible, setEditMatchDi
             });*/
             closeDialog();
         }
-        dispatch(hideBar());
     };
 
     const closeDialog = () => {

@@ -3,7 +3,8 @@ import {
     CreateMatch,
     CreateRound,
     Match,
-    Round, UpdateMatch,
+    Round,
+    UpdateMatch,
     UpdateMatchResult,
     UpdateRound
 } from './../interfaces/League';

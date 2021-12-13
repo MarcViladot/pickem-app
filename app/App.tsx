@@ -36,7 +36,6 @@ const App = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    setLoading(false);
     const isNewUser = (user) => user.metadata.lastSignInTime === user.metadata.creationTime;
     const subscriber = firebaseAuth().onAuthStateChanged((user) => {
       // console.warn(`login state change: ${!!user ? 'logged' : 'not logged'}`);

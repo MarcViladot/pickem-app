@@ -2,9 +2,7 @@ import React, {Dispatch, FC, SetStateAction} from 'react';
 import {useFormik} from 'formik';
 import * as Yup from 'yup';
 import {Round, UpdateRound} from '../../../interfaces/League';
-import {showBar} from '../../../actions/utils/showBar';
 import league from '../../../api/league';
-import {hideBar} from '../../../actions/utils/hideBar';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
@@ -23,7 +21,6 @@ interface Props {
 
 const EditRoundForm: FC<Props> = ({roundDetail, setRoundDetail, editRoundDialogVisible, setEditRoundDialogVisible}) => {
 
-    const dispatch = useDispatch();
     const loading = useSelector((state: RootState) => state.utils.showProgressBar);
 
     const formik = useFormik({
@@ -49,7 +46,6 @@ const EditRoundForm: FC<Props> = ({roundDetail, setRoundDetail, editRoundDialogV
     });
 
     const updateRound = async (data: UpdateRound) => {
-        dispatch(showBar());
         const res = await league.updateRound(data);
         if (!res.IsError) {
             setRoundDetail((prevState: any) => {
@@ -64,7 +60,6 @@ const EditRoundForm: FC<Props> = ({roundDetail, setRoundDetail, editRoundDialogV
         } else {
             // TODO SHOW ERROR
         }
-        dispatch(hideBar());
     }
 
     return (

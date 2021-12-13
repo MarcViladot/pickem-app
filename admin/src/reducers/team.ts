@@ -1,5 +1,4 @@
 import {AnyAction} from 'redux';
-import {SET_LEAGUES} from '../actions/league/setLeagues';
 import {Team} from '../interfaces/Team';
 import {SET_TEAMS} from '../actions/teams/setTeams';
 

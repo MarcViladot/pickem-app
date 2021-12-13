@@ -1,18 +1,32 @@
 import React from 'react';
 import {useFormik} from 'formik';
 import * as Yup from 'yup';
-import {useDispatch} from 'react-redux';
-import {login} from '../../actions/auth/login';
-import {Button, TextField} from '@mui/material';
+import {Button, CircularProgress, Paper, TextField} from '@mui/material';
+import {firebaseAuth} from '../../firebase';
+import {useSelector} from 'react-redux';
+import {RootState} from '../../reducers';
+
+interface Credentials {
+    email: string;
+    password: string;
+}
 
 const Login = () => {
 
-    const dispatch = useDispatch();
+    const loading = useSelector((state: RootState) => state.utils.showProgressBar);
+
+    const login = async (values: Credentials) => {
+        try {
+            firebaseAuth.signInWithEmailAndPassword(values.email, values.password);
+        } catch (e) {
+            // DISPATCH ERROR
+        }
+    }
 
     const formik = useFormik({
         initialValues: {
-            email: 'john@email.com',
-            password: 'changeme'
+            email: 'john@mail.com',
+            password: '123456'
         },
         validationSchema: Yup.object({
             email: Yup
@@ -24,18 +38,17 @@ const Login = () => {
                 .required('Required')
         }),
         onSubmit: values => {
-            dispatch(login(values))
+            login(values);
         }
     });
 
 
     return (
         <div className="w-screen h-screen flex items-center justify-center">
-            <div className="flex flex-col items-center">
-                <img src="https://via.placeholder.com/350x60" alt={"logo"}/>
-                <h1 className="text-5xl mt-10 mb-7">Sign in</h1>
+            <Paper className="flex flex-col items-center sm:w-12/12 md:w-12/12 lg:w-3/12 p-10 rounded-2xl" square>
+                <h1 className="text-5xl mb-7">Sign in</h1>
                 <form onSubmit={formik.handleSubmit} className="w-full">
-                    <div>
+                    <div className={"w-full"}>
                         <TextField
                             // @ts-ignore
                             error={formik.errors.email && formik.touched.email}
@@ -48,13 +61,9 @@ const Login = () => {
                             variant="outlined"
                             name="email"
                             fullWidth
-                            required/> {formik.errors.email && formik.touched.email
-                        ? (
-                            <small className="error">{formik.errors.email}</small>
-                        )
-                        : null}
+                            required/>
                     </div>
-                    <div>
+                    <div className={"w-full mb-4"}>
                         <TextField
                             // @ts-ignore
                             error={formik.errors.password && !!formik.touched.password}
@@ -68,18 +77,20 @@ const Login = () => {
                             variant="outlined"
                             name="password"
                             fullWidth
-                            required/> {formik.errors.password && formik.touched.password
-                        ? (
-                            <small className="error">{formik.errors.password}</small>
-                        )
-                        : null}
+                            required/>
                     </div>
                     <div className="mt-3">
                         <Button variant="contained" color="primary" type="submit" className="w-full"
-                                disabled={!formik.isValid}>Sign in</Button>
+                                disabled={!formik.isValid || loading}>
+                            {loading ?
+                                <CircularProgress size={32}/>
+                                :
+                                <span className={"text-2xl"}>Sign in</span>
+                            }
+                        </Button>
                     </div>
                 </form>
-            </div>
+            </Paper>
         </div>
     );
 };
