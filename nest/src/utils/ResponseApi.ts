@@ -42,6 +42,7 @@ export enum WebApiResponseCode {
 
   UserNotFound = 100,             // id
   UserIncorrectCredentials,
+  UserNotAdmin,
 
   LeagueNotFound = 200,           // id
 

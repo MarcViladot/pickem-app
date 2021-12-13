@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1097082691734",
+    "project_id": "pickem-app-2372f",
+    "storage_bucket": "pickem-app-2372f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1097082691734:android:f6e33de4b6e0f3b79a62b7",
+        "android_client_info": {
+          "package_name": "com.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1097082691734-2qfi17c57fu5u0jfe11qjo7cl4d6kqa7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDRMLJfLtygBTo0-EI_yhnqfVLaWB63Ej8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1097082691734-2qfi17c57fu5u0jfe11qjo7cl4d6kqa7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

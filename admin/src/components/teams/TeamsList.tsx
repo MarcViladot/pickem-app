@@ -12,9 +12,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import Dialog from '@mui/material/Dialog';
-import {showBar} from '../../actions/utils/showBar';
 import team from '../../api/team';
-import {hideBar} from '../../actions/utils/hideBar';
 import {setTeams} from '../../actions/teams/setTeams';
 import {DataGrid, GridColDef, GridRenderCellParams} from '@mui/x-data-grid';
 
@@ -72,7 +70,6 @@ const TeamsList = () => {
     });
 
     const createTeam = async (data: CreateTeam) => {
-        dispatch(showBar());
         const res = await team.createTeam(data);
         if (!res.IsError) {
             dispatch(setTeams([...teamList, res.Result]));
@@ -81,11 +78,10 @@ const TeamsList = () => {
         } else {
             // TODO SHOW ERROR
         }
-        dispatch(hideBar());
     }
 
     return (
-        <div>
+        <div className="flex-grow flex flex-col">
             <Dialog
                 open={newTeamDialogVisible}
                 onClose={() => setNewTeamDialogVisible(false)}>
@@ -155,12 +151,12 @@ const TeamsList = () => {
                     </Tooltip>
                 </div>
             </Paper>
-            <Paper style={{height: 800, width: '100%'}}>
+            <Paper style={{minHeight: 500, flex: 1, width: '100%'}}>
                 <DataGrid
                     rows={teamList}
                     columns={columns}
-                    pageSize={5}
-                    rowsPerPageOptions={[5]}
+                    pageSize={50}
+                    rowsPerPageOptions={[50]}
                     disableSelectionOnClick
                 />
             </Paper>

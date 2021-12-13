@@ -20,15 +20,12 @@ const useWebSocket = (url: string, options: Options) => {
             const baseURL = options.externalUrl === true ? '': `${Api.defaults.baseURL.replace('http', 'ws')}`;
             socket.current = new WebSocket(baseURL + url);
             socket.current.onopen = () => {
-                console.log('Websocket open');
                 setIsConnected(true)
             };
             socket.current.onmessage = options.onMessage;
             socket.current.onclose = () => {
-                console.log('websocket closed');
                 if (!expectClose) {
                     setIsConnected(false);
-                    console.log('Reconnecting after 3000ms...');
                     setTimeout(() => {
                         connect();
                     }, 3000);
@@ -37,7 +34,6 @@ const useWebSocket = (url: string, options: Options) => {
         };
         connect();
         return () => {
-            console.log('WebSocket cleanup');
             expectClose = true;
             socket.current.close();
             socket.current = null;

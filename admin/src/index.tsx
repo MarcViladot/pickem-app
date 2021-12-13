@@ -1,13 +1,13 @@
-import React, { Suspense } from "react";
+import React, {Suspense} from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { BrowserRouter as Router } from "react-router-dom";
-import { CssBaseline } from "@mui/material";
+import {createTheme, ThemeProvider} from "@mui/material/styles";
+import {BrowserRouter as Router} from "react-router-dom";
+import {CssBaseline} from "@mui/material";
 import store from "./store";
-import { Provider } from "react-redux";
+import {Provider} from "react-redux";
 
 const darkTheme = createTheme({
   palette: {

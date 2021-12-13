@@ -1,6 +1,6 @@
 import {AnyAction} from 'redux';
 import {SET_USER} from '../actions/auth/setUser';
-import { SET_USERS } from '../actions/user/setUsers';
+import {SET_USERS} from '../actions/user/setUsers';
 import {User} from '../interfaces/User';
 
 interface State {

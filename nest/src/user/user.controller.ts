@@ -14,20 +14,10 @@ export class UserController {
     constructor(private userService: UserService) {
     }
 
-    @Post("create")
-    async createUser(@Body() userDto: CreateUserDto): Promise<ResponseApiEmpty> {
-        try {
-            await this.userService.createUser(userDto);
-            return new ResponseApiEmpty();
-        } catch (error) {
-            throw new WebApiException(WebApiResponseCode.Unexpected, [], error);
-        }
-    }
-
     @Get(":id")
     @UseGuards(JwtAuthGuard, RolesGuard)
     @Roles(UserRole.ADMIN)
-    async getUserById(@Param() id: number, @Req() req: RequestWithUser): Promise<ResponseApi<User>> {
+    async getUserById(@Param() id: number): Promise<ResponseApi<User>> {
         const user = await this.userService.findUserById(id);
         if (!user) {
             throw new WebApiException(WebApiResponseCode.UserNotFound, [id]);

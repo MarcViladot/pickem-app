@@ -3,9 +3,7 @@ import {Match, Round} from '../../../interfaces/League';
 import '../../../App.css';
 import {useFormik} from 'formik';
 import * as Yup from 'yup';
-import {showBar} from '../../../actions/utils/showBar';
 import league from '../../../api/league';
-import {hideBar} from '../../../actions/utils/hideBar';
 import {IconButton, TextField, Tooltip} from '@mui/material';
 import {AccessPoint, CircleEditOutline} from 'mdi-material-ui';
 import {Remove} from '@mui/icons-material';
@@ -51,7 +49,6 @@ const MatchComponent: FC<MatchProps> = ({match, setRoundDetail, disableDeleteMat
     });
 
     const updateMatchResult = async (localResult: number, awayResult: number) => {
-        dispatch(showBar());
         const res = await league.updateMatchResult({
             matchId: match.id,
             localResult,
@@ -62,7 +59,6 @@ const MatchComponent: FC<MatchProps> = ({match, setRoundDetail, disableDeleteMat
             formik.resetForm();
             // TODO SHOW ERROR
         }
-        dispatch(hideBar())
     }
 
     const hasStarted = () => new Date() > new Date(match.startDate) && !match.finished;

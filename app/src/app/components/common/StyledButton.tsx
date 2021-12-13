@@ -3,7 +3,7 @@ import styled from "styled-components/native";
 
 interface ButtonInterface {
   disabled: boolean;
-  color: "primary" | "warn" | "success" | "cancel" | "accent";
+  color: "primary" | "warn" | "success" | "cancel" | "accent" | "gray";
 }
 
 export const StyledButton = styled.TouchableOpacity<ButtonInterface>`
@@ -19,5 +19,6 @@ const backgroundColors = new Map([
   ["warn", "#FF1E44"],
   ["success", "#38D99C"],
   ["cancel", "#666"],
-  ["accent", "#ff7e23"]
+  ["accent", "#ff7e23"],
+  ["gray", "#f8f8f8"]
 ]);

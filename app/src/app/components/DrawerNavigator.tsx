@@ -18,6 +18,7 @@ import LeagueHeader, {HomeHeader} from "./league/LeagueHeader";
 import { LeagueInfo } from "../interfaces/league.interface";
 import {DrawerHeaderProps} from '@react-navigation/drawer/lib/typescript/src/types';
 import NotificationsScreen from './NotificationsScreen';
+import {logout} from '../actions/auth/logout';
 
 export type DrawerStackParamList = {
   Home: undefined;
@@ -77,7 +78,9 @@ const CustomDrawerContent: FC<DrawerContentComponentProps> = ({ navigation }) =>
           <UserImage user={user} styles={styles.userPhoto} />
           <Text style={styles.userName}>{user.name}</Text>
         </View>
-        <FontAwesomeIcon icon={faCog} style={{ color: "gray" }} size={17} />
+        <TouchableOpacity activeOpacity={.8} onPress={() => dispatch(logout())}>
+          <FontAwesomeIcon icon={faCog} style={{ color: "gray" }} size={17} />
+        </TouchableOpacity>
       </View>
       <ScrollView>
         {user.groups.map((userGroup: UserGroup, i) => (

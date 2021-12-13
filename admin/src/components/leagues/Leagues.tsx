@@ -1,23 +1,20 @@
-import React, { useEffect, useState } from "react";
-import { loadLeagues } from "../../actions/league/loadLeagues";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../../reducers";
-import { IconButton, Paper, TextField, Tooltip, Button } from "@mui/material";
-import { CreateLeague, League } from "../../interfaces/League";
-import { Add } from "@mui/icons-material";
+import React, {useEffect, useState} from "react";
+import {loadLeagues} from "../../actions/league/loadLeagues";
+import {useDispatch, useSelector} from "react-redux";
+import {RootState} from "../../reducers";
+import {Button, IconButton, Paper, TextField, Tooltip} from "@mui/material";
+import {CreateLeague, League} from "../../interfaces/League";
+import {Add} from "@mui/icons-material";
 
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-import { useFormik } from "formik";
+import {useFormik} from "formik";
 import * as Yup from "yup";
 import league from "../../api/league";
-import { showBar } from "../../actions/utils/showBar";
-import { hideBar } from "../../actions/utils/hideBar";
-import { setLeagues } from "../../actions/league/setLeagues";
-import { useHistory } from "react-router";
+import {setLeagues} from "../../actions/league/setLeagues";
+import {useHistory} from "react-router";
 
 const Leagues = () => {
 
@@ -48,9 +45,7 @@ const Leagues = () => {
   });
 
   const createLeague = async (data: CreateLeague) => {
-    dispatch(showBar());
     const res = await league.createLeague(data);
-    dispatch(hideBar());
     if (!res.IsError) {
       dispatch(setLeagues(res.Result));
       setNewLeagueDialogVisible(false);

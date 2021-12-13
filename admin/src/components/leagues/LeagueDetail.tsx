@@ -2,7 +2,6 @@ import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {useParams} from "react-router";
 import {hideBar} from "../../actions/utils/hideBar";
-import {showBar} from "../../actions/utils/showBar";
 import league from "../../api/league";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -47,9 +46,7 @@ const LeagueDetail = () => {
     }, []);
 
     const loadLeagueDetail = async () => {
-        dispatch(showBar());
         const res = await league.getLeagueDetail(id);
-        dispatch(hideBar());
         if (!res.IsError) {
             setLeagueDetail(res.Result);
         } else {
@@ -77,7 +74,6 @@ const LeagueDetail = () => {
     });
 
     const createRound = async (values: CreateRound) => {
-        dispatch(showBar());
         const res = await league.createRound(values);
         if (!res.IsError) {
             setNewRoundDialogVisible(false);
@@ -85,18 +81,15 @@ const LeagueDetail = () => {
         } else {
             // TODO SHOW ERROR
         }
-        dispatch(hideBar());
     };
 
     const changeRoundVisibility = async (round: Round, visible: boolean) => {
-        dispatch(showBar());
         const res = await league.changeRoundVisibility(round.id, visible);
         if (!res.IsError) {
             round.visible = res.Result.visible;
         } else {
             // TODO SHOW ERROR
         }
-        dispatch(hideBar());
     };
 
     return (
