@@ -1,11 +1,31 @@
+import firebase from 'firebase/compat';
+
 export interface User {
     id: number;
+    uid: number;
     email: string;
     photo: string;
     name: string;
     token: string;
     userRole: UserRole;
     userGroups?: UserGroup[];
+    firebaseUser?: FirebaseUser;
+}
+
+interface FirebaseUser {
+    uid: string;
+    email?: string;
+    emailVerified: boolean;
+    displayName?: string;
+    photoURL?: string;
+    phoneNumber?: string;
+    disabled: boolean;
+    metadata: UserMetadata;
+}
+
+interface UserMetadata {
+    creationTime?: string;
+    lastSignInTime?: string;
 }
 
 export interface UserGroup {
@@ -36,4 +56,9 @@ export enum UserGroupRole {
     ADMIN = 1,
     OWNER = 2,
     PENDING = 3,
+}
+
+export interface UserResult {
+    parsedUsers: User[];
+    nextPageToken: string;
 }

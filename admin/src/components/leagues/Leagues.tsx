@@ -15,6 +15,7 @@ import * as Yup from "yup";
 import league from "../../api/league";
 import {setLeagues} from "../../actions/league/setLeagues";
 import {useHistory} from "react-router";
+import {showResErrorSnackbar} from '../../actions/utils/showSnackbar';
 
 const Leagues = () => {
 
@@ -50,6 +51,8 @@ const Leagues = () => {
       dispatch(setLeagues(res.Result));
       setNewLeagueDialogVisible(false);
       formik.resetForm();
+    } else {
+      dispatch(showResErrorSnackbar(res));
     }
   };
 

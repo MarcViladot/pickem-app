@@ -2,7 +2,7 @@ import store from "../../../store";
 // import {showLoading} from '../actions/utils/showLoading';
 // import {hideLoading} from '../actions/utils/hideLoading';
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { AxiosInstance } from "axios";
+import {AxiosInstance, AxiosResponse} from "axios";
 import firebaseAuth from '@react-native-firebase/auth';
 
 const pkg = require("../../../package.json");
@@ -34,11 +34,11 @@ Api.interceptors.request.use(async (config: any) => {
   }
 );
 
-/*Api.interceptors.response.use(async (response) => {
-    dispatch(hideLoading());
+/*Api.interceptors.response.use(async (response: AxiosResponse) => {
+    // dispatch(hideLoading());
     return response;
 }, (error: any) => {
-    dispatch(hideLoading());
+    // dispatch(hideLoading());
     return Promise.reject(error);
 });*/
 

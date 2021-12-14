@@ -45,8 +45,6 @@ export class ResponseServerError implements ResponseApi<any> {
     ErrorDetail: string;
     ErrorCode: WebApiErrorCode;
     ErrorParams: string[];
-    // ReqReceivedDate: Date;
-    // GeneratedDate: Date;
 
     constructor(err: AxiosError) {
         this.IsError = true;
@@ -61,9 +59,10 @@ export enum WebApiErrorCode {
     ServerConnectionError = -2,
     Unexpected = -1,
     Success = 0,
+    FirebaseError = 1
 }
 
-export const WebApiCodesTranslationMap = new Map([
-    [WebApiErrorCode.ServerConnectionError, 'ERRORS.SERVER_CONNECTION'],
-    [WebApiErrorCode.Unexpected, 'ERRORS.UNEXPECTED_ERROR'],
+export const WebApiCodesMap = new Map([
+    [WebApiErrorCode.ServerConnectionError, 'Server connection error'],
+    [WebApiErrorCode.Unexpected, 'Unexpected error'],
 ]);

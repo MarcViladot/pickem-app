@@ -3,8 +3,9 @@ import {useFormik} from 'formik';
 import * as Yup from 'yup';
 import {Button, CircularProgress, Paper, TextField} from '@mui/material';
 import {firebaseAuth} from '../../firebase';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from '../../reducers';
+import {showErrorSnackbar} from '../../actions/utils/showSnackbar';
 
 interface Credentials {
     email: string;
@@ -13,13 +14,14 @@ interface Credentials {
 
 const Login = () => {
 
+    const dispatch = useDispatch();
     const loading = useSelector((state: RootState) => state.utils.showProgressBar);
 
     const login = async (values: Credentials) => {
         try {
-            firebaseAuth.signInWithEmailAndPassword(values.email, values.password);
-        } catch (e) {
-            // DISPATCH ERROR
+            await firebaseAuth.signInWithEmailAndPassword(values.email, values.password);
+        } catch (error: any) {
+            dispatch(showErrorSnackbar(error.code));
         }
     }
 

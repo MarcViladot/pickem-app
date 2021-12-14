@@ -22,7 +22,6 @@ export type RoundsStackParamList = {
     };
     RoundDetail: {
         round: Round;
-        isPending: boolean;
     };
 };
 const RoundsStack = createStackNavigator<RoundsStackParamList>();

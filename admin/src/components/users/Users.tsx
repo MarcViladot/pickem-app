@@ -31,19 +31,20 @@ const Users = () => {
                         </IconButton>
                     </TableCell>
                     <TableCell component="th" scope="row">{user.id}</TableCell>
+                    <TableCell component="th" scope="row">{user.uid}</TableCell>
+                    <TableCell>{user.name}</TableCell>
                     <TableCell>
                         <span style={{height: 50, width: 50}} className={"flex justify-center"}>
                             {/*@ts-ignore*/}
                             <img src={user.photo} alt={user.name} style={{height: 50}} onError={(event) => event.target.style.display = 'none'}/>
                         </span>
                     </TableCell>
-                    <TableCell>{user.name}</TableCell>
-                    <TableCell>{user.email}</TableCell>
+                    <TableCell>{user.firebaseUser?.email}</TableCell>
                     <TableCell>{UserRole[user.userRole]}</TableCell>
                 </TableRow>
                 <TableRow>
                     <TableCell style={{paddingBottom: 0, paddingTop: 0}} colSpan={6}>
-                        <Collapse in={open} timeout="auto" unmountOnExit>
+                        <Collapse in={open} timeout="auto" unmountOnExit className={"mb-5"}>
                             <Box margin={1}>
                                 <Typography variant="h6" gutterBottom component="div">
                                     Groups
@@ -99,8 +100,9 @@ const Users = () => {
                         <TableRow>
                             <TableCell style={{width: 50}} />
                             <TableCell style={{width: 50}}>#</TableCell>
-                            <TableCell style={{width: 60}}>Photo</TableCell>
+                            <TableCell>Uid</TableCell>
                             <TableCell>Name</TableCell>
+                            <TableCell style={{width: 60}}>Photo</TableCell>
                             <TableCell>Email</TableCell>
                             <TableCell>Role</TableCell>
                         </TableRow>

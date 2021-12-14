@@ -23,6 +23,7 @@ import DialogActions from '@mui/material/DialogActions';
 import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from '../../../reducers';
 import {loadTeams} from '../../../actions/teams/loadTeams';
+import {showResErrorSnackbar} from '../../../actions/utils/showSnackbar';
 
 interface Props {
     roundDetail: Round;
@@ -70,6 +71,8 @@ const CreateMatchForm: FC<Props> = ({roundDetail, setRoundDetail, newMatchDialog
         if (!res.IsError) {
             closeDialog();
             setRoundDetail(res.Result);
+        } else {
+            dispatch(showResErrorSnackbar(res));
         }
     };
 

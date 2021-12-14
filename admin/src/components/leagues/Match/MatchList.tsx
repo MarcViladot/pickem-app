@@ -12,6 +12,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from '../../../reducers';
 import {DateTools} from '../../../utils/DateTools';
 import EditMatchForm from './EditMatchForm';
+import {showResErrorSnackbar} from '../../../actions/utils/showSnackbar';
 
 interface MatchListProps {
     matchList: Match[];
@@ -57,7 +58,7 @@ const MatchComponent: FC<MatchProps> = ({match, setRoundDetail, disableDeleteMat
         if (!res.IsError) {
         } else {
             formik.resetForm();
-            // TODO SHOW ERROR
+            dispatch(showResErrorSnackbar(res));
         }
     }
 

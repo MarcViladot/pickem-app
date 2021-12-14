@@ -39,9 +39,10 @@ export enum WebApiResponseCode {
   ServerConnection = -2,
   Unexpected = -1,
   Success = 0,
+  FirebaseError = 1,
 
   UserNotFound = 100,             // id
-  UserIncorrectCredentials,
+  UserEmailNotFound,             // email
   UserNotAdmin,
 
   LeagueNotFound = 200,           // id
