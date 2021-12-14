@@ -40,4 +40,6 @@ export class User {
 
   token: string;
 
+  firebaseUser?: any;
+
 }

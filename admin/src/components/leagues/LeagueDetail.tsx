@@ -23,6 +23,7 @@ import DialogActions from "@mui/material/DialogActions";
 import {RootState} from "../../reducers";
 import DateTimePicker from "@material-ui/lab/DateTimePicker";
 import {DateTools} from '../../utils/DateTools';
+import {showResErrorSnackbar} from '../../actions/utils/showSnackbar';
 
 interface ParamsProps {
     id: string;
@@ -50,7 +51,7 @@ const LeagueDetail = () => {
         if (!res.IsError) {
             setLeagueDetail(res.Result);
         } else {
-            // TODO SHOW ERROR
+            dispatch(showResErrorSnackbar(res));
         }
     };
 
@@ -79,7 +80,7 @@ const LeagueDetail = () => {
             setNewRoundDialogVisible(false);
             formik.resetForm();
         } else {
-            // TODO SHOW ERROR
+            dispatch(showResErrorSnackbar(res));
         }
     };
 
@@ -88,7 +89,7 @@ const LeagueDetail = () => {
         if (!res.IsError) {
             round.visible = res.Result.visible;
         } else {
-            // TODO SHOW ERROR
+            dispatch(showResErrorSnackbar(res));
         }
     };
 

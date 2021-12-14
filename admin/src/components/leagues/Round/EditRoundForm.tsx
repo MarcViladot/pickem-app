@@ -11,6 +11,7 @@ import DateTimePicker from '@material-ui/lab/DateTimePicker';
 import DialogActions from '@mui/material/DialogActions';
 import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from '../../../reducers';
+import {showResErrorSnackbar} from '../../../actions/utils/showSnackbar';
 
 interface Props {
     roundDetail: Round;
@@ -21,6 +22,7 @@ interface Props {
 
 const EditRoundForm: FC<Props> = ({roundDetail, setRoundDetail, editRoundDialogVisible, setEditRoundDialogVisible}) => {
 
+    const dispatch = useDispatch();
     const loading = useSelector((state: RootState) => state.utils.showProgressBar);
 
     const formik = useFormik({
@@ -58,7 +60,7 @@ const EditRoundForm: FC<Props> = ({roundDetail, setRoundDetail, editRoundDialogV
             })
             setEditRoundDialogVisible(false);
         } else {
-            // TODO SHOW ERROR
+            dispatch(showResErrorSnackbar(res));
         }
     }
 

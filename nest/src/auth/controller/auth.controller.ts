@@ -36,7 +36,6 @@ export class AuthController {
   @UseGuards(JwtAuthGuard)
   async loginAuthAdmin(@Req() req: RequestWithUid): Promise<ResponseApi<CurrentUser>> {
     try {
-      console.log(req);
       const user = await this.authService.getCurrentUser(req.user.user_id);
       if (user) {
         if (user.userRole !== UserRole.ADMIN) {

@@ -15,6 +15,7 @@ import Dialog from '@mui/material/Dialog';
 import team from '../../api/team';
 import {setTeams} from '../../actions/teams/setTeams';
 import {DataGrid, GridColDef, GridRenderCellParams} from '@mui/x-data-grid';
+import {showResErrorSnackbar} from '../../actions/utils/showSnackbar';
 
 const TeamsList = () => {
 
@@ -76,7 +77,7 @@ const TeamsList = () => {
             setNewTeamDialogVisible(false);
             formik.resetForm();
         } else {
-            // TODO SHOW ERROR
+            dispatch(showResErrorSnackbar(res));
         }
     }
 

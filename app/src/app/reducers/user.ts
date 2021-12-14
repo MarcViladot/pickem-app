@@ -4,7 +4,7 @@ import { AnyAction } from "redux";
 import { User } from "../interfaces/user.interface";
 
 export interface State {
-    isLoggedIn: false;
+    isLoggedIn: boolean;
     currentUser: User;
 }
 

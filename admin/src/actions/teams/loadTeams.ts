@@ -1,6 +1,7 @@
 import {Dispatch} from 'redux';
 import team from '../../api/team';
 import {setTeams} from './setTeams';
+import {showResErrorSnackbar} from '../utils/showSnackbar';
 
 export const loadTeams = () => {
     return async (dispatch: Dispatch) => {
@@ -8,7 +9,7 @@ export const loadTeams = () => {
         if (!res.IsError) {
             return dispatch(setTeams(res.Result));
         } else {
-            // TODO SHOW ERROR
+            dispatch(showResErrorSnackbar(res));
         }
     }
 };

@@ -2,6 +2,7 @@ import {Dispatch} from 'redux';
 
 import dashboard from '../../api/dashboard';
 import {setDashboardInfo} from './setDashboardInfo';
+import {showResErrorSnackbar} from '../utils/showSnackbar';
 
 export const loadDashboardInfo = () => {
     return async (dispatch: Dispatch) => {
@@ -9,7 +10,7 @@ export const loadDashboardInfo = () => {
         if (!res.IsError) {
             return dispatch(setDashboardInfo(res.Result));
         } else {
-            // TODO SHOW ERROR
+            dispatch(showResErrorSnackbar(res));
         }
     }
 };

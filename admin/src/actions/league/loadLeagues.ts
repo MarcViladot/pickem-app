@@ -1,6 +1,7 @@
 import {Dispatch} from 'redux';
 import league from '../../api/league';
 import {setLeagues} from './setLeagues';
+import {showResErrorSnackbar} from '../utils/showSnackbar';
 
 export const loadLeagues = () => {
     return async (dispatch: Dispatch) => {
@@ -9,7 +10,7 @@ export const loadLeagues = () => {
         if (!res.IsError) {
             return dispatch(setLeagues(res.Result));
         } else {
-            // TODO SHOW ERROR
+            dispatch(showResErrorSnackbar(res));
         }
     }
 };

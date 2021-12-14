@@ -25,7 +25,7 @@ export default {
 
   createUser(data: CreateUser) {
     return Api.post(`auth/create`, data)
-      .then((r: AxiosResponse<ResponseApi<any>>) => {
+      .then((r: AxiosResponse<ResponseApi<User>>) => {
         return r.data
       }, (err: AxiosError) => {
         return new ResponseServerError(err);

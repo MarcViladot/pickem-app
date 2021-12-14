@@ -12,6 +12,7 @@ import DialogContent from '@mui/material/DialogContent';
 import {Button, Checkbox, FormControlLabel, FormGroup, TextField} from '@mui/material';
 import DateTimePicker from '@material-ui/lab/DateTimePicker';
 import DialogActions from '@mui/material/DialogActions';
+import {showResErrorSnackbar} from '../../../actions/utils/showSnackbar';
 
 interface Props {
     match: Match;
@@ -39,6 +40,8 @@ const EditMatchForm: FC<Props> = ({match, editMatchDialogVisible, setEditMatchDi
         if (!res.IsError) {
             onMatchDeleted(match.id);
             closeDialog();
+        } else {
+            dispatch(showResErrorSnackbar(res));
         }
     };
 
@@ -73,6 +76,8 @@ const EditMatchForm: FC<Props> = ({match, editMatchDialogVisible, setEditMatchDi
                 doublePoints: newMatch.doublePoints
             });*/
             closeDialog();
+        } else {
+            dispatch(showResErrorSnackbar(res));
         }
     };
 

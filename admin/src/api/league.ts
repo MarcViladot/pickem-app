@@ -7,7 +7,7 @@ import {
     UpdateMatch,
     UpdateMatchResult,
     UpdateRound
-} from './../interfaces/League';
+} from '../interfaces/League';
 import API from './api';
 import {AxiosError, AxiosResponse} from 'axios';
 import {ResponseApi, ResponseApiEmpty, ResponseServerError} from '../utils/IResponse';

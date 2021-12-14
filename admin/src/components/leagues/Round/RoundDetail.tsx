@@ -12,6 +12,7 @@ import MatchList from '../Match/MatchList';
 import EditRoundForm from './EditRoundForm';
 import CreateMatchForm from './CreateMatchForm';
 import {CircleEditOutline} from 'mdi-material-ui';
+import {showResErrorSnackbar} from '../../../actions/utils/showSnackbar';
 
 interface ParamProps {
     roundId: string;
@@ -19,6 +20,7 @@ interface ParamProps {
 
 const RoundDetail = () => {
 
+    const dispatch = useDispatch();
     const loading = useSelector((state: RootState) => state.utils.showProgressBar);
     const {roundId} = useParams<ParamProps>();
     const [roundDetail, setRoundDetail] = useState<Round>();
@@ -36,7 +38,7 @@ const RoundDetail = () => {
         if (!res.IsError) {
             setRoundDetail(res.Result);
         } else {
-            // TODO ShOW ERROR
+            dispatch(showResErrorSnackbar(res));
         }
     };
 
