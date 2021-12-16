@@ -2,6 +2,7 @@ import {SET_USER} from '../actions/auth/setUser';
 import {LOGOUT} from '../actions/auth/logout';
 import { AnyAction } from "redux";
 import { User } from "../interfaces/user.interface";
+import {UPDATE_USER_PHOTO} from '../actions/user/updateUserPhoto';
 
 export interface State {
     isLoggedIn: boolean;
@@ -25,6 +26,14 @@ export default (state = initialState, action: AnyAction) => {
             ...state,
             currentUser: null,
             isLoggedIn: false
+        };
+    } else if (action.type === UPDATE_USER_PHOTO) {
+        return {
+            ...state,
+            currentUser: {
+                ...state.currentUser,
+                photo: action.payload
+            }
         };
     }
     return state;

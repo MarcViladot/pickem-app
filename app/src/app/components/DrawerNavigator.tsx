@@ -14,11 +14,12 @@ import league from "../api/league";
 import { showApiErrorToast } from "../actions/utils/showApiErrorToast";
 import GroupLeagueScreen from "./league/GroupLeagueScreen";
 import UserImage from "./common/UserImage";
-import LeagueHeader, {HomeHeader} from "./league/LeagueHeader";
+import LeagueHeader, {HomeHeader, HomeTitleHeader} from "./league/LeagueHeader";
 import { LeagueInfo } from "../interfaces/league.interface";
 import {DrawerHeaderProps} from '@react-navigation/drawer/lib/typescript/src/types';
 import NotificationsScreen from './NotificationsScreen';
 import {logout} from '../actions/auth/logout';
+import SettingsScreen from './user/SettingsScreen';
 
 export type DrawerStackParamList = {
   Home: undefined;
@@ -26,6 +27,7 @@ export type DrawerStackParamList = {
     leagueInfo: LeagueInfo
   };
   Notifications: undefined;
+  Settings: undefined;
 };
 const Drawer = createDrawerNavigator<DrawerStackParamList>();
 
@@ -43,12 +45,15 @@ const DrawerNavigator = () => {
         headerShown: true
       }}/>
       <Drawer.Screen name="Notifications" component={NotificationsScreen} options={{
-        header: (props) => <HomeHeader {...props} />,
+        header: (props) => <HomeTitleHeader {...props} />,
         headerShown: true
       }}/>
       <Drawer.Screen name="GroupLeague" component={GroupLeagueScreen} options={{
         header: (props) => <LeagueHeader {...props} />,
         headerShown: true
+      }} />
+      <Drawer.Screen name="Settings" component={SettingsScreen} options={{
+        headerShown: false
       }} />
     </Drawer.Navigator>
   );
@@ -78,7 +83,7 @@ const CustomDrawerContent: FC<DrawerContentComponentProps> = ({ navigation }) =>
           <UserImage user={user} styles={styles.userPhoto} />
           <Text style={styles.userName}>{user.name}</Text>
         </View>
-        <TouchableOpacity activeOpacity={.8} onPress={() => dispatch(logout())}>
+        <TouchableOpacity activeOpacity={.8} onPress={() => navigation.navigate('Settings')}>
           <FontAwesomeIcon icon={faCog} style={{ color: "gray" }} size={17} />
         </TouchableOpacity>
       </View>

@@ -6,9 +6,11 @@ import UserImage from "../common/UserImage";
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 import {DrawerHeaderProps} from "@react-navigation/drawer/lib/typescript/src/types";
 import {faBell, faDotCircle} from "@fortawesome/free-regular-svg-icons";
-import {faBell as faBellSolid} from "@fortawesome/free-solid-svg-icons";
+import {faBell as faBellSolid, faChevronLeft} from "@fortawesome/free-solid-svg-icons";
 import {LeagueInfo} from "../../interfaces/league.interface";
 import styled from 'styled-components/native';
+import {StackHeaderProps} from '@react-navigation/stack';
+import {useTranslation} from 'react-i18next';
 
 const LeagueHeader: FC<DrawerHeaderProps> = ({scene}) => {
 
@@ -58,7 +60,8 @@ export const HomeHeader: FC<DrawerHeaderProps> = ({scene}) => {
                 </TouchableOpacity>
             </View>
             <View>
-                <TouchableOpacity activeOpacity={.6} onPress={() => scene.descriptor.navigation.navigate('Notifications')}>
+                <TouchableOpacity activeOpacity={.6}
+                                  onPress={() => scene.descriptor.navigation.navigate('Notifications')}>
                     <FontAwesomeIcon icon={user.invitations.length ? faBellSolid : faBell} color={'#000'} size={20}/>
                     {!!user.invitations.length && (
                         <BadgeContainer>
@@ -67,6 +70,22 @@ export const HomeHeader: FC<DrawerHeaderProps> = ({scene}) => {
                     )}
                 </TouchableOpacity>
             </View>
+        </View>
+    )
+}
+
+export const HomeTitleHeader: FC<DrawerHeaderProps> = ({scene}) => {
+
+    const {t} = useTranslation();
+
+    return (
+        <View style={[styles.container, {height: 45}]}>
+            <TouchableOpacity activeOpacity={.5} onPress={() => scene.descriptor.navigation.goBack()}
+                              style={styles.backButton}>
+                <FontAwesomeIcon icon={faChevronLeft} color={"#000"} size={13}/>
+            </TouchableOpacity>
+            <Text style={styles.title}>{t(scene.route.name)}</Text>
+            <View style={{width: 30}}/>
         </View>
     )
 }
@@ -104,6 +123,20 @@ const styles = StyleSheet.create({
         fontSize: 17,
         color: "#000",
         marginLeft: 12
+    },
+    title: {
+        fontSize: 18,
+        fontWeight: "bold",
+        color: "#000",
+    },
+    backButton: {
+        borderWidth: 1,
+        width: 30,
+        height: 30,
+        justifyContent: "center",
+        alignItems: "center",
+        borderRadius: 50,
+        borderColor: "#C7C8CA"
     }
 });
 

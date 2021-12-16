@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import { Image, ImageStyle, StyleSheet } from "react-native";
+import { Image, ImageStyle } from "react-native";
 import { User } from "../../interfaces/user.interface";
 
 interface Props {

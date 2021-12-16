@@ -3,7 +3,7 @@ import {ScrollView, View} from 'react-native';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {TableStackParamList} from './TabTableScreen';
 import {RouteProp} from '@react-navigation/native';
-import RoundForm from '../../RoundForm';
+import RoundForm from '../../../common/RoundForm';
 
 type ScreenNavigationProps = StackNavigationProp<TableStackParamList, "TableRoundDetail">;
 type ScreenRouteProp = RouteProp<TableStackParamList, "TableRoundDetail">;

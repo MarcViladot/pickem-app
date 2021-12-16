@@ -5,15 +5,7 @@ import ButtonGroup, {IGroupButton} from "../../../common/ButtonGroup";
 import {createStackNavigator, StackNavigationProp} from "@react-navigation/stack";
 import {TabsStackParamList} from "../../GroupLeagueScreen";
 import {RouteProp} from "@react-navigation/native";
-import UserImage from "../../../common/UserImage";
-import {User, UserGroup} from "../../../../interfaces/user.interface";
-import {useSelector} from "react-redux";
-import {RootState} from "../../../../reducers";
-import DropDownPicker, {ItemType} from "react-native-dropdown-picker";
 import {LeagueInfo, Round} from "../../../../interfaces/league.interface";
-import user from "../../../../reducers/user";
-import RoundListScreen from '../Rounds/RoundListScreen';
-import RoundDetailScreen from '../Rounds/RoundDetailScreen';
 import TableScreen from './TableScreen';
 import TableRoundDetailScreen from './TableRoundDetailScreen';
 

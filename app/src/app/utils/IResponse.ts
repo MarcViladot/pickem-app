@@ -48,7 +48,6 @@ export class ResponseServerError implements ResponseApi<any> {
         this.ErrorCode = -2;
         this.ErrorParams = [];
         this.ErrorDetail = `${err.config?.method?.toUpperCase()} - ${err.response?.status}\n\n ${err.config.baseURL}${err.config.url}`;
-        console.log(this.ErrorDetail);
     }
 }
 

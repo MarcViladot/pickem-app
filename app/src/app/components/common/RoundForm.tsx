@@ -8,7 +8,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {showApiErrorToast} from '../../actions/utils/showApiErrorToast';
 import styled from 'styled-components/native';
 import {format} from 'date-fns';
-import {StyledButton} from '../common/StyledButton';
+import {StyledButton} from './StyledButton';
 import {CreateRoundPredictionDto} from '../../interfaces/round.interface';
 import prediction from '../../api/prediction';
 import {faCheckSquare, faEdit} from '@fortawesome/free-regular-svg-icons';
@@ -246,7 +246,7 @@ const RoundForm: FC<Props> = ({round, canEdit, canSubmit, hasStarted, onSubmit, 
                             </View>
                             {!canEdit && canSubmit &&
                                 <StyledButton style={{width: 100}} activeOpacity={.8} onPress={handleSubmit}
-                                              disabled={!isValid || loading} color="accent">
+                                              disabled={!isValid || loading} color="primary">
                                     <Text style={styles.buttonText}>Submit</Text>
                                 </StyledButton>
                             }

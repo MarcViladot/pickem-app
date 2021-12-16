@@ -5,6 +5,7 @@ export interface User {
   name: string;
   token: string;
   userRole: UserRole;
+  createdAt: string;
   invitations?: UserGroup[];
   userGroups?: UserGroup[];
   groups?: UserGroup[];

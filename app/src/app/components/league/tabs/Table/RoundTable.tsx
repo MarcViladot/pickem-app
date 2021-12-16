@@ -1,11 +1,9 @@
 import React, {FC, useEffect} from 'react';
-import {LeagueInfo} from '../../../../interfaces/league.interface';
+import {GroupedTableByUser, LeagueInfo} from '../../../../interfaces/league.interface';
 import {StyleSheet, View} from 'react-native';
 import DropDownPicker, {ItemType} from "react-native-dropdown-picker";
 import {User} from '../../../../interfaces/user.interface';
-import {UserRow} from './TableScreen';
-import {StackNavigationProp} from '@react-navigation/stack';
-import {TableStackParamList} from './TabTableScreen';
+import {UserRow} from './UserRow';
 
 interface Props {
     leagueInfo: LeagueInfo;
@@ -18,7 +16,7 @@ const RoundTable: FC<Props> = ({leagueInfo, currentUser, onRowClick}) => {
     const currentRoundIndex = leagueInfo.leagueInfo.rounds.findIndex(round => new Date() > new Date(round.startingDate) && !round.finished);
     const [open, setOpen] = React.useState(false);
     const [selectedRound, setSelectedRound] = React.useState(leagueInfo.leagueInfo.rounds[currentRoundIndex === -1 ? 0 : currentRoundIndex].id);
-    const [classification, setClassification] = React.useState();
+    const [classification, setClassification] = React.useState<any>();
     const [clickable, setClickable] = React.useState(false);
 
     const items: ItemType[] = leagueInfo.leagueInfo.rounds.filter(round => new Date() > new Date(round.startingDate) || round.finished).map(round => {

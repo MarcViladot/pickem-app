@@ -6,6 +6,7 @@ export class CurrentUser {
   name: string;
   photo: string;
   userRole: UserRole;
+  createdAt: Date;
   token?: string;
   groups: UserGroup[];
   invitations: UserGroup[];
@@ -14,6 +15,7 @@ export class CurrentUser {
     this.id = api.id;
     this.name = api.name;
     this.photo = api.photo;
+    this.createdAt = api.createdAt;
     this.userRole = api.userRole;
     this.token = token ? token : api.token;
     this.groups = api.userGroups.filter(userGroup => userGroup.userRole !== GroupRole.PENDING)

@@ -18,6 +18,39 @@ export class UserService {
     return this.userRepository.save({ ...createUserDto });
   }
 
+  async uploadPhotoToStorage(file: any, userId: number): Promise<string> {
+    return new Promise((resolve) => {
+      const bucket = admin.storage().bucket();
+      const fileName = `${userId}.jpg`;
+      const blob = bucket.file(fileName);
+      const blobStream = blob.createWriteStream({
+        metadata: {
+          contentType: file.mimetype
+        }
+      });
+      blobStream.on("error", (error) => {
+        throw new FirebaseException(error.message);
+      });
+      blobStream.on("finish", () => {
+        const url = `https://firebasestorage.googleapis.com/v0/b/${bucket.name}/o/${fileName}?alt=media`;
+        resolve(url);
+      });
+      blobStream.end(file.buffer);
+    });
+  }
+
+  async removeUserPhoto(userId: number): Promise<void> {
+    const bucket = admin.storage().bucket();
+    const fileName = `${userId}.jpg`;
+    const file = bucket.file(fileName);
+    try {
+      await file.delete();
+    } catch (e) {
+      throw new FirebaseException(e.message);
+    }
+    return;
+  }
+
   async updateUserPhoto(userId: number, photoUrl: string): Promise<User> {
     const user = await this.userRepository.findOne(userId);
     user.photo = photoUrl;
@@ -46,7 +79,7 @@ export class UserService {
 
   async findAll(maxCount: number, nextPageToken: string): Promise<{ parsedUsers: User[], nextPageToken: string }> {
     let func = admin.auth().listUsers(maxCount);
-    if (nextPageToken !== 'null') {
+    if (nextPageToken !== "null") {
       func = admin.auth().listUsers(maxCount, nextPageToken);
     }
     const result = await func;

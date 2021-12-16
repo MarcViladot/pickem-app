@@ -4,7 +4,7 @@ import {useBottomTabBarHeight} from "@react-navigation/bottom-tabs";
 import {StackNavigationProp} from '@react-navigation/stack';
 import {TabsStackParamList} from '../GroupLeagueScreen';
 import {RouteProp} from '@react-navigation/native';
-import RoundForm from '../RoundForm';
+import RoundForm from '../../common/RoundForm';
 
 type ScreenNavigationProps = StackNavigationProp<TabsStackParamList, "TabHome">;
 type ScreenRouteProp = RouteProp<TabsStackParamList, "TabHome">;
