@@ -1,6 +1,7 @@
-import React, { FC, useEffect, useState } from "react";
-import { Pressable, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import React, {FC, useEffect, useMemo, useState} from "react";
+import {Pressable, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import {useTranslation} from 'react-i18next';
+import {Theme, useTheme} from '@react-navigation/native';
 
 export interface IGroupButton {
     value: string | number | boolean;
@@ -20,9 +21,11 @@ interface Props {
 
 const ButtonGroup: FC<Props> = ({arrayOptions, initialValue, onSelect}) => {
 
+    const theme = useTheme();
     const {t} = useTranslation();
     const [selectedValue, setSelectedValue] = useState(initialValue);
     const [buttonsList, setButtonsList] = useState<IButton[]>([]);
+    const styles = useMemo(() => createStyles(theme), [theme]);
 
     useEffect(() => {
         const buttons: IButton[] = arrayOptions.map((opt, i) => {
@@ -45,9 +48,11 @@ const ButtonGroup: FC<Props> = ({arrayOptions, initialValue, onSelect}) => {
         <View style={styles.mainView}>
             <View style={styles.buttonGroup}>
                 {buttonsList.map((option, i) => (
-                        <Pressable onPress={() => selectValue(option.button.value)} key={i} testID={`Button${option.button.value}`}
-                                          style={[styles.button, styles[option.style], option.button.value === selectedValue ? styles.selectedButton : styles.blankButton]}>
-                            <Text style={option.button.value === selectedValue ? styles.selectedButtonText : styles.blankButtonText}>
+                        <Pressable onPress={() => selectValue(option.button.value)} key={i}
+                                   testID={`Button${option.button.value}`}
+                                   style={[styles.button, styles[option.style], option.button.value === selectedValue ? styles.selectedButton : styles.blankButton]}>
+                            <Text
+                                style={option.button.value === selectedValue ? styles.selectedButtonText : styles.blankButtonText}>
                                 {option.button.viewValue ? t(option.button.viewValue) : option.button.value}
                             </Text>
                         </Pressable>
@@ -58,48 +63,45 @@ const ButtonGroup: FC<Props> = ({arrayOptions, initialValue, onSelect}) => {
     );
 };
 
-const styles = StyleSheet.create({
-    mainView: {
-        flexDirection: 'row',
-        justifyContent: 'center'
-    },
-    buttonGroup: {
-        display: 'flex',
-        flexDirection: 'row',
-        width: '82%',
-       /* borderWidth: 1,
-        borderRadius: 10,
-        overflow: 'hidden'
-        borderColor: "#1C75BC",*/
-        height: 40,
-        backgroundColor: '#EBECF1',
-        padding: 1,
-        borderRadius: 50,
-    },
-    button: {
-        borderRadius: 50,
-        alignItems: 'center',
-        flex: 1,
-        justifyContent: 'center'
-    },
-    selectedButton: {
-        backgroundColor: '#FFF'
-    },
-    blankButton: {
-        backgroundColor: '#EBECF1'
-    },
-    selectedButtonText: {
-        fontSize: 13,
-        color: '#000'
-    },
-    blankButtonText: {
-        fontSize: 13,
-        color: "#9DA3AC"
-    },
-    disabledButton: {
-        backgroundColor: '#CCCCCC',
-    }
-});
+const createStyles = (theme: Theme) =>
+    StyleSheet.create({
+        mainView: {
+            flexDirection: 'row',
+            justifyContent: 'center'
+        },
+        buttonGroup: {
+            display: 'flex',
+            flexDirection: 'row',
+            width: '82%',
+            height: 40,
+            backgroundColor: theme.dark ? '#495666' : '#EBECF1',
+            padding: 1,
+            borderRadius: 50,
+        },
+        button: {
+            borderRadius: 50,
+            alignItems: 'center',
+            flex: 1,
+            justifyContent: 'center'
+        },
+        selectedButton: {
+            backgroundColor: theme.dark ? '#202D3A' : '#FFF'
+        },
+        blankButton: {
+            backgroundColor: theme.dark ? '#495666' : '#EBECF1'
+        },
+        selectedButtonText: {
+            fontSize: 13,
+            color: theme.colors.text
+        },
+        blankButtonText: {
+            fontSize: 13,
+            color: "#9DA3AC"
+        },
+        disabledButton: {
+            backgroundColor: '#CCCCCC',
+        }
+    });
 
 export default ButtonGroup;
 

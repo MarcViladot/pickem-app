@@ -13,6 +13,9 @@ import {CreateRoundPredictionDto} from '../../interfaces/round.interface';
 import prediction from '../../api/prediction';
 import {faCheckSquare, faEdit} from '@fortawesome/free-regular-svg-icons';
 import {showSuccessToast} from '../../actions/utils/showSuccessToast';
+import {useTheme} from '@react-navigation/native';
+import {ThemeText} from './ThemeText';
+import { ThemeView } from './ThemeView';
 
 interface Props {
     round: Round;
@@ -52,6 +55,7 @@ interface TeamRowProps extends MatchHeaderProps {
 
 const RoundForm: FC<Props> = ({round, canEdit, canSubmit, hasStarted, onSubmit, onlyView}) => {
 
+    const {colors,dark} = useTheme();
     const dispatch = useDispatch();
     const [loading, setLoading] = useState(false);
     const matchForms: MatchForm[] = round.matches.map((match: Match) => {
@@ -126,7 +130,7 @@ const RoundForm: FC<Props> = ({round, canEdit, canSubmit, hasStarted, onSubmit, 
         const TeamInfo: FC = () => (
             <View style={styles.row}>
                 <Image source={{uri: team.team.crest}} style={styles.teamCrest}/>
-                <Text>{team.team.name}</Text>
+                <ThemeText>{team.team.name}</ThemeText>
             </View>
         )
 
@@ -146,7 +150,7 @@ const RoundForm: FC<Props> = ({round, canEdit, canSubmit, hasStarted, onSubmit, 
         )
 
         return (
-            <View style={styles.teamRow}>
+            <View style={[styles.teamRow, {backgroundColor: dark ? '#495666' : '#F4F4F4'}]}>
                 <TeamInfo/>
                 <View style={styles.row}>
                     {(hasStarted || onlyView) ? <MatchStarted/> :
@@ -158,7 +162,7 @@ const RoundForm: FC<Props> = ({round, canEdit, canSubmit, hasStarted, onSubmit, 
                                                 onPress={() => {
                                                     setFieldValue(fieldName, teamPrediction === -1 ? 0 : teamPrediction - 1);
                                                 }}>
-                                        <FontAwesomeIcon icon={faMinus} color={'#464646'} size={12}/>
+                                        <FontAwesomeIcon icon={faMinus} color={dark ? 'white' : '#464646'} size={12}/>
                                     </IconButton>
                                 }
                                 <PredictionTextField editable={false}
@@ -169,7 +173,7 @@ const RoundForm: FC<Props> = ({round, canEdit, canSubmit, hasStarted, onSubmit, 
                                                 activeOpacity={.6} onPress={() => {
                                         setFieldValue(fieldName, teamPrediction === -1 ? 0 : teamPrediction + 1);
                                     }}>
-                                        <FontAwesomeIcon icon={faPlus} color={'#464646'} size={12}/>
+                                        <FontAwesomeIcon icon={faPlus} color={dark ? 'white' : '#464646'} size={12}/>
                                     </IconButton>
                                 }
                             </>
@@ -182,18 +186,18 @@ const RoundForm: FC<Props> = ({round, canEdit, canSubmit, hasStarted, onSubmit, 
 
     const MatchHeader: FC<MatchHeaderProps> = ({matchForm, setFieldValue, index}) => {
         return (
-            <View style={styles.matchHeader}>
+            <View style={[styles.matchHeader, {backgroundColor: dark ? '#495666' : '#F4F4F4'}]}>
                 <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                    <Text style={styles.matchDate}>
+                    <ThemeText style={styles.matchDate}>
                         AT {format(new Date(matchForm.match.startDate), 'dd/MM hh:mm')}
-                    </Text>
+                    </ThemeText>
                     {matchForm.match.doublePoints &&
-                        <Text style={styles.doublePoints}>x2</Text>}
+                        <Text style={[styles.doublePoints, {color: dark ? '#00258d' : '#144fff'}]}>x2</Text>}
                 </View>
                 {canEdit && !canSubmit && (!matchForm.editing ?
                         <TouchableOpacity
                             onPress={() => setFieldValue(`matches[${index}].editing`, true)}>
-                            <FontAwesomeIcon icon={faEdit}/>
+                            <FontAwesomeIcon icon={faEdit} color={colors.text}/>
                         </TouchableOpacity>
                         :
                         <TouchableOpacity
@@ -238,9 +242,9 @@ const RoundForm: FC<Props> = ({round, canEdit, canSubmit, hasStarted, onSubmit, 
                     }}>
                 {({values, setFieldValue, handleSubmit, isValid}) => (
                     <>
-                        <View style={styles.header}>
+                        <ThemeView style={styles.header}>
                             <View>
-                                <Text style={styles.roundName}>{round.name}</Text>
+                                <ThemeText style={styles.roundName}>{round.name}</ThemeText>
                                 <Text style={styles.roundDate}>{hasStarted ? 'STARTED ' : 'STARTING '}
                                     AT {format(new Date(round.startingDate), 'dd/MM hh:mm')}</Text>
                             </View>
@@ -250,9 +254,9 @@ const RoundForm: FC<Props> = ({round, canEdit, canSubmit, hasStarted, onSubmit, 
                                     <Text style={styles.buttonText}>Submit</Text>
                                 </StyledButton>
                             }
-                            {hasStarted && <Text style={styles.totalPointsText}>{totalPoints} pts</Text>}
-                        </View>
-                        <View style={styles.roundContainer}>
+                            {hasStarted && <ThemeText style={styles.totalPointsText}>{totalPoints} pts</ThemeText>}
+                        </ThemeView>
+                        <ThemeView style={styles.roundContainer}>
                             {values.matches.map((matchForm: MatchForm, index) => (
                                 <View key={index} style={styles.match}>
                                     <MatchHeader index={index} matchForm={matchForm}
@@ -263,7 +267,7 @@ const RoundForm: FC<Props> = ({round, canEdit, canSubmit, hasStarted, onSubmit, 
                                                setFieldValue={setFieldValue}/>
                                 </View>
                             ))}
-                        </View>
+                        </ThemeView>
                     </>
                 )}
             </Formik>
@@ -292,12 +296,11 @@ const styles = StyleSheet.create({
     roundContainer: {
         padding: 7,
         paddingBottom: -5,
-        backgroundColor: '#fff',
+        // backgroundColor: '#fff',
     },
     matchHeader: {
         padding: 7,
         marginBottom: 2,
-        backgroundColor: '#F4F4F4',
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
@@ -314,7 +317,7 @@ const styles = StyleSheet.create({
     },
     matchDate: {
         fontSize: 12,
-        color: '#000'
+        // color: '#000'
     },
     match: {
         marginBottom: 12,
@@ -326,7 +329,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         paddingHorizontal: 15,
-        backgroundColor: '#F4F4F4'
+        // backgroundColor: '#F4F4F4'
     },
     teamCrest: {
         width: 30,
@@ -343,11 +346,10 @@ const styles = StyleSheet.create({
     },
     totalPointsText: {
         fontSize: 20,
-        color: '#000',
         marginRight: 5,
     },
     doublePoints: {
-        color: '#144fff',
+        // color: '#144fff',
         marginLeft: 10
     }
 })

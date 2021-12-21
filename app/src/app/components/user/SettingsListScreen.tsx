@@ -2,7 +2,7 @@ import React, {FC} from 'react';
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {SettingsStackParamList} from './SettingsScreen';
-import {RouteProp} from '@react-navigation/native';
+import {RouteProp, useTheme} from '@react-navigation/native';
 import UserImage from '../common/UserImage';
 import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from '../../reducers';
@@ -18,6 +18,9 @@ import {showApiErrorToast} from '../../actions/utils/showApiErrorToast';
 import {updateUserPhoto} from '../../actions/user/updateUserPhoto';
 import Modal from 'react-native-modal'
 import {User} from '../../interfaces/user.interface';
+import {ThemeContext} from '../../../../themes';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { ThemeView } from '../common/ThemeView';
 
 type ScreenNavigationProps = StackNavigationProp<SettingsStackParamList, "SettingsList">;
 type ScreenRouteProp = RouteProp<SettingsStackParamList, "SettingsList">;
@@ -35,10 +38,16 @@ interface UserInfoProps {
 
 const SettingsListScreen: FC<Props> = ({route, navigation}) => {
 
+    const {setTheme, theme} = React.useContext(ThemeContext);
+    const {colors} = useTheme();
     const dispatch = useDispatch();
     const currentUser = useSelector((state: RootState) => state.user.currentUser);
-    const [darkMode, setDarkMode] = React.useState(false);
     const [loading, setLoading] = React.useState(false);
+
+    const changeTheme = async (newTheme: string) => {
+        await AsyncStorage.setItem('pickem_theme', newTheme);
+        setTheme(newTheme);
+    }
 
     const TextButton = styled.TouchableOpacity<{ margin?: boolean }>`
       margin-bottom: ${props => props.margin ? '18px' : '0px'};
@@ -46,13 +55,13 @@ const SettingsListScreen: FC<Props> = ({route, navigation}) => {
 
     const ButtonText = styled.Text`
       font-size: 16px;
-      color: #000;
+      color: ${colors.text};
     `
 
     return (
         <View style={{padding: 10, flexGrow: 1}}>
             <UserInfo currentUser={currentUser} loading={loading} setLoading={setLoading}/>
-            <View style={styles.settingsContainer}>
+            <ThemeView style={styles.settingsContainer}>
                 <TextButton onPress={() => null} margin>
                     <ButtonText>Notifications</ButtonText>
                 </TextButton>
@@ -68,8 +77,10 @@ const SettingsListScreen: FC<Props> = ({route, navigation}) => {
                     <ButtonText>Dark mode</ButtonText>
                     <CheckBox
                         disabled={false}
-                        value={darkMode}
-                        onValueChange={(newValue) => setDarkMode(newValue)}
+                        value={theme === 'dark'}
+                        onValueChange={(newValue) => {
+                           changeTheme(newValue ? 'dark' : 'light')
+                        }}
                     />
                 </View>
                 <TextButton onPress={() => null} margin>
@@ -78,24 +89,26 @@ const SettingsListScreen: FC<Props> = ({route, navigation}) => {
                 <TextButton onPress={() => null}>
                     <ButtonText>Privacy Policy</ButtonText>
                 </TextButton>
-            </View>
-            <TouchableOpacity style={styles.settingsContainer} onPress={() => dispatch(logout())}>
+            </ThemeView>
+            <TouchableOpacity style={[styles.settingsContainer, {backgroundColor: colors.card}]}
+                              onPress={() => dispatch(logout())}>
                 <ButtonText>Sign out</ButtonText>
             </TouchableOpacity>
             <View style={{flexGrow: 1}}/>
-            <View style={styles.settingsContainer}>
+            <ThemeView style={styles.settingsContainer}>
                 <TouchableOpacity activeOpacity={.5}>
                     <Text style={{color: '#FF1E44', fontSize: 17, marginBottom: 3}}>Delete account forever</Text>
                 </TouchableOpacity>
                 <Text style={{color: 'gray', fontSize: 14}}>You are going to loose all your leagues. This action is
                     irreversible</Text>
-            </View>
+            </ThemeView>
         </View>
     );
 };
 
 const UserInfo: FC<UserInfoProps> = ({currentUser, loading, setLoading}) => {
 
+    const {colors} = useTheme();
     const dispatch = useDispatch();
     const [cameraModalVisible, setCameraModalVisible] = React.useState(false);
     const [photoUri, setPhotoUri] = React.useState('');
@@ -158,7 +171,7 @@ const UserInfo: FC<UserInfoProps> = ({currentUser, loading, setLoading}) => {
                    onBackButtonPress={() => closeModal()}
                    animationIn="slideInUp"
                    animationOut={'fadeOut'}>
-                <View style={styles.bottomModal}>
+                <ThemeView style={styles.bottomModal}>
                     {!photoUri ? (
                             <View style={[styles.buttonsRow, {marginBottom: 20}]}>
                                 <StyledButton color={'primary'} style={styles.button} disabled={loading}
@@ -188,12 +201,13 @@ const UserInfo: FC<UserInfoProps> = ({currentUser, loading, setLoading}) => {
                             </View>
                         )
                     }
-                </View>
+                </ThemeView>
             </Modal>
-            <View style={[styles.settingsContainer, {paddingVertical: 15}]}>
+            <ThemeView style={[styles.settingsContainer, {paddingVertical: 15}]}>
                 <UserImage user={currentUser} styles={styles.profileImage}/>
                 <View style={styles.buttonsRow}>
-                    <StyledButton color={'warn'} disabled={!currentUser.photo} style={styles.button} onPress={() => removePhoto()}>
+                    <StyledButton color={'warn'} disabled={!currentUser.photo} style={styles.button}
+                                  onPress={() => removePhoto()}>
                         <Text style={styles.buttonText}>Remove photo</Text>
                     </StyledButton>
                     <StyledButton color={'primary'} disabled={loading} onPress={() => setCameraModalVisible(true)}
@@ -202,11 +216,11 @@ const UserInfo: FC<UserInfoProps> = ({currentUser, loading, setLoading}) => {
                     </StyledButton>
                 </View>
                 <View style={styles.userBottomInfo}>
-                    <Text style={{fontSize: 18, color: '#000', marginBottom: 3}}>{currentUser.name}</Text>
+                    <Text style={{fontSize: 18, color: colors.text, marginBottom: 3}}>{currentUser.name}</Text>
                     <Text style={{fontSize: 15, color: 'gray'}}>Registered
                         on {format(new Date(currentUser.createdAt), 'dd/MM/yyyy')}</Text>
                 </View>
-            </View>
+            </ThemeView>
         </>
     );
 }
@@ -214,7 +228,6 @@ const UserInfo: FC<UserInfoProps> = ({currentUser, loading, setLoading}) => {
 const styles = StyleSheet.create({
     settingsContainer: {
         padding: 10,
-        backgroundColor: '#fff',
         borderRadius: 10,
         marginBottom: 10
     },
@@ -242,7 +255,6 @@ const styles = StyleSheet.create({
     userBottomInfoText: {},
     bottomModal: {
         padding: 10,
-        backgroundColor: '#fff',
         borderTopLeftRadius: 10,
         borderTopRightRadius: 10,
         marginBottom: 0

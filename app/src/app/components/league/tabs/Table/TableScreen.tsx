@@ -43,7 +43,7 @@ const TableScreen: FC<Props> = ({navigation, route}) => {
     }
 
     return (
-        <View style={{marginTop: tabBarHeight, backgroundColor: "#F3F4F9", height: "100%"}}>
+        <View style={{marginTop: tabBarHeight, height: "100%"}}>
             <View style={styles.tableContainer}>
                 <ButtonGroup initialValue={showGlobal} arrayOptions={buttonGroup}
                              onSelect={value => setShowGlobal(value)}/>

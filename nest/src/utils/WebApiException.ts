@@ -6,6 +6,7 @@ export class WebApiException extends HttpException {
     if (errorDetail) {
       errorDetail = JSON.stringify(errorDetail, Object.getOwnPropertyNames(errorDetail));
     }
+    console.error(errorCode, errorDetail);
     super(new ResponseApiError(errorCode, errorParams, errorDetail), HttpStatus.OK);
   }
 }

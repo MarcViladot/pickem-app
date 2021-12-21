@@ -2,6 +2,8 @@ import React, {FC} from 'react';
 import {User, UserGroup} from '../../../../interfaces/user.interface';
 import UserImage from '../../../common/UserImage';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {useTheme} from '@react-navigation/native';
+import {ThemeText} from '../../../common/ThemeText';
 
 interface RowProps {
     points: number;
@@ -25,12 +27,14 @@ export const UserRow: FC<RowProps> = ({
                                           roundId
                                       }) => {
 
+    const {colors} = useTheme();
+
     const UserInfo: FC<{ userId: number, currentUser: boolean }> = ({userId}) => {
         const user: User = userGroups.find((userGroup: UserGroup) => userGroup.userId === userId).user;
         return (
             <>
                 <UserImage user={user} styles={styles.userPhoto}/>
-                <Text style={{color: isCurrentUser ? "#53BB8B" : "#000", fontSize: 15}}>{user.name}</Text>
+                <Text style={{color: isCurrentUser ? "#53BB8B" : colors.text, fontSize: 15}}>{user.name}</Text>
             </>
         );
     };
@@ -42,7 +46,7 @@ export const UserRow: FC<RowProps> = ({
                 <Text style={styles.tableIndex}>{position}</Text>
                 <UserInfo userId={userId} currentUser={isCurrentUser}/>
             </View>
-            <Text style={{fontSize: 14}}>{points} <Text style={{fontSize: 10, color: "#AAAEBB"}}>PTS</Text></Text>
+            <ThemeText style={{fontSize: 14}}>{points} <Text style={{fontSize: 10, color: "#AAAEBB"}}>PTS</Text></ThemeText>
         </TouchableOpacity>
     );
 }

@@ -2,12 +2,14 @@ import React, {FC} from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {createStackNavigator, StackHeaderProps, StackNavigationProp} from '@react-navigation/stack';
 import {DrawerStackParamList} from '../DrawerNavigator';
-import {RouteProp} from '@react-navigation/native';
+import {RouteProp, useTheme} from '@react-navigation/native';
 import NotificationsScreen from './NotificationsScreen';
 import {useTranslation} from 'react-i18next';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faChevronLeft} from '@fortawesome/free-solid-svg-icons';
 import SettingsListScreen from './SettingsListScreen';
+import {ThemeText} from '../common/ThemeText';
+import { ThemeView } from '../common/ThemeView';
 
 type ScreenNavigationProps = StackNavigationProp<DrawerStackParamList, "Settings">;
 type ScreenRouteProp = RouteProp<DrawerStackParamList, "Settings">;
@@ -26,7 +28,7 @@ const SettingsStack = createStackNavigator<SettingsStackParamList>();
 const SettingsScreen: FC<Props> = ({navigation, route}) => {
 
     return (
-        <View style={{backgroundColor: '#F3F4F9', height: '100%'}}>
+        <View style={{height: '100%'}}>
             <SettingsStack.Navigator screenOptions={{
                 animationTypeForReplace: "pop",
                 headerShown: true,
@@ -41,23 +43,23 @@ const SettingsScreen: FC<Props> = ({navigation, route}) => {
 
 export const TitleHeader: FC<StackHeaderProps> = ({route, navigation}) => {
 
+    const {colors} = useTheme();
     const {t} = useTranslation();
 
     return (
-        <View style={styles.container}>
+        <ThemeView style={styles.container}>
             <TouchableOpacity activeOpacity={.5} onPress={() => navigation.goBack()}
                               style={styles.backButton}>
-                <FontAwesomeIcon icon={faChevronLeft} color={"#000"} size={13}/>
+                <FontAwesomeIcon icon={faChevronLeft} color={colors.text} size={13}/>
             </TouchableOpacity>
-            <Text style={styles.title}>{t(route.name)}</Text>
+            <ThemeText style={styles.title}>{t(route.name)}</ThemeText>
             <View style={{width: 30}}/>
-        </View>
+        </ThemeView>
     )
 }
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: "#FFF",
         paddingVertical: 5,
         paddingHorizontal: 10,
         flexDirection: "row",
@@ -68,7 +70,6 @@ const styles = StyleSheet.create({
     title: {
         fontSize: 18,
         fontWeight: "bold",
-        color: "#000",
     },
     backButton: {
         borderWidth: 1,
