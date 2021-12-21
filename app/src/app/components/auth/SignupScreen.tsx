@@ -2,7 +2,7 @@ import React, {FC, useState} from "react";
 import {ActivityIndicator, Image, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import {StackNavigationProp} from "@react-navigation/stack";
 import {LoginStackParamList} from "../../../../App";
-import {RouteProp} from "@react-navigation/native";
+import {RouteProp, useTheme} from "@react-navigation/native";
 import {useTranslation} from "react-i18next";
 import {useDispatch} from "react-redux";
 import * as Yup from "yup";
@@ -24,6 +24,8 @@ interface Props {
 }
 
 const SignupScreen: FC<Props> = ({navigation, route}) => {
+
+    const { colors } = useTheme();
     const {t} = useTranslation();
     const dispatch = useDispatch();
 
@@ -127,7 +129,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         height: '100%',
-        backgroundColor: '#FFF'
     },
     form: {
         minWidth: 320,
@@ -135,7 +136,6 @@ const styles = StyleSheet.create({
     },
     mainText: {
         textAlign: 'center',
-        color: '#000',
         fontSize: 25,
         marginBottom: 40,
     },

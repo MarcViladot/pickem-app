@@ -11,33 +11,38 @@ import {LeagueInfo} from "../../interfaces/league.interface";
 import styled from 'styled-components/native';
 import {StackHeaderProps} from '@react-navigation/stack';
 import {useTranslation} from 'react-i18next';
+import {useTheme} from '@react-navigation/native';
+import {ThemeText} from '../common/ThemeText';
+import { ThemeView } from "../common/ThemeView";
 
 const LeagueHeader: FC<DrawerHeaderProps> = ({scene}) => {
 
+    const { colors } = useTheme();
     const user = useSelector((state: RootState) => state.user.currentUser);
 
     const {leagueInfo} = scene.route.params as { leagueInfo: LeagueInfo };
 
     return (
-        <View style={styles.container}>
+        <ThemeView style={styles.container}>
             <View style={{flexDirection: "row", alignItems: "center"}}>
                 <TouchableOpacity activeOpacity={.5} onPress={() => scene.descriptor.navigation.toggleDrawer()}>
                     <UserImage user={user} styles={styles.userImage}/>
                 </TouchableOpacity>
-                <Text style={styles.leagueName}>{leagueInfo.leagueInfo.name}</Text>
+                <ThemeText style={styles.leagueName}>{leagueInfo.leagueInfo.name}</ThemeText>
             </View>
             <View>
                 <View style={styles.chip}>
                     <FontAwesomeIcon icon={faDotCircle} color={"#ffa600"} size={13}/>
-                    <Text style={styles.chipText}>{leagueInfo.totalPoints}</Text>
+                    <ThemeText style={styles.chipText}>{leagueInfo.totalPoints}</ThemeText>
                 </View>
             </View>
-        </View>
+        </ThemeView>
     );
 };
 
 export const HomeHeader: FC<DrawerHeaderProps> = ({scene}) => {
 
+    const {colors} = useTheme();
     const user = useSelector((state: RootState) => state.user.currentUser);
 
     const BadgeContainer = styled.View`
@@ -53,7 +58,7 @@ export const HomeHeader: FC<DrawerHeaderProps> = ({scene}) => {
     `;
 
     return (
-        <View style={styles.container}>
+        <ThemeView style={styles.container}>
             <View style={{flexDirection: "row", alignItems: "center"}}>
                 <TouchableOpacity activeOpacity={.5} onPress={() => scene.descriptor.navigation.toggleDrawer()}>
                     <UserImage user={user} styles={styles.userImage}/>
@@ -62,7 +67,7 @@ export const HomeHeader: FC<DrawerHeaderProps> = ({scene}) => {
             <View>
                 <TouchableOpacity activeOpacity={.6}
                                   onPress={() => scene.descriptor.navigation.navigate('Notifications')}>
-                    <FontAwesomeIcon icon={user.invitations.length ? faBellSolid : faBell} color={'#000'} size={20}/>
+                    <FontAwesomeIcon icon={user.invitations.length ? faBellSolid : faBell} color={colors.text} size={20}/>
                     {!!user.invitations.length && (
                         <BadgeContainer>
                             <Text style={{color: '#fff', fontSize: 10}}>{user.invitations.length}</Text>
@@ -70,21 +75,22 @@ export const HomeHeader: FC<DrawerHeaderProps> = ({scene}) => {
                     )}
                 </TouchableOpacity>
             </View>
-        </View>
+        </ThemeView>
     )
 }
 
 export const HomeTitleHeader: FC<DrawerHeaderProps> = ({scene}) => {
 
+    const {colors} = useTheme();
     const {t} = useTranslation();
 
     return (
-        <View style={[styles.container, {height: 45}]}>
+        <View style={[styles.container, {height: 45, backgroundColor: colors.card}]}>
             <TouchableOpacity activeOpacity={.5} onPress={() => scene.descriptor.navigation.goBack()}
                               style={styles.backButton}>
-                <FontAwesomeIcon icon={faChevronLeft} color={"#000"} size={13}/>
+                <FontAwesomeIcon icon={faChevronLeft} color={colors.text} size={13}/>
             </TouchableOpacity>
-            <Text style={styles.title}>{t(scene.route.name)}</Text>
+            <ThemeText style={styles.title}>{t(scene.route.name)}</ThemeText>
             <View style={{width: 30}}/>
         </View>
     )
@@ -92,7 +98,6 @@ export const HomeTitleHeader: FC<DrawerHeaderProps> = ({scene}) => {
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: "#FFF",
         paddingVertical: 5,
         paddingHorizontal: 10,
         flexDirection: "row",
@@ -114,20 +119,17 @@ const styles = StyleSheet.create({
         paddingHorizontal: 10
     },
     chipText: {
-        color: "#000",
         marginLeft: 10,
         fontSize: 13,
         fontWeight: "bold"
     },
     leagueName: {
         fontSize: 17,
-        color: "#000",
         marginLeft: 12
     },
     title: {
         fontSize: 18,
         fontWeight: "bold",
-        color: "#000",
     },
     backButton: {
         borderWidth: 1,

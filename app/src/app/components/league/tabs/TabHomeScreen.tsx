@@ -21,7 +21,7 @@ const TabHomeScreen: FC<Props> = ({navigation, route}) => {
     const {leagueInfo} = route.params;
 
     return (
-        <View style={{marginTop: tabBarHeight, backgroundColor: '#F3F4F9', height: '100%'}}>
+        <View style={{marginTop: tabBarHeight, height: '100%'}}>
             <ScrollView>
                 {/*<RoundForm round={leagueInfo.leagueInfo.rounds[0]}/>*/}
             </ScrollView>

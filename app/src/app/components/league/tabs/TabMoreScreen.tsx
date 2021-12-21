@@ -2,7 +2,7 @@ import React, { FC } from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { RouteProp } from "@react-navigation/native";
+import {RouteProp, useTheme} from "@react-navigation/native";
 import { TabsStackParamList } from "../GroupLeagueScreen";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faChevronLeft, faChevronRight, faPlusCircle } from "@fortawesome/free-solid-svg-icons";
@@ -10,6 +10,8 @@ import { Match } from "../../../interfaces/league.interface";
 import { useTranslation } from "react-i18next";
 import {format} from 'date-fns';
 import styled from 'styled-components/native';
+import {ThemeText} from '../../common/ThemeText';
+import { ThemeView } from "../../common/ThemeView";
 
 type ScreenNavigationProps = StackNavigationProp<TabsStackParamList, "TabMore">;
 type ScreenRouteProp = RouteProp<TabsStackParamList, "TabMore">;
@@ -21,6 +23,7 @@ interface Props {
 
 const TabMoreScreen: FC<Props> = ({ navigation, route }) => {
 
+  const {colors} = useTheme();
   const { t } = useTranslation();
   const tabBarHeight = useBottomTabBarHeight();
   const { leagueInfo } = route.params;
@@ -46,15 +49,15 @@ const TabMoreScreen: FC<Props> = ({ navigation, route }) => {
   };
 
   const MatchComponent: FC<{ match: Match }> = ({ match }) => (
-    <View style={styles.match}>
+    <ThemeView style={styles.match}>
       <Image source={{ uri: match.teams[0].team.crest }} style={styles.teamCrest} />
       {match.finished ? (
-        <Text style={styles.matchResult}>{match.teams[0].finalResult} · {match.teams[1].finalResult}</Text>
+        <ThemeText style={styles.matchResult}>{match.teams[0].finalResult} · {match.teams[1].finalResult}</ThemeText>
       ) : (
-        <Text style={styles.matchDate}>{format(new Date(match.startDate), 'dd/MM hh:mm')}</Text>
+        <ThemeText style={styles.matchDate}>{format(new Date(match.startDate), 'dd/MM hh:mm')}</ThemeText>
       )}
       <Image source={{ uri: match.teams[1].team.crest }} style={styles.teamCrest} />
-    </View>
+    </ThemeView>
   );
 
   const IconButton = styled.TouchableOpacity<{disabled: boolean}>`
@@ -67,20 +70,30 @@ const TabMoreScreen: FC<Props> = ({ navigation, route }) => {
       border-radius: 50px;
     `;
 
+  const TextContainer = styled.View`
+    margin-bottom: 10px;
+    padding: 10px;
+    background-color: ${colors.card};
+    width: 100%;
+    border-radius: 10px;
+    flex-direction: row;
+    align-items: center;
+  `
+
   return (
-    <View style={{ marginTop: tabBarHeight, backgroundColor: "#F3F4F9", flex: 1 }}>
+    <View style={{ marginTop: tabBarHeight, flex: 1 }}>
       <View style={{ padding: 10, paddingTop: 20, flex: 1, justifyContent: "space-between" }}>
         {leagueInfo.leagueInfo.rounds.map((round, i) => (
           showRoundIndex === i && (
             <View key={i}>
               <View style={styles.roundHeader}>
                 <IconButton activeOpacity={.5} disabled={i === 0} onPress={() => decrementRoundIndex()}>
-                  <FontAwesomeIcon icon={faChevronLeft} color={"#252525"} size={16} />
+                  <FontAwesomeIcon icon={faChevronLeft} color={colors.text} size={16} />
                 </IconButton>
-                <Text style={{fontSize: 17}}>{round.name}</Text>
+                <ThemeText style={{fontSize: 17}}>{round.name}</ThemeText>
                 <IconButton activeOpacity={.5} disabled={i === leagueInfo.leagueInfo.rounds.length - 1}
                                   onPress={() => incrementRoundIndex()}>
-                  <FontAwesomeIcon icon={faChevronRight} color={"#252525"} size={16} />
+                  <FontAwesomeIcon icon={faChevronRight} color={colors.text} size={16} />
                 </IconButton>
               </View>
               <View style={styles.matchesContainer}>
@@ -90,22 +103,22 @@ const TabMoreScreen: FC<Props> = ({ navigation, route }) => {
           )
         ))}
         <View>
-          <View style={styles.textContainer}>
+          <TextContainer>
             <TouchableOpacity activeOpacity={.5}>
               <FontAwesomeIcon icon={faPlusCircle} color={"#96A6B6"} style={{ marginRight: 10 }} size={35} />
             </TouchableOpacity>
             <View style={{ flexDirection: "column" }}>
-              <Text style={{fontSize: 17}}>{t("LEAGUE.INVITE_FRIENDS")}</Text>
-              <Text
-                style={{ fontSize: 13 }}>{t("LEAGUE.INVITATION_CODE", { code: leagueInfo.groupInfo.invitationCode })}</Text>
+              <ThemeText style={{fontSize: 17}}>{t("LEAGUE.INVITE_FRIENDS")}</ThemeText>
+              <ThemeText
+                style={{ fontSize: 13}}>{t("LEAGUE.INVITATION_CODE", { code: leagueInfo.groupInfo.invitationCode })}</ThemeText>
             </View>
-          </View>
-          <View style={styles.textContainer}>
+          </TextContainer>
+          <TextContainer>
             <Text style={{ color: "#4544CB", fontSize: 15 }}>{t("LEAGUE.REMOVE_ADS")}</Text>
-          </View>
-          <View style={styles.textContainer}>
+          </TextContainer>
+          <TextContainer>
             <Text style={{ color: "#BE2560", fontSize: 15 }}>{t("LEAGUE.LEAVE_GROUP")}</Text>
-          </View>
+          </TextContainer>
         </View>
       </View>
     </View>
@@ -147,15 +160,6 @@ const styles = StyleSheet.create({
   matchDate: {
     fontSize: 10
   },
-  textContainer: {
-    marginBottom: 10,
-    padding: 10,
-    backgroundColor: "#FFF",
-    width: "100%",
-    borderRadius: 10,
-    flexDirection: "row",
-    alignItems: "center"
-  }
 });
 
 export default TabMoreScreen;

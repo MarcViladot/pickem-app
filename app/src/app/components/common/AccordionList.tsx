@@ -2,6 +2,8 @@ import React, { FC, useState } from "react";
 import { StyleSheet, View, Text, Pressable } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
+import {useTheme} from '@react-navigation/native';
+import {ThemeText} from './ThemeText';
 
 interface Props {
   name: string;
@@ -11,12 +13,13 @@ interface Props {
 
 const AccordionList: FC<Props> = ({name, listItems, openByDefault}) => {
 
+  const { colors } = useTheme();
   const [open, setOpen] = useState(openByDefault);
 
   return (
     <View>
       <View style={styles.listHeader}>
-        <Text style={styles.listName}>{name}</Text>
+        <ThemeText style={styles.listName}>{name}</ThemeText>
         <Pressable onPress={() => setOpen(prevState => !prevState)}>
           <FontAwesomeIcon icon={open ?  faChevronUp : faChevronDown} color={'gray'} size={14} />
         </Pressable>
@@ -42,7 +45,6 @@ const styles = StyleSheet.create({
   listName: {
     fontSize: 16,
     fontWeight: 'bold',
-    color: '#000'
   },
   listContent: {
     paddingRight: 15,

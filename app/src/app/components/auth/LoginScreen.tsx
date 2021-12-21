@@ -10,12 +10,14 @@ import {StyledButton} from "../common/StyledButton";
 import {setUser} from "../../actions/auth/setUser";
 import {showApiErrorToast} from "../../actions/utils/showApiErrorToast";
 import {StyledTextField} from "../common/StylesTextField";
-import {RouteProp} from "@react-navigation/native";
+import {RouteProp, useTheme} from "@react-navigation/native";
 import {StackNavigationProp} from "@react-navigation/stack";
 import {LoginStackParamList} from "../../../../App";
 import firebaseAuth from '@react-native-firebase/auth';
 import {ResponseApiError, WebApiErrorCode} from '../../utils/IResponse';
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import {ThemeText} from '../common/ThemeText';
+import { ThemeView } from "../common/ThemeView";
 
 type ScreenNavigationProps = StackNavigationProp<LoginStackParamList, 'Login'>;
 type ScreenRouteProp = RouteProp<LoginStackParamList, 'Login'>;
@@ -27,7 +29,7 @@ interface Props {
 
 const LoginScreen: FC<Props> = ({navigation, route}) => {
 
-
+    const { colors } = useTheme();
     const {t} = useTranslation();
     const dispatch = useDispatch();
     const [loading, setLoading] = useState(false);
@@ -57,12 +59,12 @@ const LoginScreen: FC<Props> = ({navigation, route}) => {
     }
 
     return (
-        <View style={styles.mainContainer}>
+        <ThemeView style={styles.mainContainer}>
             <View style={styles.form}>
                 {/*<View style={{alignItems: 'center'}}>
                   <Image source={{ uri: 'https://via.placeholder.com/300x100.png' }} style={styles.logo}/>
                 </View>*/}
-                <Text style={styles.mainText}>{t('AUTH.USE_EMAIL')}</Text>
+                <ThemeText style={styles.mainText}>{t('AUTH.USE_EMAIL')}</ThemeText>
                 <Formik
                     initialValues={{
                         email: 'john@mail.com',
@@ -110,7 +112,7 @@ const LoginScreen: FC<Props> = ({navigation, route}) => {
                     )}
                 </Formik>
             </View>
-        </View>
+        </ThemeView>
     );
 };
 
@@ -125,8 +127,7 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        height: '100%',
-        backgroundColor: '#FFF'
+        height: '100%'
     },
     form: {
         minWidth: 320,
@@ -137,7 +138,6 @@ const styles = StyleSheet.create({
         height: 70,
     },
     mainText: {
-        color: '#000',
         fontSize: 25,
         textAlign: 'center',
         marginBottom: 40,

@@ -6,12 +6,13 @@ import {faEdit} from '@fortawesome/free-regular-svg-icons';
 import {Round} from '../../../../interfaces/league.interface';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {TabsStackParamList} from '../../GroupLeagueScreen';
-import {RouteProp} from '@react-navigation/native';
+import {RouteProp, useTheme} from '@react-navigation/native';
 import {RoundsStackParamList} from './TabRoundsScreen';
 import {useDispatch, useSelector} from 'react-redux';
 import {showApiErrorToast} from '../../../../actions/utils/showApiErrorToast';
 import league from '../../../../api/league';
 import {RootState} from '../../../../reducers';
+import {ThemeText} from '../../../common/ThemeText';
 
 interface RoundProps {
     round: Round;
@@ -27,6 +28,7 @@ interface Props {
 
 const RoundListScreen: FC<Props> = ({navigation, route}) => {
 
+    const {colors} = useTheme();
     const dispatch = useDispatch();
     const {leagueInfo} = route.params;
     const currentUser = useSelector((state: RootState) => state.user.currentUser);
@@ -71,8 +73,8 @@ const RoundListScreen: FC<Props> = ({navigation, route}) => {
         }
 
         return (
-            <TouchableOpacity activeOpacity={.7} style={styles.round} onPress={() => getRoundDetail(round.id)}>
-                <Text style={styles.roundName}>{round.name}</Text>
+            <TouchableOpacity activeOpacity={.7} style={[styles.round, {backgroundColor: colors.card}]} onPress={() => getRoundDetail(round.id)}>
+                <ThemeText style={styles.roundName}>{round.name}</ThemeText>
                 <Animated.View style={{opacity: isLive ? fadeAnim : 1}}>
                     <FontAwesomeIcon
                         icon={isLive ? faBroadcastTower : round.finished ? faFlagCheckered : isPending ? faEdit : faHourglassHalf}
@@ -95,7 +97,6 @@ const styles = StyleSheet.create({
         padding: 10,
     },
     round: {
-        backgroundColor: '#FFF',
         padding: 15,
         justifyContent: 'space-between',
         flexDirection: 'row',
