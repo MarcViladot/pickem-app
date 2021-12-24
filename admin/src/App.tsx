@@ -14,8 +14,7 @@ import LocalizationProvider from '@material-ui/lab/LocalizationProvider';
 import {firebaseAuth} from './firebase';
 import {Alert, Snackbar} from '@mui/material';
 import {hideSnackbar} from './actions/utils/hideSnackbar';
-import {showErrorSnackbar, showResErrorSnackbar} from './actions/utils/showSnackbar';
-
+import {showResErrorSnackbar} from './actions/utils/showSnackbar';
 
 const App = () => {
 

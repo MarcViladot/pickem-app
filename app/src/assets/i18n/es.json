@@ -1,3 +1,28 @@
 {
-
+  "MENU": {
+    "SettingsList": "Preferencias",
+    "Notifications": "Notificaciones"
+  },
+  "SETTINGS": {
+    "REMOVE_PHOTO": "Eliminar foto",
+    "NEW_PHOTO": "Nueva foto",
+    "TAKE_PHOTO": "Tomar foto",
+    "SELECT_PHOTO": "Seleccionar foto",
+    "REGISTERED_ON": "Registrado en",
+    "NOTIFICATIONS": "Notificaciones",
+    "LANGUAGE": "Idioma",
+    "DARK_MODE": "Modo oscuro",
+    "TERMS_AND_CONDITIONS": "Términos y condiciones",
+    "PRIVACY_POLICY": "Política de privacidad",
+    "SIGN_OUT": "Cerrar sesión",
+    "DELETE_ACCOUNT": "Eliminar cuenta para siempre",
+    "DELETE_ACCOUNT_DESC": "Vas a perder todas tus ligas. Esta acción es irreversible.",
+    "SELECT_LANGUAGE": "Seleccionar idioma"
+  },
+  "COMMON": {
+    "CONFIRM": "Confirmar",
+    "CANCEL": "Cancelar",
+    "ENGLISH": "Inglés",
+    "SPANISH": "Español"
+  }
 }

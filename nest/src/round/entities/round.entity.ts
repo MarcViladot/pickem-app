@@ -2,6 +2,7 @@ import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColum
 import { LeagueType } from '../../league-type/entities/LeagueType.entity';
 import { Match } from '../../match/entities/match.entity';
 import { RoundResult } from "../../match/entities/round-result.entity";
+import { TranslationGroup } from "./translation.group";
 
 @Entity()
 export class Round {
@@ -9,8 +10,18 @@ export class Round {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column() // Only used in Admin
   name: string;
+
+  @ManyToOne(() => TranslationGroup, translationGroup => translationGroup.id, {eager: true})
+  @JoinColumn({name: 'translationGroupId'})
+  translationGroup: number;
+
+  @Column()
+  translationGroupId: number;
+
+  @Column()
+  translationNameExtra: string;
 
   @Column({type: 'timestamp'})
   startingDate: Date;

@@ -4,6 +4,9 @@ import {StyleSheet, View} from 'react-native';
 import DropDownPicker, {ItemType} from "react-native-dropdown-picker";
 import {User} from '../../../../interfaces/user.interface';
 import {UserRow} from './UserRow';
+import {CommonUtils} from '../../../../utils/CommonUtils';
+import {useTranslation} from 'react-i18next';
+import {useTheme} from '@react-navigation/native';
 
 interface Props {
     leagueInfo: LeagueInfo;
@@ -13,6 +16,8 @@ interface Props {
 
 const RoundTable: FC<Props> = ({leagueInfo, currentUser, onRowClick}) => {
 
+    const {t, i18n} = useTranslation();
+    const {colors} = useTheme();
     const currentRoundIndex = leagueInfo.leagueInfo.rounds.findIndex(round => new Date() > new Date(round.startingDate) && !round.finished);
     const [open, setOpen] = React.useState(false);
     const [selectedRound, setSelectedRound] = React.useState(leagueInfo.leagueInfo.rounds[currentRoundIndex === -1 ? 0 : currentRoundIndex].id);
@@ -21,7 +26,7 @@ const RoundTable: FC<Props> = ({leagueInfo, currentUser, onRowClick}) => {
 
     const items: ItemType[] = leagueInfo.leagueInfo.rounds.filter(round => new Date() > new Date(round.startingDate) || round.finished).map(round => {
         return {
-            label: round.name,
+            label: CommonUtils.getRoundName(round, i18n.options.lng),
             value: round.id
         };
     });
@@ -55,6 +60,8 @@ const RoundTable: FC<Props> = ({leagueInfo, currentUser, onRowClick}) => {
                 open={open}
                 value={selectedRound}
                 items={items}
+                disabled={!items.length}
+                placeholder={items.length ? t('TABLE.SELECT_ROUND') : t('TABLE.NO_ROUNDS')}
                 setOpen={setOpen}
                 setValue={setSelectedRound}
                 style={styles.dropDown}

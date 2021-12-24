@@ -49,6 +49,7 @@ const LoginScreen: FC<Props> = ({navigation, route}) => {
         try {
             await firebaseAuth().signInWithEmailAndPassword(credentials.email, credentials.password)
         } catch (e) {
+            console.log(e);
             dispatch(showApiErrorToast(new ResponseApiError(null, WebApiErrorCode.UserIncorrectCredentials)));
         }
         setLoading(false);

@@ -10,6 +10,8 @@ import { ResponseApi, ResponseApiEmpty, ResponseApiSuccess, WebApiResponseCode }
 import { WebApiException } from '../utils/WebApiException';
 import { ChangeVisibilityDto } from './dto/change-visibility.dto';
 import { UpdateRoundDto } from './dto/update-round.dto';
+import { TranslationGroup } from "./entities/translation.group";
+import { CreateTranslationGroupDto } from "./dto/create-translation-group.dto";
 
 @Controller('round')
 export class RoundController {
@@ -58,6 +60,30 @@ export class RoundController {
     }
   }
 
+  @Get('translationGroups')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.ADMIN)
+  async getTranslationGroups(): Promise<ResponseApi<TranslationGroup[]>> {
+    try {
+      const translationGroups = await this.roundService.getTranslationGroups();
+      return new ResponseApiSuccess(translationGroups);
+    } catch (error) {
+      throw new WebApiException(WebApiResponseCode.Unexpected, [], error);
+    }
+  }
+
+  @Post('translationGroup')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.ADMIN)
+  async createTranslationGroup(@Body() dto: CreateTranslationGroupDto): Promise<ResponseApi<TranslationGroup>> {
+    try {
+      const translationGroups = await this.roundService.newTranslationGroup(dto);
+      return new ResponseApiSuccess(translationGroups);
+    } catch (error) {
+      throw new WebApiException(WebApiResponseCode.Unexpected, [], error);
+    }
+  }
+
   @Get('pendingRounds')
   @UseGuards(JwtAuthGuard)
   @Roles(UserRole.ADMIN)
@@ -69,22 +95,22 @@ export class RoundController {
     return new ResponseApiSuccess(rounds);
   }
 
-  @Get(':id/:userId')
+  @Get('withMatches/:id')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRole.ADMIN)
-  async getRoundDetail(@Param() params: { id: number, userId: number}): Promise<ResponseApi<Round>> {
-    const round = await this.roundService.getRoundDetail(params.id, params.userId);
+  async getRoundWithMatches(@Param() params: { id: number }): Promise<ResponseApi<Round>> {
+    const round = await this.roundService.getRoundWithMatches(params.id);
     if (!round) {
       throw new WebApiException(WebApiResponseCode.RoundNotFound, [params.id]);
     }
     return new ResponseApiSuccess(round);
   }
 
-  @Get('withMatches/:id')
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(UserRole.ADMIN)
-  async getRoundWithMatches(@Param() params: { id: number }): Promise<ResponseApi<Round>> {
-    const round = await this.roundService.getRoundWithMatches(params.id);
+  @Get(':id/:userId')
+  //@UseGuards(JwtAuthGuard, RolesGuard)
+  // @Roles(UserRole.ADMIN)
+  async getRoundDetail(@Param() params: { id: number, userId: number}): Promise<ResponseApi<Round>> {
+    const round = await this.roundService.getRoundDetail(params.id, params.userId);
     if (!round) {
       throw new WebApiException(WebApiResponseCode.RoundNotFound, [params.id]);
     }

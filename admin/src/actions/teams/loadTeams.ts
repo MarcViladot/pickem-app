@@ -5,7 +5,7 @@ import {showResErrorSnackbar} from '../utils/showSnackbar';
 
 export const loadTeams = () => {
     return async (dispatch: Dispatch) => {
-        const res = await team.getAllTeams();
+        const res = await team.getAll();
         if (!res.IsError) {
             return dispatch(setTeams(res.Result));
         } else {

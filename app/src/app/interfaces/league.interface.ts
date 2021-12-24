@@ -33,6 +33,20 @@ export interface Round {
     finished: boolean;
     matches?: Match[];
     visible: boolean;
+    translationGroup: TranslationGroup;
+    translationNameExtra: string;
+}
+
+export interface TranslationGroup {
+    id: number;
+    groupName: string;
+    roundNames: RoundName[];
+}
+
+export interface RoundName {
+    id: number;
+    text: string;
+    lang: string;
 }
 
 export interface Match {

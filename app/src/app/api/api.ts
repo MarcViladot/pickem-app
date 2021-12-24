@@ -4,13 +4,14 @@ import store from "../../../store";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {AxiosInstance, AxiosResponse} from "axios";
 import firebaseAuth from '@react-native-firebase/auth';
+import {Platform} from 'react-native';
 
 const pkg = require("../../../package.json");
 const axios = require("axios");
 
 
 const Api: AxiosInstance = axios.create({
-  baseURL: "http://10.0.2.2:3000/",
+  baseURL: Platform.OS === 'android' ? "http://10.0.2.2:3000/" : "http://localhost:3000/",
   timeout: 5000,
   headers: {
     "Accept": "application/json",

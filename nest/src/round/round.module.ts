@@ -3,10 +3,11 @@ import { RoundService } from './round.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Round } from './entities/round.entity';
 import { RoundController } from './round.controller';
-import { LeagueTypeModule } from '../league-type/league-type.module';
+import { TranslationGroup } from "./entities/translation.group";
+import { RoundName } from "./entities/round.name";
 
 @Module({
-  imports: [LeagueTypeModule, TypeOrmModule.forFeature([Round])],
+  imports: [TypeOrmModule.forFeature([Round, TranslationGroup, RoundName])],
   providers: [RoundService],
   controllers: [RoundController],
   exports: [RoundService]
