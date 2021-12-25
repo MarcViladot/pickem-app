@@ -1,6 +1,6 @@
 {
   "MENU": {
-    "SettingsList": "Preferencias",
+    "SettingsList": "Ajustes",
     "Notifications": "Notificaciones"
   },
   "SETTINGS": {
@@ -8,21 +8,59 @@
     "NEW_PHOTO": "Nueva foto",
     "TAKE_PHOTO": "Tomar foto",
     "SELECT_PHOTO": "Seleccionar foto",
-    "REGISTERED_ON": "Registrado en",
+    "REGISTERED_ON": "Registrado el",
     "NOTIFICATIONS": "Notificaciones",
     "LANGUAGE": "Idioma",
     "DARK_MODE": "Modo oscuro",
     "TERMS_AND_CONDITIONS": "Términos y condiciones",
     "PRIVACY_POLICY": "Política de privacidad",
     "SIGN_OUT": "Cerrar sesión",
-    "DELETE_ACCOUNT": "Eliminar cuenta para siempre",
-    "DELETE_ACCOUNT_DESC": "Vas a perder todas tus ligas. Esta acción es irreversible.",
+    "DELETE_ACCOUNT": "Eliminar cuenta",
+    "DELETE_ACCOUNT_DESC": "Está a punto de eliminar su cuenta. Esta acción es irreversible",
     "SELECT_LANGUAGE": "Seleccionar idioma"
   },
   "COMMON": {
     "CONFIRM": "Confirmar",
     "CANCEL": "Cancelar",
+    "SUBMIT": "Enviar",
+    "AT": "A las",
+    "STARTED": "INICIADA EL",
+    "STARTING": "INICIARÁ EL",
+    "PREDICTIONS_SAVED": "Predicciones guardadas",
     "ENGLISH": "Inglés",
     "SPANISH": "Español"
+  },
+  "TABLE": {
+    "GLOBAL": "Global",
+    "ROUND": "Ronda",
+    "SELECT_ROUND": "Seleccionar ronda",
+    "NO_ROUNDS": "La liga aún no ha comenzado"
+  },
+  "AUTH": {
+    "SIGN_IN": "Iniciar sesión",
+    "SIGN_IN_GOOGLE": "Continuar con Google",
+    "USE_EMAIL": "Usar su correo electrónico para iniciar sesión",
+    "EMAIL": "Correo electrónico",
+    "PASSWORD": "Contraseña",
+    "ACCOUNT_YET": "¿Aún no tienes una cuenta?",
+    "ACCOUNT_ALREADY": "¿Ya tienes una cuenta?",
+    "SIGN_UP": "Registrarse",
+    "CREATE_ACCOUNT": "Crear una cuenta",
+    "USERNAME": "Nombre de usuario"
+  },
+  "LEAGUE": {
+    "TABLE": "Tabla",
+    "HOME": "Casa",
+    "ROUNDS": "Rondas",
+    "MORE": "Más",
+    "INVITE_FRIENDS": "Invitar a amigos",
+    "INVITATION_CODE": "Código de invitación: {{code}}",
+    "REMOVE_ADS": "Eliminar anuncios",
+    "LEAVE_GROUP": "Abandonar grupo"
+  },
+  "ERRORS": {
+    "ServerConnectionError": "Error de conexión con el servidor",
+    "Unexpected": "Error inesperado",
+    "UserIncorrectCredentials": "Correo electrónico o contraseña incorrectos"
   }
 }
