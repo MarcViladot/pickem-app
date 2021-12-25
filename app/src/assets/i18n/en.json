@@ -1,4 +1,41 @@
 {
+  "MENU": {
+    "SettingsList": "Settings",
+    "Notifications": "Notifications"
+  },
+  "SETTINGS": {
+    "REMOVE_PHOTO": "Remove photo",
+    "NEW_PHOTO": "New photo",
+    "TAKE_PHOTO": "Take photo",
+    "SELECT_PHOTO": "Select photo",
+    "REGISTERED_ON": "Registered on",
+    "NOTIFICATIONS": "Notifications",
+    "LANGUAGE": "Language",
+    "DARK_MODE": "Dark mode",
+    "TERMS_AND_CONDITIONS": "Terms and conditions",
+    "PRIVACY_POLICY": "Privacy policy",
+    "SIGN_OUT": "Sign out",
+    "DELETE_ACCOUNT": "Delete Account forever",
+    "DELETE_ACCOUNT_DESC": "You are going to loose all your leagues. This action is irreversible",
+    "SELECT_LANGUAGE": "Select language"
+  },
+  "COMMON": {
+    "CONFIRM": "Confirm",
+    "CANCEL": "Cancel",
+    "SUBMIT": "Submit",
+    "AT": "AT",
+    "STARTED": "STARTED AT ",
+    "STARTING": "STARTING AT ",
+    "PREDICTIONS_SAVED": "Predictions saved",
+    "ENGLISH": "English",
+    "SPANISH": "Spanish"
+  },
+  "TABLE": {
+    "GLOBAL": "Global",
+    "ROUND": "Round",
+    "SELECT_ROUND": "Select round",
+    "NO_ROUNDS": "League hasn't started yet"
+  },
   "AUTH": {
     "SIGN_IN": "Sign in",
     "SIGN_IN_GOOGLE": "Continue with Google",

@@ -52,7 +52,7 @@ export const TitleHeader: FC<StackHeaderProps> = ({route, navigation}) => {
                               style={styles.backButton}>
                 <FontAwesomeIcon icon={faChevronLeft} color={colors.text} size={13}/>
             </TouchableOpacity>
-            <ThemeText style={styles.title}>{t(route.name)}</ThemeText>
+            <ThemeText style={styles.title}>{t(`MENU.${route.name}`)}</ThemeText>
             <View style={{width: 30}}/>
         </ThemeView>
     )

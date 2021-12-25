@@ -7,6 +7,7 @@ import {RouteProp} from '@react-navigation/native';
 import {LeagueInfo, Round} from '../../../../interfaces/league.interface';
 import RoundListScreen from './RoundListScreen';
 import RoundDetailScreen from './RoundDetailScreen';
+import TabTableScreen from '../Table/TabTableScreen';
 
 type ScreenNavigationProps = StackNavigationProp<TabsStackParamList, "TabRounds">;
 type ScreenRouteProp = RouteProp<TabsStackParamList, "TabRounds">;
@@ -14,22 +15,20 @@ type ScreenRouteProp = RouteProp<TabsStackParamList, "TabRounds">;
 interface Props {
     navigation: ScreenNavigationProps;
     route: ScreenRouteProp;
+    leagueInfo: LeagueInfo;
 }
 
 export type RoundsStackParamList = {
-    RoundList: {
-        leagueInfo: LeagueInfo
-    };
+    RoundList: undefined;
     RoundDetail: {
         round: Round;
     };
 };
 const RoundsStack = createStackNavigator<RoundsStackParamList>();
 
-const TabRoundsScreen: FC<Props> = ({navigation, route}) => {
+const TabRoundsScreen: FC<Props> = ({navigation, route, leagueInfo}) => {
 
     const tabBarHeight = useBottomTabBarHeight();
-    const {leagueInfo} = route.params;
 
     return (
         <View style={{marginTop: tabBarHeight, backgroundColor: '#F3F4F9', height: '100%'}}>
@@ -37,7 +36,8 @@ const TabRoundsScreen: FC<Props> = ({navigation, route}) => {
                 animationTypeForReplace: "pop",
                 headerShown: false
             }} initialRouteName={"RoundList"}>
-                <RoundsStack.Screen name={"RoundList"} component={RoundListScreen} initialParams={{leagueInfo}}/>
+                <RoundsStack.Screen name={"RoundList"}
+                                    children={(props) => <RoundListScreen {...props} leagueInfo={leagueInfo}/>}/>
                 <RoundsStack.Screen name={"RoundDetail"} component={RoundDetailScreen}/>
             </RoundsStack.Navigator>
         </View>

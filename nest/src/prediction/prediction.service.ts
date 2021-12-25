@@ -1,13 +1,11 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Prediction } from "./entities/prediction.entity";
-import { In, Repository, UpdateResult } from "typeorm";
+import { Repository, UpdateResult } from "typeorm";
 import { CreatePredictionDto } from "./dto/create-prediction.dto";
-import { User } from "../user/entities/user.entity";
 import { TeamMatch } from "../match/entities/team-match.entity";
 import { Match } from "../match/entities/match.entity";
 import { UpdatePredictionDto } from "./dto/update-prediction.dto";
-import { QueryPartialEntity } from "typeorm/query-builder/QueryPartialEntity";
 
 @Injectable()
 export class PredictionService {

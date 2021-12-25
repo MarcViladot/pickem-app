@@ -15,22 +15,20 @@ type ScreenRouteProp = RouteProp<TabsStackParamList, "TabTable">;
 interface Props {
     navigation: ScreenNavigationProps;
     route: ScreenRouteProp;
+    leagueInfo: LeagueInfo;
 }
 
 export type TableStackParamList = {
-    Table: {
-        leagueInfo: LeagueInfo
-    };
+    Table: undefined
     TableRoundDetail: {
         round: Round;
     };
 };
 const TableStack = createStackNavigator<TableStackParamList>();
 
-const TabTableScreen: FC<Props> = ({navigation, route}) => {
+const TabTableScreen: FC<Props> = ({navigation, route, leagueInfo}) => {
 
     const tabBarHeight = useBottomTabBarHeight();
-    const {leagueInfo} = route.params;
 
     return (
         <View style={{marginTop: tabBarHeight, height: '100%'}}>
@@ -38,7 +36,8 @@ const TabTableScreen: FC<Props> = ({navigation, route}) => {
                 animationTypeForReplace: "pop",
                 headerShown: false
             }} initialRouteName={"Table"}>
-                <TableStack.Screen name={"Table"} component={TableScreen} initialParams={{leagueInfo}}/>
+                <TableStack.Screen name={"Table"}
+                                   children={(props) => <TableScreen {...props} leagueInfo={leagueInfo}/>}/>
                 <TableStack.Screen name={"TableRoundDetail"} component={TableRoundDetailScreen}/>
             </TableStack.Navigator>
         </View>

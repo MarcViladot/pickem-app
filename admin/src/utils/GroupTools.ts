@@ -14,6 +14,7 @@ export class GroupTools {
             {text: 'Leagues', link: 'leagues', icon: 'list'},
             {text: 'Teams', link: 'teams', icon: 'adb'},
             {text: 'Users', link: 'users', icon: 'group'},
+            {text: 'Translations', link: 'translations', icon: 'translate'},
         ]
     }
 }

@@ -18,8 +18,6 @@ const TabHomeScreen: FC<Props> = ({navigation, route}) => {
 
     const tabBarHeight = useBottomTabBarHeight();
 
-    const {leagueInfo} = route.params;
-
     return (
         <View style={{marginTop: tabBarHeight, height: '100%'}}>
             <ScrollView>

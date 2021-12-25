@@ -2,6 +2,7 @@
 // import {HIDE_LOADING} from '../actions/utils/hideLoading';
 // import {SET_LANG} from '../actions/utils/setLang';
 import { AnyAction } from "redux";
+import {SET_LANGUAGE} from '../actions/utils/setLanguage';
 
 const initialState = {
     serverLoading: false,
@@ -25,5 +26,11 @@ export default (state = initialState, action: AnyAction) => {
             currentLang: action.lang
         };
     }*/
+    if (action.type === SET_LANGUAGE) {
+        return {
+            ...state,
+            currentLang: action.payload
+        };
+    }
     return state;
 };

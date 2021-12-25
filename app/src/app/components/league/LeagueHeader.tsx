@@ -28,7 +28,7 @@ const LeagueHeader: FC<DrawerHeaderProps> = ({scene}) => {
                 <TouchableOpacity activeOpacity={.5} onPress={() => scene.descriptor.navigation.toggleDrawer()}>
                     <UserImage user={user} styles={styles.userImage}/>
                 </TouchableOpacity>
-                <ThemeText style={styles.leagueName}>{leagueInfo.leagueInfo.name}</ThemeText>
+                <ThemeText style={styles.leagueName}>{leagueInfo.groupInfo.name} - {leagueInfo.leagueInfo.name}</ThemeText>
             </View>
             <View>
                 <View style={styles.chip}>
@@ -90,7 +90,7 @@ export const HomeTitleHeader: FC<DrawerHeaderProps> = ({scene}) => {
                               style={styles.backButton}>
                 <FontAwesomeIcon icon={faChevronLeft} color={colors.text} size={13}/>
             </TouchableOpacity>
-            <ThemeText style={styles.title}>{t(scene.route.name)}</ThemeText>
+            <ThemeText style={styles.title}>{t(`MENU.${scene.route.name}`)}</ThemeText>
             <View style={{width: 30}}/>
         </View>
     )

@@ -6,12 +6,13 @@ import {RouteProp, useTheme} from "@react-navigation/native";
 import { TabsStackParamList } from "../GroupLeagueScreen";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faChevronLeft, faChevronRight, faPlusCircle } from "@fortawesome/free-solid-svg-icons";
-import { Match } from "../../../interfaces/league.interface";
+import {LeagueInfo, Match} from "../../../interfaces/league.interface";
 import { useTranslation } from "react-i18next";
 import {format} from 'date-fns';
 import styled from 'styled-components/native';
 import {ThemeText} from '../../common/ThemeText';
 import { ThemeView } from "../../common/ThemeView";
+import {CommonUtils} from '../../../utils/CommonUtils';
 
 type ScreenNavigationProps = StackNavigationProp<TabsStackParamList, "TabMore">;
 type ScreenRouteProp = RouteProp<TabsStackParamList, "TabMore">;
@@ -19,14 +20,14 @@ type ScreenRouteProp = RouteProp<TabsStackParamList, "TabMore">;
 interface Props {
   navigation: ScreenNavigationProps;
   route: ScreenRouteProp;
+  leagueInfo: LeagueInfo;
 }
 
-const TabMoreScreen: FC<Props> = ({ navigation, route }) => {
+const TabMoreScreen: FC<Props> = ({ navigation, route, leagueInfo }) => {
 
   const {colors} = useTheme();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const tabBarHeight = useBottomTabBarHeight();
-  const { leagueInfo } = route.params;
   const currentRoundIndex = leagueInfo.leagueInfo.rounds.findIndex(round => new Date() > new Date(round.startingDate) && !round.finished);
   const [showRoundIndex, setShowRoundIndex] = React.useState(currentRoundIndex === -1 ? 0 : currentRoundIndex);
 
@@ -54,7 +55,7 @@ const TabMoreScreen: FC<Props> = ({ navigation, route }) => {
       {match.finished ? (
         <ThemeText style={styles.matchResult}>{match.teams[0].finalResult} · {match.teams[1].finalResult}</ThemeText>
       ) : (
-        <ThemeText style={styles.matchDate}>{format(new Date(match.startDate), 'dd/MM hh:mm')}</ThemeText>
+        <ThemeText style={styles.matchDate}>{format(new Date(match.startDate), 'dd/MM HH:mm')}</ThemeText>
       )}
       <Image source={{ uri: match.teams[1].team.crest }} style={styles.teamCrest} />
     </ThemeView>
@@ -90,7 +91,7 @@ const TabMoreScreen: FC<Props> = ({ navigation, route }) => {
                 <IconButton activeOpacity={.5} disabled={i === 0} onPress={() => decrementRoundIndex()}>
                   <FontAwesomeIcon icon={faChevronLeft} color={colors.text} size={16} />
                 </IconButton>
-                <ThemeText style={{fontSize: 17}}>{round.name}</ThemeText>
+                <ThemeText style={{fontSize: 17}}>{CommonUtils.getRoundName(round, i18n.options.lng)}</ThemeText>
                 <IconButton activeOpacity={.5} disabled={i === leagueInfo.leagueInfo.rounds.length - 1}
                                   onPress={() => incrementRoundIndex()}>
                   <FontAwesomeIcon icon={faChevronRight} color={colors.text} size={16} />
@@ -140,7 +141,6 @@ const styles = StyleSheet.create({
   match: {
     width: "49%",
     marginBottom: 10,
-    backgroundColor: "#FFF",
     height: 45,
     borderRadius: 50,
     paddingVertical: 5,

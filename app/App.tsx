@@ -1,5 +1,5 @@
 import React, {createContext, useEffect, useState} from "react";
-import {StyleSheet, Text, useColorScheme, View} from "react-native";
+import {SafeAreaView, StyleSheet, Text, useColorScheme, View} from "react-native";
 import {NavigationContainer} from "@react-navigation/native";
 import {createStackNavigator} from "@react-navigation/stack";
 import LoginScreen from "./src/app/components/auth/LoginScreen";
@@ -15,9 +15,11 @@ import {showApiErrorToast} from './src/app/actions/utils/showApiErrorToast';
 import {ResponseApi} from './src/app/utils/IResponse';
 import {User} from './src/app/interfaces/user.interface';
 import {setUser} from './src/app/actions/auth/setUser';
-import {DarkTheme, LightTheme, styledDarkTheme, styledLightTheme, ThemeContext} from './themes';
+import {DarkTheme, LightTheme, ThemeContext} from './themes';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {ThemeProvider} from 'styled-components';
+import {setLanguage} from './src/app/actions/utils/setLanguage';
+import i18n from './i18n';
 
 setCustomText({
     style: {
@@ -40,6 +42,7 @@ const App = () => {
     const [loading, setLoading] = useState(true);
     const [theme, setTheme] = useState('dark');
     const themeData = {theme, setTheme};
+    const currentLang = useSelector((state: RootState) => state.utils.currentLang);
 
     const setStoredTheme = async () => {
         const storedTheme = await AsyncStorage.getItem('pickem_theme');
@@ -50,8 +53,26 @@ const App = () => {
         }
     }
 
+    const setCurrentLang = async (lang: string) => {
+        const changeLanguage = async (lang: string) => {
+            await i18n.changeLanguage(lang);
+            dispatch(setLanguage(lang));
+        }
+        if (!lang) {
+            const storedLang = await AsyncStorage.getItem('pickem_lang');
+            if (!storedLang) {
+                changeLanguage('en')
+            } else {
+                changeLanguage(storedLang);
+            }
+        } else {
+            changeLanguage(lang);
+        }
+    }
+
     useEffect(() => {
         setStoredTheme();
+        setCurrentLang(currentLang)
     }, []);
 
     useEffect(() => {
@@ -109,21 +130,21 @@ const App = () => {
     return (
         <ThemeContext.Provider value={themeData}>
             <ThemeProvider theme={theme === 'dark' ? DarkTheme : LightTheme}>
-            <NavigationContainer theme={theme === 'dark' ? DarkTheme : LightTheme}>
-                {
-                    !isLogged ?
-                        <LoginStack.Navigator screenOptions={{
-                            animationTypeForReplace: "pop",
-                            headerShown: false
-                        }}>
-                            <LoginStack.Screen name={"Login"} component={LoginScreen}/>
-                            <LoginStack.Screen name={"Signup"} component={SignupScreen}/>
-                        </LoginStack.Navigator>
-                        :
-                        <DrawerNavigator/>
-                }
-            </NavigationContainer>
-            <Toast config={toastConfig} ref={(ref) => Toast.setRef(ref)}/>
+                <NavigationContainer theme={theme === 'dark' ? DarkTheme : LightTheme}>
+                    {
+                        !isLogged ?
+                            <LoginStack.Navigator screenOptions={{
+                                animationTypeForReplace: "pop",
+                                headerShown: false
+                            }}>
+                                <LoginStack.Screen name={"Login"} component={LoginScreen}/>
+                                <LoginStack.Screen name={"Signup"} component={SignupScreen}/>
+                            </LoginStack.Navigator>
+                            :
+                            <DrawerNavigator/>
+                    }
+                </NavigationContainer>
+                <Toast config={toastConfig} ref={(ref) => Toast.setRef(ref)}/>
             </ThemeProvider>
         </ThemeContext.Provider>
     );

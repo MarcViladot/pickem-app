@@ -15,7 +15,9 @@ import {faCheckSquare, faEdit} from '@fortawesome/free-regular-svg-icons';
 import {showSuccessToast} from '../../actions/utils/showSuccessToast';
 import {useTheme} from '@react-navigation/native';
 import {ThemeText} from './ThemeText';
-import { ThemeView } from './ThemeView';
+import {ThemeView} from './ThemeView';
+import {CommonUtils} from '../../utils/CommonUtils';
+import {useTranslation} from 'react-i18next';
 
 interface Props {
     round: Round;
@@ -55,7 +57,8 @@ interface TeamRowProps extends MatchHeaderProps {
 
 const RoundForm: FC<Props> = ({round, canEdit, canSubmit, hasStarted, onSubmit, onlyView}) => {
 
-    const {colors,dark} = useTheme();
+    const {t, i18n} = useTranslation();
+    const {colors, dark} = useTheme();
     const dispatch = useDispatch();
     const [loading, setLoading] = useState(false);
     const matchForms: MatchForm[] = round.matches.map((match: Match) => {
@@ -75,7 +78,7 @@ const RoundForm: FC<Props> = ({round, canEdit, canSubmit, hasStarted, onSubmit, 
         const res = await prediction.createRoundPrediction(data);
         setLoading(false);
         if (!res.IsError) {
-            dispatch(showSuccessToast('Predictions saved'));
+            dispatch(showSuccessToast(t('COMMON.PREDICTIONS_SAVED')));
             onSubmit();
         } else {
             dispatch(showApiErrorToast(res));
@@ -94,7 +97,7 @@ const RoundForm: FC<Props> = ({round, canEdit, canSubmit, hasStarted, onSubmit, 
             });
             setLoading(false);
             if (!res.IsError) {
-                dispatch(showSuccessToast('Prediction saved'));
+                dispatch(showSuccessToast(t('COMMON.PREDICTIONS_SAVED')));
                 setFieldValue(`matches[${index}].editing`, false);
             } else {
                 dispatch(showApiErrorToast(res));
@@ -150,7 +153,7 @@ const RoundForm: FC<Props> = ({round, canEdit, canSubmit, hasStarted, onSubmit, 
         )
 
         return (
-            <View style={[styles.teamRow, {backgroundColor: dark ? '#495666' : '#F4F4F4'}]}>
+            <View style={[styles.teamRow, {backgroundColor: dark ? '#323b48' : '#F4F4F4'}]}>
                 <TeamInfo/>
                 <View style={styles.row}>
                     {(hasStarted || onlyView) ? <MatchStarted/> :
@@ -186,13 +189,13 @@ const RoundForm: FC<Props> = ({round, canEdit, canSubmit, hasStarted, onSubmit, 
 
     const MatchHeader: FC<MatchHeaderProps> = ({matchForm, setFieldValue, index}) => {
         return (
-            <View style={[styles.matchHeader, {backgroundColor: dark ? '#495666' : '#F4F4F4'}]}>
+            <View style={[styles.matchHeader, {backgroundColor: dark ? '#323b48' : '#F4F4F4'}]}>
                 <View style={{flexDirection: 'row', alignItems: 'center'}}>
                     <ThemeText style={styles.matchDate}>
-                        AT {format(new Date(matchForm.match.startDate), 'dd/MM hh:mm')}
+                        {t('COMMON.AT')} {format(new Date(matchForm.match.startDate), 'dd/MM HH:mm')}
                     </ThemeText>
                     {matchForm.match.doublePoints &&
-                        <Text style={[styles.doublePoints, {color: dark ? '#00258d' : '#144fff'}]}>x2</Text>}
+                        <Text style={[styles.doublePoints, {color: dark ? '#7599ff' : '#144fff'}]}>x2</Text>}
                 </View>
                 {canEdit && !canSubmit && (!matchForm.editing ?
                         <TouchableOpacity
@@ -244,14 +247,13 @@ const RoundForm: FC<Props> = ({round, canEdit, canSubmit, hasStarted, onSubmit, 
                     <>
                         <ThemeView style={styles.header}>
                             <View>
-                                <ThemeText style={styles.roundName}>{round.name}</ThemeText>
-                                <Text style={styles.roundDate}>{hasStarted ? 'STARTED ' : 'STARTING '}
-                                    AT {format(new Date(round.startingDate), 'dd/MM hh:mm')}</Text>
+                                <ThemeText style={styles.roundName}>{CommonUtils.getRoundName(round, i18n.options.lng)}</ThemeText>
+                                <Text style={styles.roundDate}>{t(hasStarted ? 'COMMON.STARTED' : 'COMMON.STARTING')}{format(new Date(round.startingDate), 'dd/MM HH:mm')}</Text>
                             </View>
                             {!canEdit && canSubmit &&
                                 <StyledButton style={{width: 100}} activeOpacity={.8} onPress={handleSubmit}
                                               disabled={!isValid || loading} color="primary">
-                                    <Text style={styles.buttonText}>Submit</Text>
+                                    <Text style={styles.buttonText}>{t('COMMON.SUBMIT')}</Text>
                                 </StyledButton>
                             }
                             {hasStarted && <ThemeText style={styles.totalPointsText}>{totalPoints} pts</ThemeText>}
@@ -264,7 +266,7 @@ const RoundForm: FC<Props> = ({round, canEdit, canSubmit, hasStarted, onSubmit, 
                                     <TeamRow index={index} local={true} matchForm={matchForm}
                                              setFieldValue={setFieldValue}/>
                                     <TeamRow index={index} local={false} matchForm={matchForm}
-                                               setFieldValue={setFieldValue}/>
+                                             setFieldValue={setFieldValue}/>
                                 </View>
                             ))}
                         </ThemeView>
@@ -278,7 +280,6 @@ const RoundForm: FC<Props> = ({round, canEdit, canSubmit, hasStarted, onSubmit, 
 const styles = StyleSheet.create({
     header: {
         padding: 7,
-        backgroundColor: '#fff',
         marginBottom: 10,
         justifyContent: 'space-between',
         flexDirection: 'row',

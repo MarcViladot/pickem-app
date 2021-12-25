@@ -115,7 +115,7 @@ const MatchComponent: FC<MatchProps> = ({match, setRoundDetail, disableDeleteMat
                            required/>
                 <Tooltip title={"Update match result"} placement={"top"}>
                         <span className={"ml-3"}>
-                            <IconButton type={"submit"} disabled={loading} color={"warning"} size={"large"}>
+                            <IconButton type={"submit"} disabled={loading} color={"error"} size={"large"}>
                                 <CheckCircleOutlineIcon fontSize={"large"}/>
                             </IconButton>
                         </span>

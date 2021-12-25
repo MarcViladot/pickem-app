@@ -8,7 +8,7 @@ import UserImage from "../../../common/UserImage";
 import {User, UserGroup} from "../../../../interfaces/user.interface";
 import {useSelector} from "react-redux";
 import {RootState} from "../../../../reducers";
-import {Round} from "../../../../interfaces/league.interface";
+import {LeagueInfo, Round} from "../../../../interfaces/league.interface";
 import RoundTable from './RoundTable';
 import {TableStackParamList} from './TabTableScreen';
 import league from '../../../../api/league';
@@ -20,19 +20,18 @@ type ScreenRouteProp = RouteProp<TableStackParamList, "Table">;
 interface Props {
     navigation: ScreenNavigationProps;
     route: ScreenRouteProp;
+    leagueInfo: LeagueInfo;
 }
 
-
-const TableScreen: FC<Props> = ({navigation, route}) => {
+const TableScreen: FC<Props> = ({navigation, route, leagueInfo}) => {
 
     const tabBarHeight = useBottomTabBarHeight();
     const [showGlobal, setShowGlobal] = React.useState(true);
-    const {leagueInfo} = route.params;
     const currentUser = useSelector((state: RootState) => state.user.currentUser);
 
     const buttonGroup: IGroupButton[] = [
-        {value: true, viewValue: "Global"},
-        {value: false, viewValue: "Round"}
+        {value: true, viewValue: 'TABLE.GLOBAL'},
+        {value: false, viewValue: 'TABLE.ROUND'}
     ];
 
     const getRoundDetail = async (roundId: number, userId: number) => {

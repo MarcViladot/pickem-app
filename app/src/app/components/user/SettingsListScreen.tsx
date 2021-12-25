@@ -1,5 +1,5 @@
-import React, {FC} from 'react';
-import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import React, {FC, useEffect, useState} from 'react';
+import {Image, Platform, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {SettingsStackParamList} from './SettingsScreen';
 import {RouteProp, useTheme} from '@react-navigation/native';
@@ -20,7 +20,11 @@ import Modal from 'react-native-modal'
 import {User} from '../../interfaces/user.interface';
 import {ThemeContext} from '../../../../themes';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { ThemeView } from '../common/ThemeView';
+import {ThemeView} from '../common/ThemeView';
+import {useTranslation} from 'react-i18next';
+import {Picker} from '@react-native-picker/picker';
+import {ThemeText} from '../common/ThemeText';
+import {setLanguage} from '../../actions/utils/setLanguage';
 
 type ScreenNavigationProps = StackNavigationProp<SettingsStackParamList, "SettingsList">;
 type ScreenRouteProp = RouteProp<SettingsStackParamList, "SettingsList">;
@@ -36,13 +40,20 @@ interface UserInfoProps {
     setLoading: (loading: boolean) => void;
 }
 
+interface LanguageModalProps {
+    isVisible: boolean;
+    setIsVisible: (isVisible: boolean) => void;
+}
+
 const SettingsListScreen: FC<Props> = ({route, navigation}) => {
 
+    const {t} = useTranslation()
     const {setTheme, theme} = React.useContext(ThemeContext);
     const {colors} = useTheme();
     const dispatch = useDispatch();
     const currentUser = useSelector((state: RootState) => state.user.currentUser);
     const [loading, setLoading] = React.useState(false);
+    const [isLanguageModalVisible, setIsLanguageModalVisible] = useState(false);
 
     const changeTheme = async (newTheme: string) => {
         await AsyncStorage.setItem('pickem_theme', newTheme);
@@ -60,13 +71,14 @@ const SettingsListScreen: FC<Props> = ({route, navigation}) => {
 
     return (
         <View style={{padding: 10, flexGrow: 1}}>
+            <LanguageModal isVisible={isLanguageModalVisible} setIsVisible={setIsLanguageModalVisible}/>
             <UserInfo currentUser={currentUser} loading={loading} setLoading={setLoading}/>
             <ThemeView style={styles.settingsContainer}>
                 <TextButton onPress={() => null} margin>
-                    <ButtonText>Notifications</ButtonText>
+                    <ButtonText>{t('SETTINGS.NOTIFICATIONS')}</ButtonText>
                 </TextButton>
-                <TextButton onPress={() => null} margin>
-                    <ButtonText>Language</ButtonText>
+                <TextButton onPress={() => setIsLanguageModalVisible(true)} margin>
+                    <ButtonText>{t('SETTINGS.LANGUAGE')}</ButtonText>
                 </TextButton>
                 <View style={{
                     marginBottom: 18,
@@ -74,40 +86,86 @@ const SettingsListScreen: FC<Props> = ({route, navigation}) => {
                     alignItems: 'center',
                     justifyContent: 'space-between'
                 }}>
-                    <ButtonText>Dark mode</ButtonText>
+                    <ButtonText>{t('SETTINGS.DARK_MODE')}</ButtonText>
                     <CheckBox
                         disabled={false}
                         value={theme === 'dark'}
                         onValueChange={(newValue) => {
-                           changeTheme(newValue ? 'dark' : 'light')
+                            changeTheme(newValue ? 'dark' : 'light')
                         }}
                     />
                 </View>
                 <TextButton onPress={() => null} margin>
-                    <ButtonText>Terms and Conditions</ButtonText>
+                    <ButtonText>{t('SETTINGS.TERMS_AND_CONDITIONS')}</ButtonText>
                 </TextButton>
                 <TextButton onPress={() => null}>
-                    <ButtonText>Privacy Policy</ButtonText>
+                    <ButtonText>{t('SETTINGS.PRIVACY_POLICY')}</ButtonText>
                 </TextButton>
             </ThemeView>
             <TouchableOpacity style={[styles.settingsContainer, {backgroundColor: colors.card}]}
                               onPress={() => dispatch(logout())}>
-                <ButtonText>Sign out</ButtonText>
+                <ButtonText>{t('SETTINGS.SIGN_OUT')}</ButtonText>
             </TouchableOpacity>
             <View style={{flexGrow: 1}}/>
             <ThemeView style={styles.settingsContainer}>
                 <TouchableOpacity activeOpacity={.5}>
-                    <Text style={{color: '#FF1E44', fontSize: 17, marginBottom: 3}}>Delete account forever</Text>
+                    <Text
+                        style={{color: '#FF1E44', fontSize: 17, marginBottom: 3}}>{t('SETTINGS.DELETE_ACCOUNT')}</Text>
                 </TouchableOpacity>
-                <Text style={{color: 'gray', fontSize: 14}}>You are going to loose all your leagues. This action is
-                    irreversible</Text>
+                <Text style={{color: 'gray', fontSize: 14}}>{t('SETTINGS.DELETE_ACCOUNT_DESC')}</Text>
             </ThemeView>
         </View>
     );
 };
 
+const LanguageModal: FC<LanguageModalProps> = ({isVisible, setIsVisible}) => {
+
+    const {t, i18n} = useTranslation();
+    const {colors} = useTheme();
+    const dispatch = useDispatch();
+    const currentLang = useSelector((state: RootState) => state.utils.currentLang);
+
+    const closeModal = () => {
+        setIsVisible(false);
+    }
+
+    const selectLanguage = async (lang: string) => {
+        await AsyncStorage.setItem('pickem_lang', lang);
+        dispatch(setLanguage(lang));
+        await i18n.changeLanguage(lang)
+        setIsVisible(false);
+    }
+
+    return (
+        <Modal isVisible={isVisible} style={{
+            margin: 0,
+            flex: 1,
+            justifyContent: 'flex-end',
+        }}
+               onBackdropPress={() => closeModal()}
+               onBackButtonPress={() => closeModal()}
+               animationIn="slideInUp"
+               animationOut={'fadeOut'}>
+            <ThemeView style={[styles.bottomModal, {padding: 20}]}>
+                <ThemeText style={{textAlign: 'center', fontSize: 20}}>{t('SETTINGS.SELECT_LANGUAGE')}</ThemeText>
+                <Picker
+                    style={Platform.OS === 'ios' ? styles.iosPicker : {color: colors.text}}
+                    itemStyle={{color: colors.text}}
+                    selectedValue={currentLang}
+                    onValueChange={(itemValue, itemIndex) => {
+                        selectLanguage(itemValue);
+                    }}>
+                    <Picker.Item label={t('COMMON.ENGLISH')} value="en"/>
+                    <Picker.Item label={t('COMMON.SPANISH')} value="es"/>
+                </Picker>
+            </ThemeView>
+        </Modal>
+    )
+}
+
 const UserInfo: FC<UserInfoProps> = ({currentUser, loading, setLoading}) => {
 
+    const {t} = useTranslation();
     const {colors} = useTheme();
     const dispatch = useDispatch();
     const [cameraModalVisible, setCameraModalVisible] = React.useState(false);
@@ -176,11 +234,11 @@ const UserInfo: FC<UserInfoProps> = ({currentUser, loading, setLoading}) => {
                             <View style={[styles.buttonsRow, {marginBottom: 20}]}>
                                 <StyledButton color={'primary'} style={styles.button} disabled={loading}
                                               onPress={() => openCamera()}>
-                                    <Text style={styles.buttonText}>Take photo</Text>
+                                    <Text style={styles.buttonText}>{t('SETTINGS.TAKE_PHOTO')}</Text>
                                 </StyledButton>
                                 <StyledButton color={'primary'} style={styles.button} disabled={loading}
                                               onPress={() => selectPhoto()}>
-                                    <Text style={styles.buttonText}>Select photo</Text>
+                                    <Text style={styles.buttonText}>{t('SETTINGS.SELECT_PHOTO')}</Text>
                                 </StyledButton>
                             </View>
                         )
@@ -191,11 +249,11 @@ const UserInfo: FC<UserInfoProps> = ({currentUser, loading, setLoading}) => {
                                 <View style={[styles.buttonsRow, {marginBottom: 20}]}>
                                     <StyledButton color={'cancel'} style={styles.button} disabled={loading}
                                                   onPress={() => closeModal()}>
-                                        <Text style={styles.buttonText}>Cancel</Text>
+                                        <Text style={styles.buttonText}>{t('COMMONºº.CANCEL')}</Text>
                                     </StyledButton>
                                     <StyledButton color={'primary'} style={styles.button} disabled={loading}
                                                   onPress={() => updatePhoto()}>
-                                        <Text style={styles.buttonText}>Confirm</Text>
+                                        <Text style={styles.buttonText}>{t('COMMON.CONFIRM')}</Text>
                                     </StyledButton>
                                 </View>
                             </View>
@@ -208,17 +266,19 @@ const UserInfo: FC<UserInfoProps> = ({currentUser, loading, setLoading}) => {
                 <View style={styles.buttonsRow}>
                     <StyledButton color={'warn'} disabled={!currentUser.photo} style={styles.button}
                                   onPress={() => removePhoto()}>
-                        <Text style={styles.buttonText}>Remove photo</Text>
+                        <Text style={styles.buttonText}>{t('SETTINGS.REMOVE_PHOTO')}</Text>
                     </StyledButton>
                     <StyledButton color={'primary'} disabled={loading} onPress={() => setCameraModalVisible(true)}
                                   style={styles.button}>
-                        <Text style={styles.buttonText}>New photo</Text>
+                        <Text style={styles.buttonText}>{t('SETTINGS.NEW_PHOTO')}</Text>
                     </StyledButton>
                 </View>
                 <View style={styles.userBottomInfo}>
                     <Text style={{fontSize: 18, color: colors.text, marginBottom: 3}}>{currentUser.name}</Text>
-                    <Text style={{fontSize: 15, color: 'gray'}}>Registered
-                        on {format(new Date(currentUser.createdAt), 'dd/MM/yyyy')}</Text>
+                    <Text style={{
+                        fontSize: 15,
+                        color: 'gray'
+                    }}>{t('SETTINGS.REGISTERED_ON')} {format(new Date(currentUser.createdAt), 'dd/MM/yyyy')}</Text>
                 </View>
             </ThemeView>
         </>
@@ -258,7 +318,11 @@ const styles = StyleSheet.create({
         borderTopLeftRadius: 10,
         borderTopRightRadius: 10,
         marginBottom: 0
-    }
+    },
+    iosPicker: {
+        height: 150,
+        marginBottom: 30
+    },
 })
 
 export default SettingsListScreen;

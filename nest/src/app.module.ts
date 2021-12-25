@@ -22,7 +22,9 @@ import { Prediction } from "./prediction/entities/prediction.entity";
 import { RoundResult } from "./match/entities/round-result.entity";
 import { DashboardModule } from "./dashboard/dashboard.module";
 import { ConfigModule } from "@nestjs/config";
-import { FirebaseAuthService } from './auth/services/firebase-auth.service';
+import { FirebaseAuthService } from "./auth/services/firebase-auth.service";
+import { TranslationGroup } from "./round/entities/translation.group";
+import { RoundName } from "./round/entities/round.name";
 
 @Module({
   imports: [
@@ -34,7 +36,8 @@ import { FirebaseAuthService } from './auth/services/firebase-auth.service';
       password: "root",
       database: "pickem",
       timezone: "utc",
-      entities: [User, Group, UserGroup, LeagueType, Round, Match, TeamMatch, Team, Prediction, RoundResult],
+      entities: [User, Group, UserGroup, LeagueType, Round, Match, TeamMatch, Team, Prediction, RoundResult,
+        TranslationGroup, RoundName],
       synchronize: true
     }),
     ConfigModule.forRoot({ isGlobal: true }),

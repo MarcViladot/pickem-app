@@ -3,7 +3,7 @@ import {ScrollView, StyleSheet, Text, TouchableOpacity, View, Animated} from "re
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faBroadcastTower, faFlagCheckered, faHourglassHalf} from '@fortawesome/free-solid-svg-icons';
 import {faEdit} from '@fortawesome/free-regular-svg-icons';
-import {Round} from '../../../../interfaces/league.interface';
+import {LeagueInfo, Round} from '../../../../interfaces/league.interface';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {TabsStackParamList} from '../../GroupLeagueScreen';
 import {RouteProp, useTheme} from '@react-navigation/native';
@@ -13,6 +13,8 @@ import {showApiErrorToast} from '../../../../actions/utils/showApiErrorToast';
 import league from '../../../../api/league';
 import {RootState} from '../../../../reducers';
 import {ThemeText} from '../../../common/ThemeText';
+import {useTranslation} from 'react-i18next';
+import {CommonUtils} from '../../../../utils/CommonUtils';
 
 interface RoundProps {
     round: Round;
@@ -24,13 +26,14 @@ type ScreenRouteProp = RouteProp<RoundsStackParamList, "RoundList">;
 interface Props {
     navigation: ScreenNavigationProps;
     route: ScreenRouteProp;
+    leagueInfo: LeagueInfo;
 }
 
-const RoundListScreen: FC<Props> = ({navigation, route}) => {
+const RoundListScreen: FC<Props> = ({navigation, route, leagueInfo}) => {
 
+    const {t, i18n} = useTranslation();
     const {colors} = useTheme();
     const dispatch = useDispatch();
-    const {leagueInfo} = route.params;
     const currentUser = useSelector((state: RootState) => state.user.currentUser);
 
     const RoundItem: FC<RoundProps> = ({round}) => {
@@ -74,7 +77,7 @@ const RoundListScreen: FC<Props> = ({navigation, route}) => {
 
         return (
             <TouchableOpacity activeOpacity={.7} style={[styles.round, {backgroundColor: colors.card}]} onPress={() => getRoundDetail(round.id)}>
-                <ThemeText style={styles.roundName}>{round.name}</ThemeText>
+                <ThemeText style={styles.roundName}>{CommonUtils.getRoundName(round, i18n.options.lng)}</ThemeText>
                 <Animated.View style={{opacity: isLive ? fadeAnim : 1}}>
                     <FontAwesomeIcon
                         icon={isLive ? faBroadcastTower : round.finished ? faFlagCheckered : isPending ? faEdit : faHourglassHalf}

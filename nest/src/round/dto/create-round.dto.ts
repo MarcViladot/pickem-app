@@ -11,4 +11,10 @@ export class CreateRoundDto {
   @ApiProperty()
   leagueTypeId: number;
 
+  @ApiProperty()
+  translationGroupId: number;
+
+  @ApiProperty()
+  translationNameExtra: string;
+
 }
