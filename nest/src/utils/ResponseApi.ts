@@ -50,5 +50,9 @@ export enum WebApiResponseCode {
   RoundNotFound = 300,            // id
 
   MatchNotFound = 400,             // id
-  MatchAlreadyFinished = 401
+  MatchAlreadyFinished = 401,
+
+  GroupNotFound = 500,            // code
+  UserAlreadyInGroup,
+  RequestAlreadySent
 }

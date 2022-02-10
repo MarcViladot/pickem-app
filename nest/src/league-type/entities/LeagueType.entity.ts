@@ -1,4 +1,3 @@
-import { UserGroup } from "../../group/entities/user-group.entity";
 import { Column, Entity, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { Round } from "../../round/entities/round.entity";
 import { RoundResult } from "../../match/entities/round-result.entity";
@@ -25,6 +24,9 @@ export class LeagueType {
 
   @OneToMany(() => RoundResult, roundResult => roundResult.league)
   roundResults: RoundResult[];
+
+  @Column({default: false})
+  visible: boolean;
 
 
 }

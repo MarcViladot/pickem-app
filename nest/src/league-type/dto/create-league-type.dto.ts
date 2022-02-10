@@ -8,4 +8,7 @@ export class createLeagueTypeDto {
     @ApiProperty()
     name: string;
 
+    @ApiProperty()
+    visible: boolean;
+
 }

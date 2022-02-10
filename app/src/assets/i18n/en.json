@@ -1,7 +1,35 @@
 {
   "MENU": {
     "SettingsList": "Settings",
-    "Notifications": "Notifications"
+    "Notifications": "Notifications",
+    "AddHome": "Add League / Group",
+    "JoinGroup": "Join Group",
+    "CreateGroup": "Create Group",
+    "AddLeagueType": "Add Leagues"
+  },
+  "ADD": {
+    "ADD_LEAGUE_OR_GROUP": "Add League / Group",
+    "JOIN_GROUP": "Join group",
+    "INVITATION_CODE": "Invitation code",
+    "ENTER_INVITATION_CODE": "Enter invitation code",
+    "ADD_GROUP": "Add group",
+    "CREATE_GROUP_TITLE": "Create group",
+    "CREATE_GROUP_SUBTITLE": "Create a group to share your predictions with your friends",
+    "JOIN_GROUP_TITLE": "Join group",
+    "JOIN_GROUP_SUBTITLE": "Join an already existing private group",
+    "RANDOM_GROUP_TITLE": "Join a random group",
+    "RANDOM_GROUP_SUBTITLE": "Join a random group",
+    "ADD_LEAGUE": "Add league",
+    "ADD_LEAGUE_TITLE": "Add league",
+    "ADD_LEAGUE_SUBTITLE": "Add a new competition to one of your groups",
+    "REQUEST_SENT": "Join request sent",
+    "GROUP_NAME": "Group name",
+    "CREATE": "Create",
+    "CREATE_GROUP": "Create a new group",
+    "PRIVATE": "Private",
+    "PUBLIC": "Public",
+    "ADD_LEAGUES": "Add",
+    "SELECT_LEAGUES": "Select leagues"
   },
   "SETTINGS": {
     "REMOVE_PHOTO": "Remove photo",
@@ -61,6 +89,9 @@
   "ERRORS": {
     "ServerConnectionError": "Server connection error",
     "Unexpected": "Unexpected error",
-    "UserIncorrectCredentials": "Incorrect user email or password"
+    "UserIncorrectCredentials": "Incorrect user email or password",
+    "GroupNotFound": "Group with code {{p1}} not found",
+    "UserAlreadyInGroup": "You are already in this group",
+    "RequestAlreadySent": "Join request to this group already sent"
   }
 }

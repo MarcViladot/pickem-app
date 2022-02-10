@@ -1,4 +1,4 @@
-import React, {FC} from "react";
+import React, {FC, PropsWithChildren, useState} from "react";
 import {AppBar, Drawer, IconButton, LinearProgress, List, ListItem, Toolbar, Tooltip,} from "@mui/material";
 import Icon from "@mui/material/Icon";
 import {makeStyles} from "@material-ui/styles";
@@ -19,6 +19,8 @@ import TeamsList from "../teams/TeamsList";
 import LeagueDetail from "../leagues/LeagueDetail";
 import RoundDetail from '../leagues/Round/RoundDetail';
 import Translations from '../translations/Translations';
+import MenuIcon from '@mui/icons-material/Menu';
+import useMobileView from '../../utils/UseMobileView';
 
 const useStyles = makeStyles({
     root: {
@@ -56,11 +58,14 @@ const useStyles = makeStyles({
     },
 });
 
-const Home = () => {
+const Home: FC = () => {
     const user = useSelector((state: RootState) => state.user.currentUser);
     const classes = useStyles();
     const history = useHistory();
     const showProgressBar = useSelector((state: RootState) => state.utils.showProgressBar);
+
+    const [mobileView] = useMobileView();
+    const [drawerOpen, setDrawerOpen] = useState(false);
 
     return (
         <div>
@@ -68,11 +73,12 @@ const Home = () => {
                 position="fixed"
                 sx={{zIndex: (theme) => theme.zIndex.drawer + 1}}
             >
-                <CustomToolbar user={user}/>
+                <CustomToolbar user={user} toggleDrawer={() => setDrawerOpen(prevState => !prevState)}/>
             </AppBar>
             <Drawer
-                variant="permanent"
+                variant={mobileView ? "temporary" : "permanent"}
                 className={clsx(classes.drawer, classes.drawerClose)}
+                open={drawerOpen}
                 classes={{
                     paper: clsx(classes.drawerClose),
                 }}
@@ -88,7 +94,10 @@ const Home = () => {
                             <ListItem
                                 button
                                 key={navItem.text}
-                                onClick={() => history.push(`/${navItem.link}`)}
+                                onClick={() => {
+                                    setDrawerOpen(false);
+                                    history.push(`/${navItem.link}`)
+                                }}
                                 style={{height: 50}}
                             >
                                 <Icon>{navItem.icon}</Icon>
@@ -102,8 +111,7 @@ const Home = () => {
                     <LinearProgress color="secondary" className="progress-bar"/>
                 )}
             </div>
-            <div className="router-content">
-
+            <div className="router-content" style={{paddingLeft: mobileView ? 10 : 74, paddingTop: mobileView ? 74 : 10}}>
                 <Switch>
                     <Route exact path="/">
                         <Dashboard/>
@@ -132,16 +140,22 @@ const Home = () => {
     );
 };
 
-const CustomToolbar: FC<{ user: User }> = ({user}) => {
+const CustomToolbar: FC<{ user: User, toggleDrawer: () => void }> = ({user, toggleDrawer}) => {
     const dispatch = useDispatch();
+
     return (
         <Toolbar className="flex justify-between">
             <div className="flex items-center">
+                <div className={"md:hidden mr-3"}>
+                <IconButton type={"submit"} size={"large"} onClick={() => toggleDrawer()}>
+                    <MenuIcon fontSize={"large"} />
+                </IconButton>
+                </div>
                 <img src={logo} className="mr-2" style={{height: "44px"}}/>
                 <div className="text-3xl">MY APP</div>
             </div>
             <div className="flex items-center">
-                <div className="mr-3 text-xl">{user.name}</div>
+                <div className="mr-3 text-xl hidden sm:inline">{user.name}</div>
                 <IconButton onClick={() => dispatch(logout())}>
                     <ExitToAppIcon/>
                 </IconButton>

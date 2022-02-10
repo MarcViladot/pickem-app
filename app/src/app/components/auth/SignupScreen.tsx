@@ -14,6 +14,7 @@ import {Formik} from "formik";
 import {StyledTextField} from "../common/StylesTextField";
 import {StyledButton} from "../common/StyledButton";
 import firebaseAuth from '@react-native-firebase/auth';
+import {ThemeText} from '../common/ThemeText';
 
 type ScreenNavigationProps = StackNavigationProp<LoginStackParamList, 'Signup'>;
 type ScreenRouteProp = RouteProp<LoginStackParamList, 'Signup'>;
@@ -67,7 +68,7 @@ const SignupScreen: FC<Props> = ({navigation, route}) => {
     return (
         <View style={styles.mainContainer}>
             <View style={styles.form}>
-                <Text style={styles.mainText}>{t('AUTH.CREATE_ACCOUNT')}</Text>
+                <ThemeText style={styles.mainText}>{t('AUTH.CREATE_ACCOUNT')}</ThemeText>
                 <Formik
                     initialValues={{
                         name: '',

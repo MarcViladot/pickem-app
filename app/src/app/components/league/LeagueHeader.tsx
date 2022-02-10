@@ -1,4 +1,4 @@
-import React, {FC} from "react";
+import React, {FC, useEffect} from "react";
 import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import {useSelector} from "react-redux";
 import {RootState} from "../../reducers";

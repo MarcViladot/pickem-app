@@ -65,7 +65,7 @@ const MatchComponent: FC<MatchProps> = ({match, setRoundDetail, disableDeleteMat
     const hasStarted = () => new Date() > new Date(match.startDate) && !match.finished;
 
     const RenderDate: FC<{ startDate: string }> = ({startDate}) => (
-        <div className={"text-xs"}>{`${DateTools.getMatchParsedDate(new Date(startDate))}`}</div>
+        <div className={"text-xs hidden md:block"}>{`${DateTools.getMatchParsedDate(new Date(startDate))}`}</div>
     )
 
     return (
@@ -73,13 +73,13 @@ const MatchComponent: FC<MatchProps> = ({match, setRoundDetail, disableDeleteMat
             <EditMatchForm match={match} editMatchDialogVisible={editMatchDialogVisible}
                            setEditMatchDialogVisible={setEditMatchDialogVisible}
                             disableDeleteMatch={disableDeleteMatch} onMatchDeleted={onMatchDeleted} onMatchUpdate={onMatchUpdate}/>
-            <div className={"flex items-center justify-end"}>
+            <div className={"flex justify-start items-center md:justify-end"}>
                 <img src={match.teams[0].team.crest} alt={match.teams[0].team.name} style={{height: 50}}/>
-                <span className={"text-xl ml-3"}>{match.teams[0].team.name}</span>
+                <span className={"text-xl ml-3 hidden md:inline"}>{match.teams[0].team.name}</span>
             </div>
             <form onSubmit={formik.handleSubmit} className={"flex items-center justify-center"}>
                 <Tooltip title={"Edit Match"} placement={"right"} className={"mr-3"}>
-                        <span className={"mr-3"}>
+                        <span className={"mr-2 md:mr-3"}>
                             <IconButton onClick={() => setEditMatchDialogVisible(true)}
                                         color={"warning"}
                                         size={"large"}>
@@ -114,16 +114,16 @@ const MatchComponent: FC<MatchProps> = ({match, setRoundDetail, disableDeleteMat
                            name="awayResult"
                            required/>
                 <Tooltip title={"Update match result"} placement={"top"}>
-                        <span className={"ml-3"}>
+                        <span className={"ml-2 md:ml-3"}>
                             <IconButton type={"submit"} disabled={loading} color={"error"} size={"large"}>
                                 <CheckCircleOutlineIcon fontSize={"large"}/>
                             </IconButton>
                         </span>
                 </Tooltip>
             </form>
-            <div className={"flex items-center flex-row-reverse justify-end"}>
-                <img src={match.teams[1].team.crest} alt={match.teams[1].team.name} style={{height: 50}}/>
-                <span className={"text-xl mr-3"}>{match.teams[1].team.name}</span>
+            <div className={"flex items-center justify-start"}>
+                <img src={match.teams[1].team.crest} alt={match.teams[1].team.name} className={"h-10 w-10"}/>
+                <span className={"text-xl mr-3 hidden md:inline"}>{match.teams[1].team.name}</span>
             </div>
         </>
     )

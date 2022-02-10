@@ -35,6 +35,9 @@ export class UserGroup {
   @JoinColumn({ name: "groupId" })
   group: Group;
 
+  @Column()
+  groupId: number;
+
   @Column({ type: "enum", enum: UserRole, default: UserRole.MEMBER })
   userRole: number;
 

@@ -1,7 +1,11 @@
 {
   "MENU": {
     "SettingsList": "Ajustes",
-    "Notifications": "Notificaciones"
+    "Notifications": "Notificaciones",
+    "AddHome": "Añadir Liga / Grupo"
+  },
+  "ADD": {
+    "ADD_LEAGUE_OR_GROUP": "Añadir Liga / Grupo"
   },
   "SETTINGS": {
     "REMOVE_PHOTO": "Eliminar foto",
@@ -32,8 +36,8 @@
   },
   "TABLE": {
     "GLOBAL": "Global",
-    "ROUND": "Ronda",
-    "SELECT_ROUND": "Seleccionar ronda",
+    "ROUND": "Jornada",
+    "SELECT_ROUND": "Seleccionar jornada",
     "NO_ROUNDS": "La liga aún no ha comenzado"
   },
   "AUTH": {
@@ -50,8 +54,8 @@
   },
   "LEAGUE": {
     "TABLE": "Tabla",
-    "HOME": "Casa",
-    "ROUNDS": "Rondas",
+    "HOME": "Home",
+    "ROUNDS": "Jornadas",
     "MORE": "Más",
     "INVITE_FRIENDS": "Invitar a amigos",
     "INVITATION_CODE": "Código de invitación: {{code}}",

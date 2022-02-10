@@ -20,12 +20,12 @@ const AccordionList: FC<Props> = ({name, listItems, openByDefault}) => {
     <View>
       <View style={styles.listHeader}>
         <ThemeText style={styles.listName}>{name}</ThemeText>
-        <Pressable onPress={() => setOpen(prevState => !prevState)}>
+        <Pressable onPress={() => setOpen(prevState => !prevState)} testID={"toggleButton"}>
           <FontAwesomeIcon icon={open ?  faChevronUp : faChevronDown} color={'gray'} size={14} />
         </Pressable>
       </View>
       { open &&
-        <View style={styles.listContent}>
+        <View style={styles.listContent} testID={"listContent"}>
           {listItems.map((item) => item)}
         </View>
       }

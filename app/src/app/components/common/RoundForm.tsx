@@ -164,18 +164,19 @@ const RoundForm: FC<Props> = ({round, canEdit, canSubmit, hasStarted, onSubmit, 
                                                 disabled={teamPrediction <= 0 || !matchForm.editing}
                                                 onPress={() => {
                                                     setFieldValue(fieldName, teamPrediction === -1 ? 0 : teamPrediction - 1);
-                                                }}>
+                                                }} testID={`Decrement${local ? 'Local' : 'Away'}Button`}>
                                         <FontAwesomeIcon icon={faMinus} color={dark ? 'white' : '#464646'} size={12}/>
                                     </IconButton>
                                 }
                                 <PredictionTextField editable={false}
+                                                     testID={`${local ? 'Local' : 'Away'}Field`}
                                                      editing={matchForm.editing}
                                                      value={`${teamPrediction !== -1 ? teamPrediction : '-'}`}/>
                                 {matchForm.editing &&
                                     <IconButton disabled={!matchForm.editing}
                                                 activeOpacity={.6} onPress={() => {
                                         setFieldValue(fieldName, teamPrediction === -1 ? 0 : teamPrediction + 1);
-                                    }}>
+                                    }} testID={`Increment${local ? 'Local' : 'Away'}Button`}>
                                         <FontAwesomeIcon icon={faPlus} color={dark ? 'white' : '#464646'} size={12}/>
                                     </IconButton>
                                 }
@@ -198,12 +199,12 @@ const RoundForm: FC<Props> = ({round, canEdit, canSubmit, hasStarted, onSubmit, 
                         <Text style={[styles.doublePoints, {color: dark ? '#7599ff' : '#144fff'}]}>x2</Text>}
                 </View>
                 {canEdit && !canSubmit && (!matchForm.editing ?
-                        <TouchableOpacity
+                        <TouchableOpacity testID={'EditButton'}
                             onPress={() => setFieldValue(`matches[${index}].editing`, true)}>
                             <FontAwesomeIcon icon={faEdit} color={colors.text}/>
                         </TouchableOpacity>
                         :
-                        <TouchableOpacity
+                        <TouchableOpacity testID={'EditSubmitButton'}
                             disabled={loading}
                             onPress={() => editPrediction(matchForm, index, setFieldValue)}>
                             <FontAwesomeIcon icon={faCheckSquare} color={'#38b174'}/>
@@ -252,7 +253,7 @@ const RoundForm: FC<Props> = ({round, canEdit, canSubmit, hasStarted, onSubmit, 
                             </View>
                             {!canEdit && canSubmit &&
                                 <StyledButton style={{width: 100}} activeOpacity={.8} onPress={handleSubmit}
-                                              disabled={!isValid || loading} color="primary">
+                                              disabled={!isValid || loading} color="primary" testID={'SubmitButton'}>
                                     <Text style={styles.buttonText}>{t('COMMON.SUBMIT')}</Text>
                                 </StyledButton>
                             }

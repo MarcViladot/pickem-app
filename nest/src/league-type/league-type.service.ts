@@ -2,7 +2,7 @@ import { createLeagueTypeDto } from "./dto/create-league-type.dto";
 import { LeagueType } from "./entities/LeagueType.entity";
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { Repository } from "typeorm";
+import { In, Repository } from "typeorm";
 import { Group } from "../group/entities/group.entity";
 import { RoundResult } from "../match/entities/round-result.entity";
 import { ClassificationTableInfo, GroupedTableByUser } from "./interfaces/league.interface";
@@ -19,13 +19,29 @@ export class LeagueTypeService {
                 @InjectRepository(Group) private groupRepository: Repository<Group>) {
     }
 
-
     async getLeagueTypeById(id: number): Promise<LeagueType> {
         return this.leagueTypeRepository.findOne(id);
     }
 
+
+    async getLeaguesTypeByIds(ids: number[]): Promise<LeagueType[]> {
+        return this.leagueTypeRepository.find({
+            where: {
+                id: In(ids)
+            }
+        });
+    }
+
     async getLeagueTypes(): Promise<LeagueType[]> {
         return this.leagueTypeRepository.find();
+    }
+
+    async getVisibleLeagueTypes(): Promise<LeagueType[]> {
+        return this.leagueTypeRepository.find({
+            where: {
+                visible: true
+            }
+        });
     }
 
     async createLeagueType(createLeagueTypeDto: createLeagueTypeDto): Promise<LeagueType | undefined> {
@@ -135,5 +151,11 @@ export class LeagueTypeService {
         const group = Object.assign({}, acc);
         group[roundId] = group[roundId].concat(cur).sort((a, b) => b.points - a.points);
         return group;
+    }
+
+    async updateLeagueVisibility(id: number, visible: boolean): Promise<LeagueType> {
+        const league = await this.leagueTypeRepository.findOne(id);
+        league.visible = visible;
+        return this.leagueTypeRepository.save(league);
     }
 }

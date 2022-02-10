@@ -32,4 +32,7 @@ export class Group {
   @JoinTable()
   leagues: LeagueType[];
 
+  @Column()
+  private: boolean;
+
 }
