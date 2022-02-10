@@ -47,8 +47,8 @@ const Login = () => {
 
     return (
         <div className="w-screen h-screen flex items-center justify-center">
-            <Paper className="flex flex-col items-center sm:w-12/12 md:w-12/12 lg:w-3/12 p-10 rounded-2xl" square>
-                <h1 className="text-5xl mb-7">Sign in</h1>
+            <Paper className="w-11/12 md:w-10/12 lg:w-4/12 p-10 rounded-2xl" square>
+                <h1 className="text-5xl mb-7 text-center">Sign in</h1>
                 <form onSubmit={formik.handleSubmit} className="w-full">
                     <div className={"w-full"}>
                         <TextField

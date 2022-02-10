@@ -2,6 +2,7 @@ import Api from "./api";
 import { AxiosError, AxiosResponse } from "axios";
 import { ResponseApi, ResponseServerError } from "../utils/IResponse";
 import {LeagueInfo, Round} from '../interfaces/league.interface';
+import {LeagueType} from '../interfaces/user.interface';
 
 export default {
 
@@ -21,5 +22,15 @@ export default {
       }, (err: AxiosError) => {
         return new ResponseServerError(err);
       })
-  }
+  },
+
+  getLeagueTypes() {
+    return Api.get(`league`)
+      .then((r: AxiosResponse<ResponseApi<LeagueType[]>>) => {
+        return r.data
+      }, (err: AxiosError) => {
+        return new ResponseServerError(err);
+      })
+  },
+
 }

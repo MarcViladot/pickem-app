@@ -1,12 +1,12 @@
 import { createLeagueTypeDto } from "./dto/create-league-type.dto";
 import { LeagueType } from "./entities/LeagueType.entity";
-import { Body, ConsoleLogger, Controller, Get, Param, Post, Req, UseGuards } from "@nestjs/common";
+import { Body, ConsoleLogger, Controller, Get, Param, Post, Put, Req, UseGuards } from "@nestjs/common";
 import { LeagueTypeService } from "./league-type.service";
 import { JwtAuthGuard, RequestWithUser } from "../auth/guards/jwt/jwt-auth.guard";
 import { RolesGuard } from "../auth/guards/roles.guard";
 import { Roles } from "../auth/decorators/roles.decorator";
 import { UserRole } from "../user/entities/user.entity";
-import { ResponseApi, ResponseApiSuccess, WebApiResponseCode } from "../utils/ResponseApi";
+import { ResponseApi, ResponseApiEmpty, ResponseApiSuccess, WebApiResponseCode } from "../utils/ResponseApi";
 import { WebApiException } from "../utils/WebApiException";
 import { RoundResult } from "../match/entities/round-result.entity";
 
@@ -22,6 +22,22 @@ export class LeagueTypeController {
     async getLeagueTypes(): Promise<ResponseApi<LeagueType[]>> {
         const leagues = await this.leagueService.getLeagueTypes();
         return new ResponseApiSuccess(leagues);
+    }
+
+    @Get("visible")
+    async getVisibleLeagueTypes(): Promise<ResponseApi<LeagueType[]>> {
+        const leagues = await this.leagueService.getVisibleLeagueTypes();
+        return new ResponseApiSuccess(leagues);
+    }
+
+    @Put(`:id/change-visibility/:visible`)
+    async updateLeagueVisibility(@Param() params: {id: number, visible: boolean}): Promise<ResponseApiEmpty> {
+        try {
+            await this.leagueService.updateLeagueVisibility(params.id, Boolean(params.visible));
+            return new ResponseApiEmpty();
+        } catch (e) {
+            throw new WebApiException(WebApiResponseCode.Unexpected, [], e);
+        }
     }
 
     @Get(":id")

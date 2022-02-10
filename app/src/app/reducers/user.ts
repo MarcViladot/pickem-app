@@ -3,6 +3,7 @@ import {LOGOUT} from '../actions/auth/logout';
 import { AnyAction } from "redux";
 import { User } from "../interfaces/user.interface";
 import {UPDATE_USER_PHOTO} from '../actions/user/updateUserPhoto';
+import {ADD_GROUP_TO_USER} from '../actions/user/addGroupToUser';
 
 export interface State {
     isLoggedIn: boolean;
@@ -20,6 +21,14 @@ export default (state = initialState, action: AnyAction) => {
             ...state,
             currentUser: action.payload ,
             isLoggedIn: true
+        };
+    } else if (action.type === ADD_GROUP_TO_USER) {
+        return {
+            ...state,
+            currentUser: {
+                ...state.currentUser,
+                groups: [...state.currentUser.groups, action.payload]
+            }
         };
     } else if (action.type === LOGOUT) {
         return {

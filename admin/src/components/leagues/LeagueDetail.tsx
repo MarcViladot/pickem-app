@@ -120,6 +120,21 @@ const LeagueDetail: FC = () => {
         }
     };
 
+    const updateLeagueVisibility = async (visible: boolean) => {
+        if (!!leagueDetail) {
+            const res = await league.updateLeagueVisibility(leagueDetail.id, visible);
+            if (!res.IsError) {
+                // @ts-ignore
+                setLeagueDetail(prevState => ({
+                    ...prevState,
+                    visible
+                }));
+            } else {
+                dispatch(showResErrorSnackbar(res));
+            }
+        }
+    };
+
     const Row: FC<{ round: Round, index: number }> = ({round, index}) => {
 
         const [open, setOpen] = React.useState(false);
@@ -293,11 +308,20 @@ const LeagueDetail: FC = () => {
                     <>
                         <Paper className={"p-5 mb-3 flex justify-between"}>
                             <h1 className={"text-4xl"}>{leagueDetail.name}</h1>
-                            <Tooltip title={"Add round"} placement={"left"}>
-                                <IconButton onClick={() => setNewRoundDialogVisible(true)}>
-                                    <Add/>
-                                </IconButton>
-                            </Tooltip>
+                            <div className={"flex items-center"}>
+                                <div className={"mr-5"}>
+                                    <span className={"mr-1"}>Visible</span>
+                                    <Switch checked={leagueDetail.visible} color={"error"} onChange={(e) => {
+                                        console.log(e.target.checked);
+                                        updateLeagueVisibility(e.target.checked)
+                                    }} onClick={e => e.stopPropagation()}/>
+                                </div>
+                                <Tooltip title={"Add round"} placement={"left"}>
+                                    <IconButton onClick={() => setNewRoundDialogVisible(true)}>
+                                        <Add/>
+                                    </IconButton>
+                                </Tooltip>
+                            </div>
                         </Paper>
                         <TableContainer component={Paper} className={"flex-grow"}>
                             <Table sx={{minWidth: 650}} aria-label="a dense table">

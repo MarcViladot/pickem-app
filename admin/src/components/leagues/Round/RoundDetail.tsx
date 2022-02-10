@@ -76,7 +76,7 @@ const RoundDetail = () => {
                             </Tooltip>
                         </div>
                     </Paper>
-                    <Paper className={"p-5 flex-grow flex items-center"}>
+                    <Paper className={"p-2 md:p-5 flex-grow flex md:items-center"}>
                         <MatchList disableDeleteMatch={false} matchList={roundDetail.matches || []}
                                    setRoundDetail={setRoundDetail} onMatchDeleted={(matchId) => updateMatchList(matchId)}/>
                     </Paper>

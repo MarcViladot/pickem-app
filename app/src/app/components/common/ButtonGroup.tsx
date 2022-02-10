@@ -17,9 +17,10 @@ interface Props {
     arrayOptions: IGroupButton[];
     initialValue: any;
     onSelect: (value: any) => void;
+    fullWidth?: boolean;
 }
 
-const ButtonGroup: FC<Props> = ({arrayOptions, initialValue, onSelect}) => {
+const ButtonGroup: FC<Props> = ({arrayOptions, initialValue, onSelect, fullWidth}) => {
 
     const theme = useTheme();
     const {t} = useTranslation();
@@ -46,7 +47,7 @@ const ButtonGroup: FC<Props> = ({arrayOptions, initialValue, onSelect}) => {
 
     return (
         <View style={styles.mainView}>
-            <View style={styles.buttonGroup}>
+            <View style={[styles.buttonGroup, {width: fullWidth ? '100%' : '82%'}]}>
                 {buttonsList.map((option, i) => (
                         <Pressable onPress={() => selectValue(option.button.value)} key={i}
                                    testID={`Button${option.button.value}`}
@@ -72,7 +73,6 @@ const createStyles = (theme: Theme) =>
         buttonGroup: {
             display: 'flex',
             flexDirection: 'row',
-            width: '82%',
             height: 40,
             backgroundColor: theme.dark ? '#495666' : '#EBECF1',
             padding: 1,

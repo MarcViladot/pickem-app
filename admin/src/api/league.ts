@@ -115,4 +115,13 @@ export default {
             })
     },
 
+    updateLeagueVisibility(id: number, visible: boolean) {
+        return API.put(`league/${id}/change-visibility/${visible}`, {})
+            .then((r: AxiosResponse<ResponseApiEmpty>) => {
+                return r.data
+            }, (err: AxiosError) => {
+                return new ResponseServerError(err);
+            })
+    },
+
 }

@@ -1,7 +1,7 @@
 .router-content {
     height: calc(100vh - 64px);
     width: 100%;
-    padding: 10px 10px 10px 74px;
+    padding: 10px;
     display: flex;
     flex-direction: column;
     box-sizing: border-box;
@@ -9,7 +9,7 @@
 
 .match-grid {
     display: grid;
-    grid-template-columns: 1fr 350px 1fr;
+    grid-template-columns: minmax(50px, 1fr) 350px minmax(50px, 1fr);
 }
 
 .result-field {
@@ -23,4 +23,13 @@
 }
 .MuiSelect-root {
     height: 100% !important;
+}
+
+@media (max-width: 768px) {
+    .match-grid {
+        grid-template-columns: 50px 1fr 50px;
+    }
+    .result-field {
+        height: 55px;
+    }
 }

@@ -5,6 +5,7 @@ export interface League {
     logo: string;
     name: string;
     rounds?: Round[];
+    visible: boolean;
 }
 
 export interface CreateLeague {

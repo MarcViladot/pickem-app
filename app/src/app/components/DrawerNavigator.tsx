@@ -1,4 +1,4 @@
-import React, {FC, useState} from "react";
+import React, {FC, useEffect, useState} from "react";
 import {createDrawerNavigator} from "@react-navigation/drawer";
 import HomeScreen from "./HomeScreen";
 import Foo from "./league/GroupLeagueScreen";
@@ -23,6 +23,9 @@ import SettingsScreen from './user/SettingsScreen';
 import {useTheme} from '@react-navigation/native';
 import {ThemeText} from './common/ThemeText';
 import { ThemeView } from "./common/ThemeView";
+import {StyledButton} from './common/StyledButton';
+import {useTranslation} from 'react-i18next';
+import AddScreen from './add/AddScreen';
 
 export type DrawerStackParamList = {
     Home: undefined;
@@ -31,6 +34,7 @@ export type DrawerStackParamList = {
     };
     Notifications: undefined;
     Settings: undefined;
+    Add: undefined;
 };
 const Drawer = createDrawerNavigator<DrawerStackParamList>();
 
@@ -58,6 +62,9 @@ const DrawerNavigator = () => {
             <Drawer.Screen name="Settings" component={SettingsScreen} options={{
                 headerShown: false
             }}/>
+            <Drawer.Screen name="Add" component={AddScreen} options={{
+                headerShown: false
+            }}/>
         </Drawer.Navigator>
     );
 };
@@ -65,6 +72,7 @@ const DrawerNavigator = () => {
 
 const CustomDrawerContent: FC<DrawerContentComponentProps> = ({navigation}) => {
 
+    const {t} = useTranslation();
     const {colors, dark} = useTheme();
     const dispatch = useDispatch();
     const user = useSelector((state: RootState) => state.user.currentUser);
@@ -92,7 +100,7 @@ const CustomDrawerContent: FC<DrawerContentComponentProps> = ({navigation}) => {
                     <FontAwesomeIcon icon={faCog} color={colors.text} size={17}/>
                 </TouchableOpacity>
             </ThemeView>
-            <ScrollView>
+            <ScrollView style={{flex: 1}}>
                 {user.groups.map((userGroup: UserGroup, i) => (
                     <AccordionList key={userGroup.id} openByDefault={user.groups.length === 1 && i === 0}
                                    name={userGroup.group.name} listItems={userGroup.group.leagues.map((league) => (
@@ -106,6 +114,11 @@ const CustomDrawerContent: FC<DrawerContentComponentProps> = ({navigation}) => {
                     ))}/>
                 ))}
             </ScrollView>
+            <ThemeView style={styles.footer}>
+                <StyledButton disabled={false} color={'primary'} onPress={() => navigation.navigate('Add')}>
+                   <Text style={{color: 'white'}}>{t('ADD.ADD_LEAGUE_OR_GROUP')}</Text>
+                </StyledButton>
+            </ThemeView>
         </View>
     );
 };
@@ -149,6 +162,9 @@ const styles = StyleSheet.create({
         width: 25,
         height: 25,
         marginRight: 10,
+    },
+    footer: {
+        padding: 10
     }
 });
 

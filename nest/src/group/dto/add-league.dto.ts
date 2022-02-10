@@ -7,6 +7,6 @@ export class AddLeagueDto {
   groupId: number;
 
   @ApiProperty()
-  leagueTypeId: number;
+  leagueTypeIds: number[];
 
 }
