@@ -9,7 +9,7 @@ export class Match {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ type: 'timestamp' })
+  @Column({ type: 'timestamp', nullable: true })
   startDate: Date;
 
   @Column({ default: false })

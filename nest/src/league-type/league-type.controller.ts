@@ -8,29 +8,39 @@ import { Roles } from "../auth/decorators/roles.decorator";
 import { UserRole } from "../user/entities/user.entity";
 import { ResponseApi, ResponseApiEmpty, ResponseApiSuccess, WebApiResponseCode } from "../utils/ResponseApi";
 import { WebApiException } from "../utils/WebApiException";
-import { RoundResult } from "../match/entities/round-result.entity";
+import { RoundService } from "../round/round.service";
+import { Group } from "../group/entities/group.entity";
+import { Round } from "../round/entities/round.entity";
+import { UserGroup } from "../group/entities/user-group.entity";
+import { LeagueEvent, RoundEvent } from "./interfaces/league.interface";
 
 
 
 @Controller("league")
 export class LeagueTypeController {
 
-    constructor(private leagueService: LeagueTypeService) {
+    constructor(private leagueService: LeagueTypeService,
+                private roundService: RoundService) {
     }
 
     @Get("")
+    @UseGuards(JwtAuthGuard, RolesGuard)
+    @Roles(UserRole.ADMIN)
     async getLeagueTypes(): Promise<ResponseApi<LeagueType[]>> {
         const leagues = await this.leagueService.getLeagueTypes();
         return new ResponseApiSuccess(leagues);
     }
 
     @Get("visible")
+    @UseGuards(JwtAuthGuard)
     async getVisibleLeagueTypes(): Promise<ResponseApi<LeagueType[]>> {
         const leagues = await this.leagueService.getVisibleLeagueTypes();
         return new ResponseApiSuccess(leagues);
     }
 
     @Put(`:id/change-visibility/:visible`)
+    @UseGuards(JwtAuthGuard, RolesGuard)
+    @Roles(UserRole.ADMIN)
     async updateLeagueVisibility(@Param() params: {id: number, visible: boolean}): Promise<ResponseApiEmpty> {
         try {
             await this.leagueService.updateLeagueVisibility(params.id, Boolean(params.visible));
@@ -54,16 +64,28 @@ export class LeagueTypeController {
     @Get("getGroupLeague/:groupId/:leagueId")
     @UseGuards(JwtAuthGuard)
     async getGroupLeague(@Req() req: RequestWithUser, @Param() params: { groupId: number, leagueId: number }): Promise<ResponseApi<LeagueType>> {
-        const leagueInfo = await this.leagueService.getGroupLeague(params.leagueId, req.user.userId);
-        const groupInfo = await this.leagueService.getGroupInfo(params.groupId, params.leagueId);
-        const table = groupInfo.userGroups.map((userGroup) => userGroup.user);
-        const data = {
-            totalPoints: this.leagueService.calculateUserTotalPoints(groupInfo, req.user.userId),
-            leagueInfo,
-            groupInfo,
-            table: this.leagueService.getClassificationTableInfo(table)
-        };
-        return new ResponseApiSuccess(data);
+        try {
+            const nextRound: Round = await this.roundService.getNextRound(req.user.userId, params.leagueId);
+            const roundsHistory: Round[] = await this.roundService.getLeagueHistory(params.leagueId);
+            const leagueInfo: LeagueType = await this.leagueService.getGroupLeague(params.leagueId, req.user.userId);
+            const groupInfo: Group = await this.leagueService.getGroupInfo(params.groupId, params.leagueId);
+            const table = groupInfo.userGroups.map((userGroup) => userGroup.user);
+            const roundEvents: RoundEvent[] = this.leagueService.getRoundEvents(roundsHistory);
+            const leagueEvents: LeagueEvent[] = this.leagueService.getLeagueEvents(groupInfo.events, roundEvents);
+            const data = {
+                homeInfo: {
+                    nextRound: nextRound || null,
+                    events: leagueEvents
+                },
+                totalPoints: this.leagueService.calculateUserTotalPoints(groupInfo, req.user.userId),
+                leagueInfo,
+                groupInfo,
+                table: this.leagueService.getClassificationTableInfo(table)
+            };
+            return new ResponseApiSuccess(data);
+        } catch (e) {
+            throw new WebApiException(WebApiResponseCode.Unexpected, [], e);
+        }
     }
 
     @Post("createLeagueType")

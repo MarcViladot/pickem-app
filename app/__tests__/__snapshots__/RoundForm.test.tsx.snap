@@ -1,0 +1,636 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Round form component renders correctly 1`] = `
+<View
+  style={
+    Object {
+      "marginBottom": 40,
+      "padding": 10,
+    }
+  }
+>
+  <View
+    style={
+      Array [
+        Object {
+          "backgroundColor": "#1F2C39",
+        },
+        Object {
+          "alignItems": "center",
+          "flexDirection": "row",
+          "justifyContent": "space-between",
+          "marginBottom": 10,
+          "padding": 7,
+        },
+      ]
+    }
+  >
+    <View>
+      <Text
+        style={
+          Array [
+            Object {
+              "color": "#FFF",
+            },
+            Object {
+              "fontSize": 18,
+              "fontWeight": "bold",
+              "marginBottom": 5,
+            },
+          ]
+        }
+      >
+        Round 1
+      </Text>
+      <Text
+        style={
+          Object {
+            "color": "#A6A6A6",
+            "fontSize": 13,
+          }
+        }
+      >
+        STARTING AT 
+        22/12 13:19
+      </Text>
+    </View>
+    <View
+      accessibilityState={
+        Object {
+          "disabled": true,
+        }
+      }
+      accessible={true}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        Object {
+          "alignItems": "center",
+          "backgroundColor": "#CCCCCC",
+          "borderRadius": 50,
+          "height": 40,
+          "justifyContent": "center",
+          "opacity": 1,
+          "width": 100,
+        }
+      }
+      testID="SubmitButton"
+    >
+      <Text
+        style={
+          Object {
+            "color": "#FFF",
+            "fontSize": 17,
+          }
+        }
+      >
+        Submit
+      </Text>
+    </View>
+  </View>
+  <View
+    style={
+      Array [
+        Object {
+          "backgroundColor": "#1F2C39",
+        },
+        Object {
+          "padding": 7,
+          "paddingBottom": -5,
+        },
+      ]
+    }
+  >
+    <View
+      style={
+        Object {
+          "marginBottom": 12,
+        }
+      }
+    >
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "center",
+              "flexDirection": "row",
+              "justifyContent": "space-between",
+              "marginBottom": 2,
+              "padding": 7,
+            },
+            Object {
+              "backgroundColor": "#F4F4F4",
+            },
+          ]
+        }
+      >
+        <View
+          style={
+            Object {
+              "alignItems": "center",
+              "flexDirection": "row",
+            }
+          }
+        >
+          <Text
+            style={
+              Array [
+                Object {
+                  "color": "#FFF",
+                },
+                Object {
+                  "fontSize": 12,
+                },
+              ]
+            }
+          >
+            AT
+             
+            22/12 13:19
+          </Text>
+        </View>
+      </View>
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "center",
+              "flexDirection": "row",
+              "height": 50,
+              "justifyContent": "space-between",
+              "marginBottom": 1,
+              "paddingHorizontal": 15,
+            },
+            Object {
+              "backgroundColor": "#F4F4F4",
+            },
+          ]
+        }
+      >
+        <View
+          style={
+            Object {
+              "alignItems": "center",
+              "flexDirection": "row",
+            }
+          }
+        >
+          <Image
+            source={
+              Object {
+                "uri": "",
+              }
+            }
+            style={
+              Object {
+                "height": 30,
+                "marginRight": 10,
+                "width": 30,
+              }
+            }
+          />
+          <Text
+            style={
+              Array [
+                Object {
+                  "color": "#FFF",
+                },
+              ]
+            }
+          >
+            Local team
+          </Text>
+        </View>
+        <View
+          style={
+            Object {
+              "alignItems": "center",
+              "flexDirection": "row",
+            }
+          }
+        >
+          <View
+            accessibilityState={
+              Object {
+                "disabled": true,
+              }
+            }
+            accessible={true}
+            focusable={true}
+            onClick={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              Object {
+                "opacity": 0.5,
+              }
+            }
+            testID="DecrementLocalButton"
+          >
+            <RNSVGSvgView
+              align="xMidYMid"
+              bbHeight={12}
+              bbWidth={12}
+              fill="#464646"
+              focusable={false}
+              height={12}
+              meetOrSlice={0}
+              minX={0}
+              minY={0}
+              secondaryFill={null}
+              secondaryOpacity={0.4}
+              size={12}
+              style={
+                Array [
+                  Object {
+                    "backgroundColor": "transparent",
+                    "borderWidth": 0,
+                  },
+                  Object {},
+                  Object {
+                    "flex": 0,
+                    "height": 12,
+                    "width": 12,
+                  },
+                ]
+              }
+              vbHeight={512}
+              vbWidth={448}
+              width={12}
+            >
+              <RNSVGGroup
+                fill={4282795590}
+                propList={
+                  Array [
+                    "fill",
+                  ]
+                }
+              >
+                <RNSVGPath
+                  d="M416 208H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h384c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z"
+                  fill={4282795590}
+                  fillOpacity={1}
+                  propList={
+                    Array [
+                      "fill",
+                      "fillOpacity",
+                    ]
+                  }
+                />
+              </RNSVGGroup>
+            </RNSVGSvgView>
+          </View>
+          <TextInput
+            editable={false}
+            editing={true}
+            style={
+              Array [
+                Object {
+                  "backgroundColor": "#FFF",
+                  "borderColor": "#A6A6A6",
+                  "borderStyle": "solid",
+                  "borderWidth": 1,
+                  "color": "black",
+                  "fontSize": 18,
+                  "fontWeight": "bold",
+                  "height": 40,
+                  "marginBottom": 0,
+                  "marginLeft": 10,
+                  "marginRight": 10,
+                  "marginTop": 0,
+                  "textAlign": "center",
+                  "width": 30,
+                },
+              ]
+            }
+            testID="LocalField"
+            value="-"
+          />
+          <View
+            accessibilityState={
+              Object {
+                "disabled": false,
+              }
+            }
+            accessible={true}
+            focusable={true}
+            onClick={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              Object {
+                "opacity": 1,
+              }
+            }
+            testID="IncrementLocalButton"
+          >
+            <RNSVGSvgView
+              align="xMidYMid"
+              bbHeight={12}
+              bbWidth={12}
+              fill="#464646"
+              focusable={false}
+              height={12}
+              meetOrSlice={0}
+              minX={0}
+              minY={0}
+              secondaryFill={null}
+              secondaryOpacity={0.4}
+              size={12}
+              style={
+                Array [
+                  Object {
+                    "backgroundColor": "transparent",
+                    "borderWidth": 0,
+                  },
+                  Object {},
+                  Object {
+                    "flex": 0,
+                    "height": 12,
+                    "width": 12,
+                  },
+                ]
+              }
+              vbHeight={512}
+              vbWidth={448}
+              width={12}
+            >
+              <RNSVGGroup
+                fill={4282795590}
+                propList={
+                  Array [
+                    "fill",
+                  ]
+                }
+              >
+                <RNSVGPath
+                  d="M416 208H272V64c0-17.67-14.33-32-32-32h-32c-17.67 0-32 14.33-32 32v144H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h144v144c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32V304h144c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z"
+                  fill={4282795590}
+                  fillOpacity={1}
+                  propList={
+                    Array [
+                      "fill",
+                      "fillOpacity",
+                    ]
+                  }
+                />
+              </RNSVGGroup>
+            </RNSVGSvgView>
+          </View>
+        </View>
+      </View>
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "center",
+              "flexDirection": "row",
+              "height": 50,
+              "justifyContent": "space-between",
+              "marginBottom": 1,
+              "paddingHorizontal": 15,
+            },
+            Object {
+              "backgroundColor": "#F4F4F4",
+            },
+          ]
+        }
+      >
+        <View
+          style={
+            Object {
+              "alignItems": "center",
+              "flexDirection": "row",
+            }
+          }
+        >
+          <Image
+            source={
+              Object {
+                "uri": "",
+              }
+            }
+            style={
+              Object {
+                "height": 30,
+                "marginRight": 10,
+                "width": 30,
+              }
+            }
+          />
+          <Text
+            style={
+              Array [
+                Object {
+                  "color": "#FFF",
+                },
+              ]
+            }
+          >
+            Away team
+          </Text>
+        </View>
+        <View
+          style={
+            Object {
+              "alignItems": "center",
+              "flexDirection": "row",
+            }
+          }
+        >
+          <View
+            accessibilityState={
+              Object {
+                "disabled": true,
+              }
+            }
+            accessible={true}
+            focusable={true}
+            onClick={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              Object {
+                "opacity": 0.5,
+              }
+            }
+            testID="DecrementAwayButton"
+          >
+            <RNSVGSvgView
+              align="xMidYMid"
+              bbHeight={12}
+              bbWidth={12}
+              fill="#464646"
+              focusable={false}
+              height={12}
+              meetOrSlice={0}
+              minX={0}
+              minY={0}
+              secondaryFill={null}
+              secondaryOpacity={0.4}
+              size={12}
+              style={
+                Array [
+                  Object {
+                    "backgroundColor": "transparent",
+                    "borderWidth": 0,
+                  },
+                  Object {},
+                  Object {
+                    "flex": 0,
+                    "height": 12,
+                    "width": 12,
+                  },
+                ]
+              }
+              vbHeight={512}
+              vbWidth={448}
+              width={12}
+            >
+              <RNSVGGroup
+                fill={4282795590}
+                propList={
+                  Array [
+                    "fill",
+                  ]
+                }
+              >
+                <RNSVGPath
+                  d="M416 208H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h384c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z"
+                  fill={4282795590}
+                  fillOpacity={1}
+                  propList={
+                    Array [
+                      "fill",
+                      "fillOpacity",
+                    ]
+                  }
+                />
+              </RNSVGGroup>
+            </RNSVGSvgView>
+          </View>
+          <TextInput
+            editable={false}
+            editing={true}
+            style={
+              Array [
+                Object {
+                  "backgroundColor": "#FFF",
+                  "borderColor": "#A6A6A6",
+                  "borderStyle": "solid",
+                  "borderWidth": 1,
+                  "color": "black",
+                  "fontSize": 18,
+                  "fontWeight": "bold",
+                  "height": 40,
+                  "marginBottom": 0,
+                  "marginLeft": 10,
+                  "marginRight": 10,
+                  "marginTop": 0,
+                  "textAlign": "center",
+                  "width": 30,
+                },
+              ]
+            }
+            testID="AwayField"
+            value="-"
+          />
+          <View
+            accessibilityState={
+              Object {
+                "disabled": false,
+              }
+            }
+            accessible={true}
+            focusable={true}
+            onClick={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              Object {
+                "opacity": 1,
+              }
+            }
+            testID="IncrementAwayButton"
+          >
+            <RNSVGSvgView
+              align="xMidYMid"
+              bbHeight={12}
+              bbWidth={12}
+              fill="#464646"
+              focusable={false}
+              height={12}
+              meetOrSlice={0}
+              minX={0}
+              minY={0}
+              secondaryFill={null}
+              secondaryOpacity={0.4}
+              size={12}
+              style={
+                Array [
+                  Object {
+                    "backgroundColor": "transparent",
+                    "borderWidth": 0,
+                  },
+                  Object {},
+                  Object {
+                    "flex": 0,
+                    "height": 12,
+                    "width": 12,
+                  },
+                ]
+              }
+              vbHeight={512}
+              vbWidth={448}
+              width={12}
+            >
+              <RNSVGGroup
+                fill={4282795590}
+                propList={
+                  Array [
+                    "fill",
+                  ]
+                }
+              >
+                <RNSVGPath
+                  d="M416 208H272V64c0-17.67-14.33-32-32-32h-32c-17.67 0-32 14.33-32 32v144H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h144v144c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32V304h144c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z"
+                  fill={4282795590}
+                  fillOpacity={1}
+                  propList={
+                    Array [
+                      "fill",
+                      "fillOpacity",
+                    ]
+                  }
+                />
+              </RNSVGGroup>
+            </RNSVGSvgView>
+          </View>
+        </View>
+      </View>
+    </View>
+  </View>
+</View>
+`;

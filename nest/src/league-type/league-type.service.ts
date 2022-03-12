@@ -5,8 +5,17 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { In, Repository } from "typeorm";
 import { Group } from "../group/entities/group.entity";
 import { RoundResult } from "../match/entities/round-result.entity";
-import { ClassificationTableInfo, GroupedTableByUser } from "./interfaces/league.interface";
+import {
+    ClassificationTableInfo,
+    GroupedTableByUser,
+    LeagueEvent,
+    RoundEvent, UserLeagueEvent
+} from "./interfaces/league.interface";
 import { User } from "src/user/entities/user.entity";
+import { Round } from "../round/entities/round.entity";
+import { UserGroup } from "../group/entities/user-group.entity";
+import { UserEventService } from "../user-event/user-event.service";
+import { UserEvent, UserEventType } from "../user-event/entities/user-event.entity";
 
 interface GroupedRounds {
     [roundId: string]: RoundResult[]
@@ -22,7 +31,6 @@ export class LeagueTypeService {
     async getLeagueTypeById(id: number): Promise<LeagueType> {
         return this.leagueTypeRepository.findOne(id);
     }
-
 
     async getLeaguesTypeByIds(ids: number[]): Promise<LeagueType[]> {
         return this.leagueTypeRepository.find({
@@ -75,6 +83,8 @@ export class LeagueTypeService {
     getGroupInfo(groupId: number, leagueId: number): Promise<Group> {
         return this.groupRepository.createQueryBuilder("group")
           .where("group.id = :groupId", { groupId })
+          .leftJoinAndSelect('group.events', 'event', 'event.groupId = group.id')
+          .leftJoinAndSelect('event.user', 'eventUser')
           .leftJoinAndSelect("group.userGroups", "userGroups", "userGroups.groupId = group.id")
           .leftJoinAndSelect("userGroups.user", "user", "userGroups.userId = user.id")
           .leftJoinAndSelect("user.roundResults", "roundResult", "roundResult.userId = user.id AND roundResult.leagueTypeId = :leagueId", { leagueId })
@@ -157,5 +167,15 @@ export class LeagueTypeService {
         const league = await this.leagueTypeRepository.findOne(id);
         league.visible = visible;
         return this.leagueTypeRepository.save(league);
+    }
+
+    getRoundEvents(round: Round[]): RoundEvent[] {
+        return round.map(round => new RoundEvent(round.finishedAt, round));
+    }
+
+    getLeagueEvents(userEvents: UserEvent[], roundEvents: RoundEvent[]): LeagueEvent[] {
+        const userLeagueEvents: UserLeagueEvent[] = userEvents.map(e => new UserLeagueEvent(e));
+        const allEvents: LeagueEvent[] = [...userLeagueEvents, ...roundEvents];
+        return allEvents.sort((a, b) => b.date.getTime() - a.date.getTime());
     }
 }

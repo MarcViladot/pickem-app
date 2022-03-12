@@ -86,6 +86,21 @@ export class RoundService {
       .getOne();
   }
 
+  async getNextRound(userId: number, leagueId: number): Promise<Round | undefined> {
+    return this.roundRepository.createQueryBuilder("round")
+      .where("round.leagueTypeId = :leagueId", { leagueId: leagueId })
+      .andWhere("round.startingDate > :now", { now: new Date() })
+      .andWhere("round.visible = 1")
+      .leftJoinAndSelect("round.matches", "match", "match.roundId = round.id")
+      .addOrderBy("match.startDate", "ASC")
+      .leftJoinAndSelect("match.predictions", "prediction", "prediction.userId = :userId", { userId })
+      .leftJoinAndSelect("match.teams", "teamMatch")
+      .addOrderBy("teamMatch.teamPosition", "ASC")
+      .leftJoinAndSelect("teamMatch.team", "team", "team.id = teamMatch.teamId")
+      .getOne();
+  }
+
+
   async changeVisibilityOfRound(changeVisibilityDto: ChangeVisibilityDto): Promise<Round> {
     const round = await this.getRoundById(changeVisibilityDto.id);
     round.visible = changeVisibilityDto.visible;
@@ -107,7 +122,8 @@ export class RoundService {
       ...round,
       name: updateRoundDto.name,
       startingDate: updateRoundDto.startingDate,
-      finished: updateRoundDto.finished
+      finished: updateRoundDto.finished,
+      finishedAt: updateRoundDto.finished ? new Date() : null,
     };
     return this.roundRepository.save(updatedRound);
   }
@@ -130,4 +146,20 @@ export class RoundService {
       .leftJoinAndSelect("round.league", "league", "round.leagueTypeId = league.id")
       .getMany();
   }
+
+  async getLeagueHistory(leagueId: number): Promise<Round[]> {
+    return this.roundRepository.createQueryBuilder("round")
+      .where("round.leagueTypeId = :leagueId", { leagueId: leagueId })
+      .andWhere("round.finished = true")
+      .andWhere("round.visible = true")
+      .leftJoinAndSelect('round.translationGroup', 'translationGroup')
+      .leftJoinAndSelect('translationGroup.roundNames', 'roundNames')
+      .leftJoinAndSelect("round.roundResults", "roundResult", "roundResult.roundId = round.id")
+      .leftJoinAndSelect('roundResult.user', 'user', 'roundResult.userId = user.id')
+      .leftJoinAndSelect("round.league", "league", "round.leagueTypeId = league.id")
+      .orderBy("round.startingDate", "DESC")
+      .getMany();
+  }
+
+
 }

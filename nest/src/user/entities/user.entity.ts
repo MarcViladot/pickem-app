@@ -2,6 +2,7 @@ import { UserGroup } from '../../group/entities/user-group.entity';
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany, CreateDateColumn } from "typeorm";
 import { Prediction } from '../../prediction/entities/prediction.entity';
 import { RoundResult } from "../../match/entities/round-result.entity";
+import { UserEvent } from "../../user-event/entities/user-event.entity";
 
 export enum UserRole {
   MEMBER = 0,
@@ -38,8 +39,12 @@ export class User {
   @OneToMany(() => RoundResult, roundResult => roundResult.user)
   roundResults: RoundResult[];
 
+  @OneToMany(() => UserEvent, (userEvent) => userEvent.user)
+  events: UserEvent[];
+
   token: string;
 
   firebaseUser?: any;
+
 
 }

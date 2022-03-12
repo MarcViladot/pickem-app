@@ -9,7 +9,7 @@ export class CurrentUser {
   createdAt: Date;
   token?: string;
   groups: UserGroup[];
-  invitations: UserGroup[];
+  // invitations: UserGroup[];
 
   constructor(api: User, token?: string) {
     this.id = api.id;
@@ -19,6 +19,6 @@ export class CurrentUser {
     this.userRole = api.userRole;
     this.token = token ? token : api.token;
     this.groups = api.userGroups.filter(userGroup => userGroup.userRole !== GroupRole.PENDING)
-    this.invitations = api.userGroups.filter(userGroup => userGroup.userRole === GroupRole.PENDING)
+    // this.invitations = api.userGroups.filter(userGroup => userGroup.userRole === GroupRole.PENDING)
   }
 }

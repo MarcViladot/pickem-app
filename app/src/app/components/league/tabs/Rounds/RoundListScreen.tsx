@@ -90,7 +90,7 @@ const RoundListScreen: FC<Props> = ({navigation, route, leagueInfo}) => {
 
     return (
         <ScrollView style={styles.container}>
-            {leagueInfo.leagueInfo.rounds.map((round, i) => <RoundItem round={round} key={i}/>)}
+            {leagueInfo.leagueInfo.rounds.reverse().map((round, i) => <RoundItem round={round} key={i}/>)}
         </ScrollView>
     );
 

@@ -54,5 +54,7 @@ export enum WebApiResponseCode {
 
   GroupNotFound = 500,            // code
   UserAlreadyInGroup,
-  RequestAlreadySent
+  RequestAlreadySent,
+  NotAllowedToChangeRole,
+  UserNotInGroup
 }

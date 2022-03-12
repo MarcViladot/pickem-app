@@ -8,7 +8,7 @@ import {RouteProp, useTheme} from '@react-navigation/native';
 import styled from 'styled-components/native';
 import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from '../../reducers';
-import {Group, UserGroupRole} from '../../interfaces/user.interface';
+import {Group, User, UserGroup, UserGroupRole} from '../../interfaces/user.interface';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {AddStackParamList} from './AddScreen';
 import GroupApi from '../../api/group';
@@ -28,14 +28,14 @@ const AddHomeScreen: FC<Props> = ({navigation}) => {
     const {colors} = useTheme();
     const {t} = useTranslation();
     const dispatch = useDispatch();
-    const currentUser = useSelector((state: RootState) => state.user.currentUser);
+    const currentUser: User = useSelector((state: RootState) => state.user.currentUser);
 
     const addLeague = () => {
-        const adminGroups = currentUser.groups.filter((group) => group.role === UserGroupRole.ADMIN || group.role === UserGroupRole.OWNER);
+        const adminGroups: UserGroup[] = currentUser.groups.filter((group: UserGroup) => group.userRole === UserGroupRole.ADMIN || group.userRole === UserGroupRole.OWNER);
         if (adminGroups.length > 1) {
-            // NAVIGATE TO SELECT GROUP SCREEN
+            navigation.navigate('SelectGroup', {groups: adminGroups})
         } else if (adminGroups.length === 1) {
-            getVisibleLeagueTypes(adminGroups[0]);
+            getVisibleLeagueTypes(adminGroups[0].group);
         }
     }
 

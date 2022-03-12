@@ -2,6 +2,7 @@ import { Team } from "./team.interface"
 import { Group } from "./user.interface";
 
 export interface LeagueInfo {
+    homeInfo: LeagueHomeInfo;
     leagueInfo: League;
     groupInfo: Group;
     totalPoints: number;
@@ -77,5 +78,10 @@ export interface TeamMatch {
 export enum TeamPosition {
     LOCAL = 0,
     AWAY = 1
+}
+
+export interface LeagueHomeInfo {
+    nextRound: Round | null;
+    leagueHistory: Round[];
 }
 

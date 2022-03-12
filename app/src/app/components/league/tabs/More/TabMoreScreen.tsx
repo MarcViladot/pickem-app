@@ -5,7 +5,7 @@ import {StackNavigationProp} from "@react-navigation/stack";
 import {RouteProp, useTheme} from "@react-navigation/native";
 import {TabsStackParamList} from "../../GroupLeagueScreen";
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
-import {faPlusCircle} from "@fortawesome/free-solid-svg-icons";
+import {faPlusCircle, faUsersCog} from "@fortawesome/free-solid-svg-icons";
 import {LeagueInfo} from "../../../../interfaces/league.interface";
 import {useTranslation} from "react-i18next";
 import styled from 'styled-components/native';
@@ -51,6 +51,12 @@ const TabMoreScreen: FC<Props> = ({navigation, route, leagueInfo}) => {
                             <ThemeText
                                 style={{fontSize: 13}}>{t("LEAGUE.INVITATION_CODE", {code: leagueInfo.groupInfo.invitationCode})}</ThemeText>
                         </View>
+                    </TextContainer>
+                    <TextContainer>
+                        <TouchableOpacity activeOpacity={.5} style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%'}}>
+                            <ThemeText style={{fontSize: 15}}>{t("LEAGUE.GROUP_CONFIG")}</ThemeText>
+                            <FontAwesomeIcon icon={faUsersCog} color={"#96A6B6"} style={{marginRight: 10}} size={20}/>
+                        </TouchableOpacity>
                     </TextContainer>
                     <TextContainer>
                         <Text style={{color: "#4544CB", fontSize: 15}}>{t("LEAGUE.REMOVE_ADS")}</Text>

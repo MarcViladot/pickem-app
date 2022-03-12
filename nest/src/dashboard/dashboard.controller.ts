@@ -16,11 +16,16 @@ export class DashboardController {
   }
 
   @Get('info')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.ADMIN)
   async getDashboardInfo(): Promise<ResponseApi<IDashboardInfo>> {
     const userCount = await this.dashboardService.getTotalUserCount();
     const groupCount = await this.dashboardService.getTotalGroupCount();
+    const teamsCount = await this.dashboardService.getTotalTeamsCount();
+    const leaguesCount = await this.dashboardService.getTotalLeaguesCount();
+    const predictionsCount = await this.dashboardService.getTotalPredictionsCount();
     const liveMatchList = await this.dashboardService.getLiveMatches();
-    const dashboardInfo = new DashboardInfo(groupCount, userCount, liveMatchList)
+    const dashboardInfo = new DashboardInfo(groupCount, userCount, liveMatchList, leaguesCount, teamsCount, predictionsCount);
     return new ResponseApiSuccess(dashboardInfo);
   }
 

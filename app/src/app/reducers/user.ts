@@ -23,11 +23,12 @@ export default (state = initialState, action: AnyAction) => {
             isLoggedIn: true
         };
     } else if (action.type === ADD_GROUP_TO_USER) {
+        const group = action.payload;
         return {
             ...state,
             currentUser: {
                 ...state.currentUser,
-                groups: [...state.currentUser.groups, action.payload]
+                groups: state.currentUser.groups.map(g => g.id === group.id ? group : g)
             }
         };
     } else if (action.type === LOGOUT) {

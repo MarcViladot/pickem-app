@@ -1,0 +1,107 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Button group component renders correctly 1`] = `
+<View
+  style={
+    Object {
+      "flexDirection": "row",
+      "justifyContent": "center",
+    }
+  }
+>
+  <View
+    style={
+      Object {
+        "backgroundColor": "#495666",
+        "borderRadius": 50,
+        "display": "flex",
+        "flexDirection": "row",
+        "height": 40,
+        "padding": 1,
+        "width": "82%",
+      }
+    }
+  >
+    <View
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "borderRadius": 50,
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          undefined,
+          Object {
+            "backgroundColor": "#202D3A",
+          },
+        ]
+      }
+      testID="Button1"
+    >
+      <Text
+        style={
+          Object {
+            "color": "#FFF",
+            "fontSize": 13,
+          }
+        }
+      >
+        FIRST_VALUE
+      </Text>
+    </View>
+    <View
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "borderRadius": 50,
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          undefined,
+          Object {
+            "backgroundColor": "#495666",
+          },
+        ]
+      }
+      testID="Button2"
+    >
+      <Text
+        style={
+          Object {
+            "color": "#9DA3AC",
+            "fontSize": 13,
+          }
+        }
+      >
+        SECOND_VALUE
+      </Text>
+    </View>
+  </View>
+</View>
+`;

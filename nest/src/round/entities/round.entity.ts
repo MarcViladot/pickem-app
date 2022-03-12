@@ -23,7 +23,7 @@ export class Round {
   @Column()
   translationNameExtra: string;
 
-  @Column({type: 'timestamp'})
+  @Column({type: 'timestamp', nullable: true})
   startingDate: Date;
 
   @Column({default: false})
@@ -47,5 +47,8 @@ export class Round {
 
   @UpdateDateColumn()
   updatedAt: Date;
+
+  @Column({type: 'timestamp', nullable: true})
+  finishedAt: Date;
 
 }

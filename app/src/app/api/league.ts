@@ -25,7 +25,7 @@ export default {
   },
 
   getLeagueTypes() {
-    return Api.get(`league`)
+    return Api.get(`league/visible`)
       .then((r: AxiosResponse<ResponseApi<LeagueType[]>>) => {
         return r.data
       }, (err: AxiosError) => {

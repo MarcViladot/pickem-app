@@ -1,6 +1,16 @@
 import { UserGroup } from "./user-group.entity";
-import { Column, CreateDateColumn, Entity, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import {
+  Column,
+  CreateDateColumn,
+  Entity, JoinColumn,
+  JoinTable,
+  ManyToMany,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn
+} from "typeorm";
 import { LeagueType } from "src/league-type/entities/LeagueType.entity";
+import { UserEvent } from "../../user-event/entities/user-event.entity";
 
 @Entity()
 export class Group {
@@ -34,5 +44,8 @@ export class Group {
 
   @Column()
   private: boolean;
+
+  @OneToMany(() => UserEvent, (userEvent) => userEvent.group)
+  events: UserEvent[];
 
 }

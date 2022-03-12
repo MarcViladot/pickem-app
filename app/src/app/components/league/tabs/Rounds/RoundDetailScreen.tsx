@@ -1,4 +1,4 @@
-import React, {FC} from 'react';
+import React, {FC, useMemo} from 'react';
 import {ScrollView, Text, View} from 'react-native';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {RoundsStackParamList} from './TabRoundsScreen';
@@ -16,10 +16,10 @@ interface Props {
 const RoundDetailScreen: FC<Props> = ({navigation, route}) => {
 
     const {round} = route.params;
-    const isPending = round.matches.some(match => match.predictions.length === 0);
-    const hasStarted = new Date() > new Date(round.startingDate)
-    const canEdit = !isPending && !round.finished && !hasStarted;
-    const canSubmit = !hasStarted && isPending && !round.finished;
+    const isPending = useMemo(() => round.matches.some(match => match.predictions.length === 0), [round]);
+    const hasStarted = useMemo(() => new Date() > new Date(round.startingDate), [round]);
+    const canEdit = useMemo(() => !isPending && !round.finished && !hasStarted, [isPending, round, hasStarted]);
+    const canSubmit = useMemo(() => !hasStarted && isPending && !round.finished, [isPending, round, hasStarted]);
 
     return (
         <ScrollView>

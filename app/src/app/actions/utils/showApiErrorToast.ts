@@ -5,6 +5,9 @@ import i18next from 'i18next';
 
 export const SHOW_TOAST = "SHOW_TOAST";
 export const showApiErrorToast = (res: ResponseApiError) => {
+    if (res.ErrorCode === WebApiErrorCode.Unexpected) {
+        console.log(res.ErrorDetail);
+    }
     const translation = ErrorTools.getApiErrorMsgFromResponse(res);
     Toast.show({
         text1: i18next.t(translation.error, translation.paramsToTranslate),

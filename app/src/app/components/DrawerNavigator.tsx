@@ -16,16 +16,16 @@ import GroupLeagueScreen from "./league/GroupLeagueScreen";
 import UserImage from "./common/UserImage";
 import LeagueHeader, {HomeHeader, HomeTitleHeader} from "./league/LeagueHeader";
 import {LeagueInfo} from "../interfaces/league.interface";
-import {DrawerHeaderProps} from '@react-navigation/drawer/lib/typescript/src/types';
 import NotificationsScreen from './NotificationsScreen';
-import {logout} from '../actions/auth/logout';
 import SettingsScreen from './user/SettingsScreen';
 import {useTheme} from '@react-navigation/native';
 import {ThemeText} from './common/ThemeText';
-import { ThemeView } from "./common/ThemeView";
+import {ThemeView} from "./common/ThemeView";
 import {StyledButton} from './common/StyledButton';
 import {useTranslation} from 'react-i18next';
 import AddScreen from './add/AddScreen';
+import {CommonActions} from '@react-navigation/native';
+
 
 export type DrawerStackParamList = {
     Home: undefined;
@@ -81,6 +81,16 @@ const CustomDrawerContent: FC<DrawerContentComponentProps> = ({navigation}) => {
     const loadLeague = async (groupId: number, leagueId: number) => {
         const res = await league.getGroupLeague(groupId, leagueId);
         if (!res.IsError) {
+            navigation.dispatch(
+                CommonActions.reset({
+                    index: 1,
+                    routes: [
+                        {
+                            name: 'GroupLeague'
+                        },
+                    ],
+                })
+            );
             navigation.navigate('GroupLeague', {leagueInfo: res.Result});
         } else {
             dispatch(showApiErrorToast(res));
@@ -116,7 +126,7 @@ const CustomDrawerContent: FC<DrawerContentComponentProps> = ({navigation}) => {
             </ScrollView>
             <ThemeView style={styles.footer}>
                 <StyledButton disabled={false} color={'primary'} onPress={() => navigation.navigate('Add')}>
-                   <Text style={{color: 'white'}}>{t('ADD.ADD_LEAGUE_OR_GROUP')}</Text>
+                    <Text style={{color: 'white'}}>{t('ADD.ADD_LEAGUE_OR_GROUP')}</Text>
                 </StyledButton>
             </ThemeView>
         </View>

@@ -5,9 +5,12 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from '../user/entities/user.entity';
 import { Group } from '../group/entities/group.entity';
 import { Match } from '../match/entities/match.entity';
+import { LeagueType } from "../league-type/entities/LeagueType.entity";
+import { Prediction } from "../prediction/entities/prediction.entity";
+import { Team } from "../team/entities/team.entity";
 
 @Module({
-  imports: [TypeOrmModule.forFeature([User, Group, Match])],
+  imports: [TypeOrmModule.forFeature([User, Group, Match, LeagueType, Prediction, Team])],
   controllers: [DashboardController],
   providers: [DashboardService]
 })

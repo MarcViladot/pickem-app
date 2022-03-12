@@ -64,7 +64,7 @@ export const HomeHeader: FC<DrawerHeaderProps> = ({scene}) => {
                     <UserImage user={user} styles={styles.userImage}/>
                 </TouchableOpacity>
             </View>
-            <View>
+            {/*<View>
                 <TouchableOpacity activeOpacity={.6}
                                   onPress={() => scene.descriptor.navigation.navigate('Notifications')}>
                     <FontAwesomeIcon icon={user.invitations.length ? faBellSolid : faBell} color={colors.text} size={20}/>
@@ -74,7 +74,7 @@ export const HomeHeader: FC<DrawerHeaderProps> = ({scene}) => {
                         </BadgeContainer>
                     )}
                 </TouchableOpacity>
-            </View>
+            </View>*/}
         </ThemeView>
     )
 }

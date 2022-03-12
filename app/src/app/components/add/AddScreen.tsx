@@ -8,7 +8,8 @@ import AddHomeScreen from './AddHomeScreen';
 import JoinGroupScreen from './JoinGroupScreen';
 import CreateGroupScreen from './CreateGroupScreen';
 import AddLeagueTypeScreen from './AddLeagueTypeScreen';
-import {Group, LeagueType} from '../../interfaces/user.interface';
+import {Group, LeagueType, UserGroup} from '../../interfaces/user.interface';
+import SelectGroupScreen from './SelectGroupScreen';
 
 type ScreenNavigationProps = StackNavigationProp<DrawerStackParamList, "Add">;
 type ScreenRouteProp = RouteProp<DrawerStackParamList, "Add">;
@@ -25,6 +26,9 @@ export type AddStackParamList = {
     AddLeagueType: {
         group: Group;
         leagueTypes: LeagueType[];
+    },
+    SelectGroup: {
+        groups: UserGroup[];
     }
 };
 const AddStack = createStackNavigator<AddStackParamList>();
@@ -41,6 +45,7 @@ const AddScreen: FC<Props> = () => {
                 <AddStack.Screen name={"JoinGroup"} component={JoinGroupScreen}/>
                 <AddStack.Screen name={"CreateGroup"} component={CreateGroupScreen}/>
                 <AddStack.Screen name={"AddLeagueType"} component={AddLeagueTypeScreen}/>
+                <AddStack.Screen name={"SelectGroup"} component={SelectGroupScreen}/>
             </AddStack.Navigator>
         </View>
     );

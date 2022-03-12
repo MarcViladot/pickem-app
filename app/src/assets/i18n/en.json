@@ -5,9 +5,11 @@
     "AddHome": "Add League / Group",
     "JoinGroup": "Join Group",
     "CreateGroup": "Create Group",
-    "AddLeagueType": "Add Leagues"
+    "AddLeagueType": "Add Leagues",
+    "SelectGroup": "Select Group"
   },
   "ADD": {
+    "SELECT_GROUP": "Available groups",
     "ADD_LEAGUE_OR_GROUP": "Add League / Group",
     "JOIN_GROUP": "Join group",
     "INVITATION_CODE": "Invitation code",
@@ -84,7 +86,8 @@
     "INVITE_FRIENDS": "Invite friends",
     "INVITATION_CODE": "Invitation code: {{code}}",
     "REMOVE_ADS": "Remove ads",
-    "LEAVE_GROUP": "Leave Group"
+    "LEAVE_GROUP": "Leave Group",
+    "GROUP_CONFIG": "Group configuration"
   },
   "ERRORS": {
     "ServerConnectionError": "Server connection error",
