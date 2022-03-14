@@ -1,7 +1,7 @@
-import React, {FC} from 'react';
-import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import React, {FC, useMemo, useState} from 'react';
+import {Animated, Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import {faChevronLeft, faChevronRight} from '@fortawesome/free-solid-svg-icons';
+import {faBroadcastTower, faChevronLeft, faChevronRight} from '@fortawesome/free-solid-svg-icons';
 import {ThemeText} from '../../../common/ThemeText';
 import {CommonUtils} from '../../../../utils/CommonUtils';
 import {Match, Round} from '../../../../interfaces/league.interface';
@@ -21,20 +21,6 @@ const RoundList: FC<Props> = ({rounds, defaultRoundIndex}) => {
     const {colors} = useTheme();
     const {i18n} = useTranslation();
     const [showRoundIndex, setShowRoundIndex] = React.useState(defaultRoundIndex === -1 ? 0 : defaultRoundIndex);
-
-    const MatchComponent: FC<{ match: Match }> = ({match}) => (
-        <ThemeView style={styles.match}>
-            <Image source={{uri: match.teams[0].team.crest}} style={styles.teamCrest}/>
-            {match.finished ? (
-                <ThemeText style={styles.matchResult}
-                           testID={"finalResult"}>{match.teams[0].finalResult} · {match.teams[1].finalResult}</ThemeText>
-            ) : (
-                <ThemeText style={styles.matchDate}
-                           testID={"startDate"}>{format(new Date(match.startDate), 'dd/MM HH:mm')}</ThemeText>
-            )}
-            <Image source={{uri: match.teams[1].team.crest}} style={styles.teamCrest}/>
-        </ThemeView>
-    );
 
     const IconButton = styled.TouchableOpacity<{ disabled: boolean }>`
       opacity: ${props => props.disabled ? '0.5' : '1'};
@@ -64,14 +50,14 @@ const RoundList: FC<Props> = ({rounds, defaultRoundIndex}) => {
         });
     };
 
-
     return (
         <>
             {rounds.map((round, i) => (
                 showRoundIndex === i && (
                     <View key={i}>
                         <View style={styles.roundHeader}>
-                            <IconButton activeOpacity={.5} disabled={i === 0} onPress={() => decrementRoundIndex()} testID={'previousButton'}>
+                            <IconButton activeOpacity={.5} disabled={i === 0} onPress={() => decrementRoundIndex()}
+                                        testID={'previousButton'}>
                                 <FontAwesomeIcon icon={faChevronLeft} color={colors.text} size={16}/>
                             </IconButton>
                             <ThemeText
@@ -90,6 +76,57 @@ const RoundList: FC<Props> = ({rounds, defaultRoundIndex}) => {
         </>
     );
 };
+
+export const MatchComponent: FC<{ match: Match }> = ({match}) => {
+
+    const hasStarted = useMemo(() => new Date().getTime() > new Date(match.startDate).getTime(), [match.startDate]);
+    const [fadeAnim] = useState(new Animated.Value(0.3));
+
+    React.useEffect(() => {
+        if (hasStarted) {
+            const runAnimation = () => {
+                Animated.sequence([
+                    Animated.timing(fadeAnim, {
+                        useNativeDriver: true,
+                        toValue: 1.5,
+                        duration: 700,
+                    }),
+                    Animated.timing(fadeAnim, {
+                        useNativeDriver: true,
+                        toValue: 0.3,
+                        duration: 700
+                    })
+                ]).start(() => {
+                    runAnimation();
+                });
+            };
+            runAnimation();
+        }
+    }, [hasStarted]);
+
+
+    return (
+        <ThemeView style={styles.match}>
+            <Image source={{uri: match.teams[0].team.crest}} style={styles.teamCrest}/>
+            {match.finished ? (
+                <ThemeText style={styles.matchResult}
+                           testID={"finalResult"}>{match.teams[0].finalResult} · {match.teams[1].finalResult}</ThemeText>
+            ) : (
+                <>
+                    {hasStarted ?
+                        <Animated.View style={{opacity: fadeAnim}}>
+                            <FontAwesomeIcon icon={faBroadcastTower} size={20} color={'red'}/>
+                        </Animated.View>
+                        :
+                        <ThemeText style={styles.matchDate}
+                                   testID={"startDate"}>{format(new Date(match.startDate), 'dd/MM HH:mm')}</ThemeText>}
+                </>
+
+            )}
+            <Image source={{uri: match.teams[1].team.crest}} style={styles.teamCrest}/>
+        </ThemeView>
+    );
+}
 
 const styles = StyleSheet.create({
     roundHeader: {
