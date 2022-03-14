@@ -6,7 +6,7 @@ import {RouteProp, useTheme} from "@react-navigation/native";
 import {TabsStackParamList} from "../../GroupLeagueScreen";
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 import {faPlusCircle, faUsersCog} from "@fortawesome/free-solid-svg-icons";
-import {LeagueInfo} from "../../../../interfaces/league.interface";
+import {ILeagueInfo, LeagueInfo} from "../../../../interfaces/league.interface";
 import {useTranslation} from "react-i18next";
 import styled from 'styled-components/native';
 import {ThemeText} from '../../../common/ThemeText';

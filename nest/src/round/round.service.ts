@@ -91,6 +91,8 @@ export class RoundService {
       .where("round.leagueTypeId = :leagueId", { leagueId: leagueId })
       .andWhere("round.startingDate > :now", { now: new Date() })
       .andWhere("round.visible = 1")
+      .leftJoinAndSelect("round.translationGroup", "translationGroup")
+      .leftJoinAndSelect("translationGroup.roundNames", "roundNames")
       .leftJoinAndSelect("round.matches", "match", "match.roundId = round.id")
       .addOrderBy("match.startDate", "ASC")
       .leftJoinAndSelect("match.predictions", "prediction", "prediction.userId = :userId", { userId })

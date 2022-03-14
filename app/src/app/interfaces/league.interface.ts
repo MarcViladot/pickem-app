@@ -1,12 +1,46 @@
-import { Team } from "./team.interface"
-import { Group } from "./user.interface";
+import {Team} from "./team.interface"
+import {Group} from "./user.interface";
 
-export interface LeagueInfo {
+export interface ILeagueInfo {
     homeInfo: LeagueHomeInfo;
     leagueInfo: League;
     groupInfo: Group;
     totalPoints: number;
     table: ClassificationTableInfo;
+}
+
+export class LeagueInfo implements ILeagueInfo {
+    homeInfo: LeagueHomeInfo;
+    leagueInfo: League;
+    groupInfo: Group;
+    totalPoints: number;
+    table: ClassificationTableInfo;
+
+    constructor(api: ILeagueInfo) {
+        this.setState(api);
+    }
+
+    setState(league: ILeagueInfo): void {
+        this.homeInfo = league.homeInfo;
+        this.leagueInfo = league.leagueInfo;
+        this.groupInfo = league.groupInfo;
+        this.totalPoints = league.totalPoints;
+        this.table = league.table;
+    }
+
+    updateNextRound(round: Round): void {
+        this.homeInfo.nextRound = {...round};
+        this.updateRoundList(round);
+    }
+
+    updateRoundList(round: Round): void {
+        this.leagueInfo.rounds = this.leagueInfo.rounds.map(r => {
+            if (r.id === round.id) {
+                return {...round};
+            }
+            return r;
+        });
+    }
 }
 
 export interface ClassificationTableInfo {

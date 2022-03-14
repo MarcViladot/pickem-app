@@ -20,14 +20,14 @@ import {Round, RoundName} from '../../interfaces/League';
 import {DateTools} from '../../utils/DateTools';
 import league from '../../api/league';
 import {useQuery} from 'react-query';
-import {useNavigate} from 'react-router-dom';
+import {useNavigate, useParams} from 'react-router-dom';
 import {useSnackbar} from '../../contexts/snackbar.context';
 
 const LeagueDetail: FC = () => {
     const [loading, setLoading] = useState(false);
     const [newRoundDialogVisible, setNewRoundDialogVisible] = useState(false);
     const navigate = useNavigate();
-    const { id } = {id: 1};
+    const { id } = useParams();
     const { showResErrorSnackbar, showSuccessSnackbar } = useSnackbar();
     const { isFetching, data } = useQuery([`league`, id], () => league.getLeagueDetail(`${id}`), {
         onSuccess: (res) => {

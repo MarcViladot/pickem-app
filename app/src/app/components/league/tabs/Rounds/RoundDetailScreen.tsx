@@ -4,9 +4,11 @@ import {StackNavigationProp} from '@react-navigation/stack';
 import {RoundsStackParamList} from './TabRoundsScreen';
 import {RouteProp} from '@react-navigation/native';
 import RoundForm from '../../../common/RoundForm';
+import {HomeStackParamList} from '../Home/TabHomeScreen';
+import {Round} from '../../../../interfaces/league.interface';
 
-type ScreenNavigationProps = StackNavigationProp<RoundsStackParamList, "RoundDetail">;
-type ScreenRouteProp = RouteProp<RoundsStackParamList, "RoundDetail">;
+type ScreenNavigationProps = StackNavigationProp<RoundsStackParamList, "RoundDetail"> | StackNavigationProp<HomeStackParamList, "RoundDetail">;
+type ScreenRouteProp = RouteProp<RoundsStackParamList, "RoundDetail"> | RouteProp<HomeStackParamList, "RoundDetail">;
 
 interface Props {
     navigation: ScreenNavigationProps;
@@ -15,15 +17,22 @@ interface Props {
 
 const RoundDetailScreen: FC<Props> = ({navigation, route}) => {
 
-    const {round} = route.params;
+    const {round, onSubmit} = route.params;
     const isPending = useMemo(() => round.matches.some(match => match.predictions.length === 0), [round]);
     const hasStarted = useMemo(() => new Date() > new Date(round.startingDate), [round]);
     const canEdit = useMemo(() => !isPending && !round.finished && !hasStarted, [isPending, round, hasStarted]);
     const canSubmit = useMemo(() => !hasStarted && isPending && !round.finished, [isPending, round, hasStarted]);
 
+    const goBack = (data: Round) => {
+        if (typeof onSubmit === 'function') {
+            onSubmit(data);
+        }
+        navigation.goBack();
+    };
+
     return (
         <ScrollView>
-            <RoundForm onlyView={false} round={round} canEdit={canEdit} canSubmit={canSubmit} hasStarted={hasStarted} onSubmit={() => navigation.goBack()} />
+            <RoundForm onlyView={false} round={round} canEdit={canEdit} canSubmit={canSubmit} hasStarted={hasStarted} onSubmit={goBack} />
         </ScrollView>
     );
 };

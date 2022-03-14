@@ -7,7 +7,7 @@ import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 import {DrawerHeaderProps} from "@react-navigation/drawer/lib/typescript/src/types";
 import {faBell, faDotCircle} from "@fortawesome/free-regular-svg-icons";
 import {faBell as faBellSolid, faChevronLeft} from "@fortawesome/free-solid-svg-icons";
-import {LeagueInfo} from "../../interfaces/league.interface";
+import {ILeagueInfo} from "../../interfaces/league.interface";
 import styled from 'styled-components/native';
 import {StackHeaderProps} from '@react-navigation/stack';
 import {useTranslation} from 'react-i18next';
@@ -20,7 +20,7 @@ const LeagueHeader: FC<DrawerHeaderProps> = ({scene}) => {
     const { colors } = useTheme();
     const user = useSelector((state: RootState) => state.user.currentUser);
 
-    const {leagueInfo} = scene.route.params as { leagueInfo: LeagueInfo };
+    const {leagueInfo} = scene.route.params as { leagueInfo: ILeagueInfo };
 
     return (
         <ThemeView style={styles.container}>

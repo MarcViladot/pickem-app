@@ -18,6 +18,7 @@ import {ThemeText} from './ThemeText';
 import {ThemeView} from './ThemeView';
 import {CommonUtils} from '../../utils/CommonUtils';
 import {useTranslation} from 'react-i18next';
+import {ResponseApi} from '../../utils/IResponse';
 
 interface Props {
     round: Round;
@@ -25,7 +26,7 @@ interface Props {
     canSubmit: boolean;
     hasStarted: boolean;
     onlyView: boolean;
-    onSubmit: () => void;
+    onSubmit: (data?: any) => void;
 }
 
 interface MatchForm {
@@ -75,11 +76,11 @@ const RoundForm: FC<Props> = ({round, canEdit, canSubmit, hasStarted, onSubmit, 
 
     const createRoundPrediction = async (data: CreateRoundPredictionDto[]) => {
         setLoading(true);
-        const res = await prediction.createRoundPrediction(data);
+        const res: ResponseApi<Round> = await prediction.createRoundPrediction(data);
         setLoading(false);
         if (!res.IsError) {
             dispatch(showSuccessToast(t('COMMON.PREDICTIONS_SAVED')));
-            onSubmit();
+            onSubmit(res.Result);
         } else {
             dispatch(showApiErrorToast(res));
         }
@@ -93,7 +94,7 @@ const RoundForm: FC<Props> = ({round, canEdit, canSubmit, hasStarted, onSubmit, 
             const res = await prediction.updatePrediction({
                 id: pred.id,
                 localTeamResult: matchForm.localTeamPrediction,
-                awayTeamResult: matchForm.awayTeamPrediction
+                awayTeamResult: matchForm.awayTeamPrediction,
             });
             setLoading(false);
             if (!res.IsError) {
@@ -239,7 +240,8 @@ const RoundForm: FC<Props> = ({round, canEdit, canSubmit, hasStarted, onSubmit, 
                             return {
                                 matchId: match.match.id,
                                 localTeamResult: match.localTeamPrediction,
-                                awayTeamResult: match.awayTeamPrediction
+                                awayTeamResult: match.awayTeamPrediction,
+                                roundId: round.id
                             };
                         });
                         createRoundPrediction(parsedValues)

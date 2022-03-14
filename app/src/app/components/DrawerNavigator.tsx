@@ -15,7 +15,7 @@ import {showApiErrorToast} from "../actions/utils/showApiErrorToast";
 import GroupLeagueScreen from "./league/GroupLeagueScreen";
 import UserImage from "./common/UserImage";
 import LeagueHeader, {HomeHeader, HomeTitleHeader} from "./league/LeagueHeader";
-import {LeagueInfo} from "../interfaces/league.interface";
+import {ILeagueInfo, LeagueInfo} from "../interfaces/league.interface";
 import NotificationsScreen from './NotificationsScreen';
 import SettingsScreen from './user/SettingsScreen';
 import {useTheme} from '@react-navigation/native';
@@ -30,7 +30,7 @@ import {CommonActions} from '@react-navigation/native';
 export type DrawerStackParamList = {
     Home: undefined;
     GroupLeague: {
-        leagueInfo: LeagueInfo
+        leagueInfo: LeagueInfo;
     };
     Notifications: undefined;
     Settings: undefined;
@@ -91,7 +91,7 @@ const CustomDrawerContent: FC<DrawerContentComponentProps> = ({navigation}) => {
                     ],
                 })
             );
-            navigation.navigate('GroupLeague', {leagueInfo: res.Result});
+            navigation.navigate('GroupLeague', {leagueInfo: new LeagueInfo(res.Result)});
         } else {
             dispatch(showApiErrorToast(res));
         }

@@ -11,4 +11,7 @@ export class UpdatePredictionDto {
   @ApiProperty()
   id: number;
 
+  @ApiProperty()
+  roundId: number;
+
 }

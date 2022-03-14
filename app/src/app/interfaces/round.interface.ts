@@ -2,6 +2,7 @@ export interface CreateRoundPredictionDto {
     matchId: number;
     localTeamResult: number;
     awayTeamResult: number;
+    roundId: number;
 }
 
 export interface UpdatePredictionDto {

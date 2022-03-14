@@ -6,11 +6,14 @@ import { JwtAuthGuard, RequestWithUser } from "../auth/guards/jwt/jwt-auth.guard
 import { ResponseApi, ResponseApiSuccess, WebApiResponseCode } from "../utils/ResponseApi";
 import { WebApiException } from "../utils/WebApiException";
 import { UpdatePredictionDto } from "./dto/update-prediction.dto";
+import { RoundService } from "../round/round.service";
+import { Round } from "../round/entities/round.entity";
 
 @Controller("prediction")
 export class PredictionController {
 
-  constructor(private predictionService: PredictionService) {
+  constructor(private predictionService: PredictionService,
+              private roundService: RoundService) {
   }
 
   /*@Post()
@@ -26,10 +29,11 @@ export class PredictionController {
 
   @Post()
   @UseGuards(JwtAuthGuard)
-  async createRoundPrediction(@Body() createPredictionsDto: CreatePredictionDto[], @Req() req: RequestWithUser): Promise<ResponseApi<Prediction[]>> {
+  async createRoundPrediction(@Body() createPredictionsDto: CreatePredictionDto[], @Req() req: RequestWithUser): Promise<ResponseApi<Round>> {
     try {
-      const predictions = this.predictionService.createRoundPrediction(createPredictionsDto, req.user.userId);
-      return new ResponseApiSuccess(predictions);
+      await this.predictionService.createRoundPrediction(createPredictionsDto, req.user.userId);
+      const updatedRound = await this.roundService.getRoundDetail(createPredictionsDto[0].roundId, req.user.userId);
+      return new ResponseApiSuccess(updatedRound);
     } catch (error) {
       throw new WebApiException(WebApiResponseCode.Unexpected, [], error);
     }

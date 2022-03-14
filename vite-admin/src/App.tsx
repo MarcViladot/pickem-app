@@ -15,7 +15,7 @@ import auth from './api/auth';
 import LeaguesList from './components/leagues/LeaguesList';
 import Dashboard from './components/dashboard/Dashboard';
 import LeagueDetail from './components/leagues/LeagueDetail';
-import RoundDetail from './components/leagues/RoundDetail';
+import RoundDetail from './components/rounds/RoundDetail';
 import TeamsList from './components/teams/TeamsList';
 import UsersList from './components/users/UsersList';
 import TranslationsList from './components/translations/TranslationsList';

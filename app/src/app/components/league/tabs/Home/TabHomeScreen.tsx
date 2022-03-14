@@ -5,7 +5,7 @@ import {createStackNavigator, StackNavigationProp} from '@react-navigation/stack
 import {TabsStackParamList} from '../../GroupLeagueScreen';
 import {RouteProp} from '@react-navigation/native';
 import RoundForm from '../../../common/RoundForm';
-import {LeagueHomeInfo, LeagueInfo, Round} from '../../../../interfaces/league.interface';
+import {LeagueHomeInfo, ILeagueInfo, LeagueInfo, Round} from '../../../../interfaces/league.interface';
 import RoundListScreen from '../Rounds/RoundListScreen';
 import RoundDetailScreen from '../Rounds/RoundDetailScreen';
 import LeagueHomeScreen from './HomeScreen';
@@ -20,9 +20,11 @@ interface Props {
 }
 
 export type HomeStackParamList = {
-    LeagueHome: {
-        leagueInfo: LeagueInfo;
-    };
+    LeagueHome: undefined;
+    RoundDetail: {
+        round: Round;
+        onSubmit: (Round) => void
+    }
 };
 const HomeStack = createStackNavigator<HomeStackParamList>();
 
@@ -36,7 +38,9 @@ const TabHomeScreen: FC<Props> = ({navigation, route, leagueInfo}) => {
                 animationTypeForReplace: "pop",
                 headerShown: false
             }} initialRouteName={"LeagueHome"}>
-                <HomeStack.Screen name={"LeagueHome"} component={LeagueHomeScreen} initialParams={{leagueInfo}} />
+                <HomeStack.Screen name={"LeagueHome"}
+                                  children={(props) => <LeagueHomeScreen {...props} leagueInfo={leagueInfo}/>} />
+                <HomeStack.Screen name={"RoundDetail"} component={RoundDetailScreen}/>
             </HomeStack.Navigator>
         </View>
     );

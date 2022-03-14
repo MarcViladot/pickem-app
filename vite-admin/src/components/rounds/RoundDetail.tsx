@@ -5,15 +5,15 @@ import { AddCircleOutline } from '@mui/icons-material';
 import league from '../../api/league';
 import {useQuery, useQueryClient} from 'react-query';
 import {useSnackbar} from '../../contexts/snackbar.context';
-import {useNavigate} from 'react-router-dom';
-import CreateMatchDialog from '../rounds/CreateMatchDialog';
-import EditRoundDialog from '../rounds/EditRoundDialog';
+import {useNavigate, useParams} from 'react-router-dom';
+import CreateMatchDialog from './CreateMatchDialog';
+import EditRoundDialog from './EditRoundDialog';
 import MatchList from '../common/MatchList';
 
 const RoundDetail: FC = () => {
     const queryClient = useQueryClient();
     const navigate = useNavigate();
-    const { id, roundId } = {id: 1, roundId: 1};
+    const { id, roundId } = useParams();
     const { showResErrorSnackbar } = useSnackbar();
     const { isFetching, data } = useQuery([`round`, id, roundId], () => league.getRoundWithMatches(`${roundId}`), {
         onSuccess: (res) => {

@@ -1,9 +1,9 @@
-import React, {FC, useState} from 'react';
+import React, {FC, useMemo, useState} from 'react';
 import {ScrollView, StyleSheet, Text, TouchableOpacity, View, Animated} from "react-native";
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faBroadcastTower, faFlagCheckered, faHourglassHalf} from '@fortawesome/free-solid-svg-icons';
 import {faEdit} from '@fortawesome/free-regular-svg-icons';
-import {LeagueInfo, Round} from '../../../../interfaces/league.interface';
+import {ILeagueInfo, LeagueInfo, Round} from '../../../../interfaces/league.interface';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {TabsStackParamList} from '../../GroupLeagueScreen';
 import {RouteProp, useTheme} from '@react-navigation/native';
@@ -18,6 +18,7 @@ import {CommonUtils} from '../../../../utils/CommonUtils';
 
 interface RoundProps {
     round: Round;
+    onSubmit: (round: Round) => void;
 }
 
 type ScreenNavigationProps = StackNavigationProp<RoundsStackParamList, "RoundList">;
@@ -36,10 +37,10 @@ const RoundListScreen: FC<Props> = ({navigation, route, leagueInfo}) => {
     const dispatch = useDispatch();
     const currentUser = useSelector((state: RootState) => state.user.currentUser);
 
-    const RoundItem: FC<RoundProps> = ({round}) => {
+    const RoundItem: FC<RoundProps> = ({round, onSubmit}) => {
 
-        const isPending = round.matches.some(match => match.predictions.length === 0);
-        const isLive = !round.finished && new Date() > new Date(round.startingDate);
+        const isPending = useMemo(() => round.matches.some(match => match.predictions.length === 0), [round]);
+        const isLive = useMemo(() => !round.finished && new Date() > new Date(round.startingDate), [round]);
 
         const [fadeAnim] = useState(new Animated.Value(0.3));
 
@@ -69,14 +70,15 @@ const RoundListScreen: FC<Props> = ({navigation, route, leagueInfo}) => {
         const getRoundDetail = async (id: number) => {
             const res = await league.getRoundDetail(id, currentUser.id);
             if (!res.IsError) {
-                navigation.navigate('RoundDetail', {round: res.Result});
+                navigation.navigate('RoundDetail', {round: res.Result, onSubmit});
             } else {
                 dispatch(showApiErrorToast(res));
             }
         }
 
         return (
-            <TouchableOpacity activeOpacity={.7} style={[styles.round, {backgroundColor: colors.card}]} onPress={() => getRoundDetail(round.id)}>
+            <TouchableOpacity activeOpacity={.7} style={[styles.round, {backgroundColor: colors.card}]}
+                              onPress={() => getRoundDetail(round.id)}>
                 <ThemeText style={styles.roundName}>{CommonUtils.getRoundName(round, i18n.options.lng)}</ThemeText>
                 <Animated.View style={{opacity: isLive ? fadeAnim : 1}}>
                     <FontAwesomeIcon
@@ -88,9 +90,14 @@ const RoundListScreen: FC<Props> = ({navigation, route, leagueInfo}) => {
         )
     }
 
+    const updateRound = (round: Round) => {
+        leagueInfo.updateRoundList(round);
+    }
+
     return (
         <ScrollView style={styles.container}>
-            {leagueInfo.leagueInfo.rounds.reverse().map((round, i) => <RoundItem round={round} key={i}/>)}
+            {leagueInfo.leagueInfo.rounds.reverse().map((round, i) => <RoundItem round={round} key={i}
+                                                                                 onSubmit={round => updateRound(round)}/>)}
         </ScrollView>
     );
 

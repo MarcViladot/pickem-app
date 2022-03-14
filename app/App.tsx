@@ -1,5 +1,5 @@
 import React, {createContext, useEffect, useState} from "react";
-import {SafeAreaView, StyleSheet, Text, useColorScheme, View} from "react-native";
+import {LogBox, SafeAreaView, StyleSheet, Text, useColorScheme, View} from "react-native";
 import {NavigationContainer} from "@react-navigation/native";
 import {createStackNavigator} from "@react-navigation/stack";
 import LoginScreen from "./src/app/components/auth/LoginScreen";
@@ -20,6 +20,11 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {ThemeProvider} from 'styled-components';
 import {setLanguage} from './src/app/actions/utils/setLanguage';
 import i18n from './i18n';
+
+LogBox.ignoreLogs([
+    'Non-serializable values were found in the navigation state',
+    'Require cycle: node_modules/axios/lib/defaults.js -> node_modules/axios/lib/adapters/xhr.js -> node_modules/axios/lib/defaults.js'
+]);
 
 setCustomText({
     style: {

@@ -8,7 +8,7 @@ import UserImage from "../../../common/UserImage";
 import {User, UserGroup} from "../../../../interfaces/user.interface";
 import {useSelector} from "react-redux";
 import {RootState} from "../../../../reducers";
-import {LeagueInfo, Round} from "../../../../interfaces/league.interface";
+import {ILeagueInfo, LeagueInfo, Round} from "../../../../interfaces/league.interface";
 import RoundTable from './RoundTable';
 import {TableStackParamList} from './TabTableScreen';
 import league from '../../../../api/league';

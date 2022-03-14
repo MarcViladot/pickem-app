@@ -12,4 +12,7 @@ export class CreatePredictionDto {
   @ApiProperty()
   matchId: number;
 
+  @ApiProperty()
+  roundId: number;
+
 }

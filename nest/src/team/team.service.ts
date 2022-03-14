@@ -16,7 +16,11 @@ export class TeamService {
   }
 
   async getAllTeams(): Promise<Team[]> {
-    return this.teamRepository.find();
+    return this.teamRepository.find({
+      order: {
+        name: "ASC",
+      },
+    });
   }
 
   async getTeamById(id: number): Promise<Team | undefined> {

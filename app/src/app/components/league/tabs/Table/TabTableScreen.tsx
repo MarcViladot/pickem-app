@@ -5,7 +5,7 @@ import ButtonGroup, {IGroupButton} from "../../../common/ButtonGroup";
 import {createStackNavigator, StackNavigationProp} from "@react-navigation/stack";
 import {TabsStackParamList} from "../../GroupLeagueScreen";
 import {RouteProp} from "@react-navigation/native";
-import {LeagueInfo, Round} from "../../../../interfaces/league.interface";
+import {ILeagueInfo, LeagueInfo, Round} from "../../../../interfaces/league.interface";
 import TableScreen from './TableScreen';
 import TableRoundDetailScreen from './TableRoundDetailScreen';
 

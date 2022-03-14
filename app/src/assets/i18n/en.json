@@ -87,7 +87,9 @@
     "INVITATION_CODE": "Invitation code: {{code}}",
     "REMOVE_ADS": "Remove ads",
     "LEAVE_GROUP": "Leave Group",
-    "GROUP_CONFIG": "Group configuration"
+    "GROUP_CONFIG": "Group configuration",
+    "STARTS_IN": "Starts in",
+    "NEXT_ROUND": "Next round"
   },
   "ERRORS": {
     "ServerConnectionError": "Server connection error",

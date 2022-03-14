@@ -4,7 +4,7 @@ import {useBottomTabBarHeight} from "@react-navigation/bottom-tabs";
 import {createStackNavigator, StackNavigationProp} from '@react-navigation/stack';
 import {TabsStackParamList} from '../../GroupLeagueScreen';
 import {RouteProp} from '@react-navigation/native';
-import {LeagueInfo, Round} from '../../../../interfaces/league.interface';
+import {ILeagueInfo, LeagueInfo, Round} from '../../../../interfaces/league.interface';
 import RoundListScreen from './RoundListScreen';
 import RoundDetailScreen from './RoundDetailScreen';
 import TabTableScreen from '../Table/TabTableScreen';
@@ -22,6 +22,7 @@ export type RoundsStackParamList = {
     RoundList: undefined;
     RoundDetail: {
         round: Round;
+        onSubmit: (round: Round) => void;
     };
 };
 const RoundsStack = createStackNavigator<RoundsStackParamList>();

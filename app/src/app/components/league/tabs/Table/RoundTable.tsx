@@ -1,5 +1,5 @@
 import React, {FC, useEffect} from 'react';
-import {GroupedTableByUser, LeagueInfo} from '../../../../interfaces/league.interface';
+import {GroupedTableByUser, ILeagueInfo, LeagueInfo} from '../../../../interfaces/league.interface';
 import {StyleSheet, View} from 'react-native';
 import DropDownPicker, {ItemType} from "react-native-dropdown-picker";
 import {User} from '../../../../interfaces/user.interface';
