@@ -157,7 +157,6 @@ export class RoundService {
       .leftJoinAndSelect('round.translationGroup', 'translationGroup')
       .leftJoinAndSelect('translationGroup.roundNames', 'roundNames')
       .leftJoinAndSelect("round.roundResults", "roundResult", "roundResult.roundId = round.id AND roundResult.userId IN (:userIds)", { userIds })
-      .leftJoinAndSelect('roundResult.user', 'user', 'roundResult.userId = user.id')
       .leftJoinAndSelect("round.league", "league", "round.leagueTypeId = league.id")
       .orderBy("round.startingDate", "DESC")
       .getMany();
