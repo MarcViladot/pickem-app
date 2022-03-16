@@ -1,4 +1,5 @@
 import { Match } from "../../match/entities/match.entity";
+import { Round } from "../../round/entities/round.entity";
 
 export interface IDashboardInfo {
   usersCount: number;
@@ -25,4 +26,8 @@ export class DashboardInfo implements IDashboardInfo {
     this.leaguesCount = leaguesCount;
     this.predictionsCount = predictionsCount;
   }
+}
+
+export interface IAppDashboard {
+  nextRounds: Round[];
 }

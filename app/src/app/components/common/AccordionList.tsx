@@ -39,8 +39,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     padding: 10,
-    paddingRight: 12,
-    paddingLeft: 12
+    paddingHorizontal: 12
   },
   listName: {
     fontSize: 16,

@@ -1,12 +1,12 @@
 import React, {FC, useEffect, useState} from "react";
 import {createDrawerNavigator} from "@react-navigation/drawer";
-import HomeScreen from "./HomeScreen";
+import HomeScreen from "./home/HomeScreen";
 import Foo from "./league/GroupLeagueScreen";
 import {Image, ScrollView, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import {DrawerContentComponentProps} from "@react-navigation/drawer/src/types";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../reducers";
-import {faCog} from "@fortawesome/free-solid-svg-icons";
+import {faCog, faHome} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 import AccordionList from "./common/AccordionList";
 import {UserGroup} from "../interfaces/user.interface";
@@ -25,10 +25,11 @@ import {StyledButton} from './common/StyledButton';
 import {useTranslation} from 'react-i18next';
 import AddScreen from './add/AddScreen';
 import {CommonActions} from '@react-navigation/native';
+import HomeStackScreen from './home/HomeStackScreen';
 
 
 export type DrawerStackParamList = {
-    Home: undefined;
+    HomeStack: undefined;
     GroupLeague: {
         leagueInfo: LeagueInfo;
     };
@@ -41,13 +42,13 @@ const Drawer = createDrawerNavigator<DrawerStackParamList>();
 const DrawerNavigator = () => {
 
     return (
-        <Drawer.Navigator initialRouteName="Home" drawerType={"slide"}
+        <Drawer.Navigator initialRouteName="HomeStack" drawerType={"slide"}
                           drawerContent={(props) => <CustomDrawerContent {...props} />}
                           drawerStyle={{
                               backgroundColor: "#c6cbef",
                               width: 230
                           }}>
-            <Drawer.Screen name="Home" component={HomeScreen} options={{
+            <Drawer.Screen name="HomeStack" component={HomeStackScreen} options={{
                 header: (props) => <HomeHeader {...props} />,
                 headerShown: true
             }}/>
@@ -111,6 +112,15 @@ const CustomDrawerContent: FC<DrawerContentComponentProps> = ({navigation}) => {
                 </TouchableOpacity>
             </ThemeView>
             <ScrollView style={{flex: 1}}>
+                <View style={styles.homeButtonContainer}>
+                    <TouchableOpacity activeOpacity={.4} disabled={loading}
+                                      onPress={() => navigation.navigate('HomeStack')}
+                                      style={[styles.leagueButton, styles.homeButton]}
+                                      key={'home'}>
+                        <ThemeText style={{fontSize: 16, fontWeight: 'bold',}}>{t('Home')}</ThemeText>
+                        <FontAwesomeIcon icon={faHome} size={16} color={colors.text} />
+                    </TouchableOpacity>
+                </View>
                 {user.groups.map((userGroup: UserGroup, i) => (
                     <AccordionList key={userGroup.id} openByDefault={user.groups.length === 1 && i === 0}
                                    name={userGroup.group.name} listItems={userGroup.group.leagues.map((league) => (
@@ -162,6 +172,13 @@ const styles = StyleSheet.create({
         height: 37,
         borderRadius: 50,
         marginRight: 10
+    },
+    homeButtonContainer: {
+        paddingHorizontal: 12
+    },
+    homeButton: {
+        justifyContent: 'space-between',
+        marginBottom: 5
     },
     leagueButton: {
         flexDirection: "row",

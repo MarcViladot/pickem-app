@@ -7,6 +7,7 @@ import { Group } from '../group/entities/group.entity';
 import { Prediction } from "../prediction/entities/prediction.entity";
 import { LeagueType } from "../league-type/entities/LeagueType.entity";
 import { Team } from "../team/entities/team.entity";
+import { Round } from "../round/entities/round.entity";
 
 @Injectable()
 export class DashboardService {
@@ -16,7 +17,8 @@ export class DashboardService {
               @InjectRepository(Group) private groupRepo: Repository<Group>,
               @InjectRepository(Prediction) private predictionRepo: Repository<Prediction>,
               @InjectRepository(LeagueType) private leagueRepo: Repository<LeagueType>,
-              @InjectRepository(Team) private teamRepo: Repository<Team>) {
+              @InjectRepository(Team) private teamRepo: Repository<Team>,
+              @InjectRepository(Round) private roundRepo: Repository<Round>) {
   }
 
   async getTotalUserCount(): Promise<number> {
@@ -48,4 +50,19 @@ export class DashboardService {
       .getMany();
   }
 
+  async getNextRounds(userId: number): Promise<Round[]> {
+    return this.roundRepo.createQueryBuilder("round")
+      .where("round.startingDate > :now", { now: new Date() })
+      .andWhere("round.visible = 1")
+      .leftJoinAndSelect('round.league', 'league')
+      .leftJoinAndSelect("round.translationGroup", "translationGroup")
+      .leftJoinAndSelect("translationGroup.roundNames", "roundNames")
+      .leftJoinAndSelect("round.matches", "match", "match.roundId = round.id")
+      .addOrderBy("match.startDate", "ASC")
+      .leftJoinAndSelect("match.predictions", "prediction", "prediction.userId = :userId", { userId })
+      .leftJoinAndSelect("match.teams", "teamMatch")
+      .addOrderBy("teamMatch.teamPosition", "ASC")
+      .leftJoinAndSelect("teamMatch.team", "team", "team.id = teamMatch.teamId")
+      .getMany();
+  }
 }

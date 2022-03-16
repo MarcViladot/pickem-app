@@ -16,7 +16,7 @@ interface RowProps {
     roundId?: number
 }
 
-export const UserRow: FC<RowProps> = ({
+export const TableUserRow: FC<RowProps> = ({
                                           userId,
                                           points,
                                           position,

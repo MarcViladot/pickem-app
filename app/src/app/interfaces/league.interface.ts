@@ -1,5 +1,6 @@
 import {Team} from "./team.interface"
-import {Group} from "./user.interface";
+import {Group, LeagueType, User} from "./user.interface";
+import {LeagueEvent} from './event.interface';
 
 export interface ILeagueInfo {
     homeInfo: LeagueHomeInfo;
@@ -70,6 +71,18 @@ export interface Round {
     visible: boolean;
     translationGroup: TranslationGroup;
     translationNameExtra: string;
+    league?: League;
+}
+
+export interface RoundResult {
+    id: number;
+    points: number;
+    user: User;
+    userId: number;
+    round: Round;
+    roundId: number;
+    league: LeagueType;
+    leagueTypeId: number;
 }
 
 export interface TranslationGroup {
@@ -116,6 +129,6 @@ export enum TeamPosition {
 
 export interface LeagueHomeInfo {
     nextRound: Round | null;
-    leagueHistory: Round[];
+    events: LeagueEvent[];
 }
 

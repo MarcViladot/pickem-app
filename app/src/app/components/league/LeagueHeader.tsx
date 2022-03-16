@@ -63,6 +63,7 @@ export const HomeHeader: FC<DrawerHeaderProps> = ({scene}) => {
                 <TouchableOpacity activeOpacity={.5} onPress={() => scene.descriptor.navigation.toggleDrawer()}>
                     <UserImage user={user} styles={styles.userImage}/>
                 </TouchableOpacity>
+                <Text style={{marginLeft: 10, fontSize: 20}}>Picke'ms</Text>
             </View>
             {/*<View>
                 <TouchableOpacity activeOpacity={.6}

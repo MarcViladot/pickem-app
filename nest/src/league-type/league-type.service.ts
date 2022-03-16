@@ -65,11 +65,10 @@ export class LeagueTypeService {
     getGroupLeague(leagueId: number, userId: number): Promise<LeagueType> {
         return this.leagueTypeRepository.createQueryBuilder("league")
           .where("league.id = :leagueId", { leagueId })
-          .leftJoinAndSelect("league.rounds", "round")
+          .leftJoinAndSelect("league.rounds", "round", "round.visible = 1")
           .leftJoinAndSelect('round.translationGroup', 'translationGroup')
           .leftJoinAndSelect('translationGroup.roundNames', 'roundNames')
           .leftJoinAndSelect('round.roundResults', 'roundResult', 'roundResult.roundId = round.id AND roundResult.userId = :userId', { userId })
-          .andWhere('round.visible = 1')
           .orderBy("round.startingDate", "ASC")
           .leftJoinAndSelect("round.matches", "match", "match.roundId = round.id")
           .addOrderBy("match.startDate", "ASC")
@@ -169,8 +168,8 @@ export class LeagueTypeService {
         return this.leagueTypeRepository.save(league);
     }
 
-    getRoundEvents(round: Round[]): RoundEvent[] {
-        return round.map(round => new RoundEvent(round.finishedAt, round));
+    getRoundEvents(round: Round[], users: User[]): RoundEvent[] {
+        return round.map(round => new RoundEvent(round.finishedAt, round, users));
     }
 
     getLeagueEvents(userEvents: UserEvent[], roundEvents: RoundEvent[]): LeagueEvent[] {

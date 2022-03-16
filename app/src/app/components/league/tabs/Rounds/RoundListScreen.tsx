@@ -96,8 +96,16 @@ const RoundListScreen: FC<Props> = ({navigation, route, leagueInfo}) => {
 
     return (
         <ScrollView style={styles.container}>
-            {leagueInfo.leagueInfo.rounds.reverse().map((round, i) => <RoundItem round={round} key={i}
-                                                                                 onSubmit={round => updateRound(round)}/>)}
+            {leagueInfo.leagueInfo.rounds.length > 0 ?
+                <>
+                    {leagueInfo.leagueInfo.rounds.reverse().map((round, i) => <RoundItem round={round} key={i}
+                                                                                         onSubmit={round => updateRound(round)}/>)}
+                </>
+                :
+                <View style={{alignItems: 'center', marginTop: 30}}>
+                    <Text style={{fontSize: 20}}>{t('TABLE.NO_ROUNDS')}</Text>
+                </View>
+            }
         </ScrollView>
     );
 

@@ -8,7 +8,7 @@ import RoundForm from '../../../common/RoundForm';
 import {LeagueHomeInfo, ILeagueInfo, LeagueInfo, Round} from '../../../../interfaces/league.interface';
 import RoundListScreen from '../Rounds/RoundListScreen';
 import RoundDetailScreen from '../Rounds/RoundDetailScreen';
-import LeagueHomeScreen from './HomeScreen';
+import LeagueHomeScreen from './LeagueHomeScreen';
 
 type ScreenNavigationProps = StackNavigationProp<TabsStackParamList, "TabHome">;
 type ScreenRouteProp = RouteProp<TabsStackParamList, "TabHome">;
@@ -19,31 +19,31 @@ interface Props {
     leagueInfo: LeagueInfo;
 }
 
-export type HomeStackParamList = {
+export type LeagueHomeStackParamList = {
     LeagueHome: undefined;
     RoundDetail: {
         round: Round;
         onSubmit: (Round) => void
     }
 };
-const HomeStack = createStackNavigator<HomeStackParamList>();
+const LeagueHomeStack = createStackNavigator<LeagueHomeStackParamList>();
 
-const TabHomeScreen: FC<Props> = ({navigation, route, leagueInfo}) => {
+const TabLeagueHomeScreen: FC<Props> = ({navigation, route, leagueInfo}) => {
 
     const tabBarHeight = useBottomTabBarHeight();
 
     return (
         <View style={{marginTop: tabBarHeight, backgroundColor: '#F3F4F9', height: '100%'}}>
-            <HomeStack.Navigator screenOptions={{
+            <LeagueHomeStack.Navigator screenOptions={{
                 animationTypeForReplace: "pop",
                 headerShown: false
             }} initialRouteName={"LeagueHome"}>
-                <HomeStack.Screen name={"LeagueHome"}
+                <LeagueHomeStack.Screen name={"LeagueHome"}
                                   children={(props) => <LeagueHomeScreen {...props} leagueInfo={leagueInfo}/>} />
-                <HomeStack.Screen name={"RoundDetail"} component={RoundDetailScreen}/>
-            </HomeStack.Navigator>
+                <LeagueHomeStack.Screen name={"RoundDetail"} component={RoundDetailScreen}/>
+            </LeagueHomeStack.Navigator>
         </View>
     );
 };
 
-export default TabHomeScreen;
+export default TabLeagueHomeScreen;

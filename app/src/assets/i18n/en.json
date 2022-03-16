@@ -98,5 +98,9 @@
     "GroupNotFound": "Group with code {{p1}} not found",
     "UserAlreadyInGroup": "You are already in this group",
     "RequestAlreadySent": "Join request to this group already sent"
+  },
+  "EVENTS": {
+    "ROUND_FINISH": "End of",
+    "UserJoined": "has joined the group"
   }
 }

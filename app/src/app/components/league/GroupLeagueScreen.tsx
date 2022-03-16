@@ -2,7 +2,7 @@ import React, {FC, useEffect} from "react";
 import {StackNavigationProp} from "@react-navigation/stack";
 import {RouteProp, useTheme} from "@react-navigation/native";
 import {DrawerStackParamList} from "../DrawerNavigator";
-import TabHomeScreen from "./tabs/Home/TabHomeScreen";
+import TabLeagueHomeScreen from "./tabs/Home/TabLeagueHomeScreen";
 import TabRoundsScreen from "./tabs/Rounds/TabRoundsScreen";
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 import {faBars, faTrophy} from "@fortawesome/free-solid-svg-icons";
@@ -13,7 +13,6 @@ import {useTranslation} from "react-i18next";
 import {faClock} from "@fortawesome/free-regular-svg-icons";
 import TabTableScreen from "./tabs/Table/TabTableScreen";
 import TabMoreScreen from "./tabs/More/TabMoreScreen";
-import {ILeagueInfo} from "../../interfaces/league.interface";
 
 type ScreenNavigationProps = StackNavigationProp<DrawerStackParamList, "GroupLeague">;
 type ScreenRouteProp = RouteProp<DrawerStackParamList, "GroupLeague">;
@@ -45,7 +44,7 @@ const GroupLeagueScreen: FC<Props> = ({navigation, route}) => {
             tabBarIconStyle: styles.tabBarIconStyle,
         }}>
             <Tab.Screen name="TabHome"
-                        children={props => <TabHomeScreen {...props} leagueInfo={leagueInfo}/>}
+                        children={props => <TabLeagueHomeScreen {...props} leagueInfo={leagueInfo}/>}
                         options={{
                             tabBarIcon: ({focused, color}) => <FontAwesomeIcon icon={faHome} color={colors.text}
                                                                                size={15}/>,

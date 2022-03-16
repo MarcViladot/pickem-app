@@ -3,7 +3,7 @@ import {GroupedTableByUser, ILeagueInfo, LeagueInfo} from '../../../../interface
 import {StyleSheet, View} from 'react-native';
 import DropDownPicker, {ItemType} from "react-native-dropdown-picker";
 import {User} from '../../../../interfaces/user.interface';
-import {UserRow} from './UserRow';
+import {TableUserRow} from './TableUserRow';
 import {CommonUtils} from '../../../../utils/CommonUtils';
 import {useTranslation} from 'react-i18next';
 import {useTheme} from '@react-navigation/native';
@@ -72,14 +72,14 @@ const RoundTable: FC<Props> = ({leagueInfo, currentUser, onRowClick}) => {
                 }}/>
             <View style={styles.table}>
                 {classification ?
-                    classification.map((roundResult, i) => <UserRow key={i} userId={roundResult.userId}
-                                                                    points={roundResult.points}
-                                                                    clickable={clickable}
-                                                                    position={i + 1}
-                                                                    roundId={selectedRound}
-                                                                    onRowClick={onRowClick}
-                                                                    isCurrentUser={currentUser.id === roundResult.userId}
-                                                                    userGroups={leagueInfo.groupInfo.userGroups}/>)
+                    classification.map((roundResult, i) => <TableUserRow key={i} userId={roundResult.userId}
+                                                                         points={roundResult.points}
+                                                                         clickable={clickable}
+                                                                         position={i + 1}
+                                                                         roundId={selectedRound}
+                                                                         onRowClick={onRowClick}
+                                                                         isCurrentUser={currentUser.id === roundResult.userId}
+                                                                         userGroups={leagueInfo.groupInfo.userGroups}/>)
                     : <></>}
             </View>
         </>

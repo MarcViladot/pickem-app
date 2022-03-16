@@ -4,11 +4,11 @@ import {StackNavigationProp} from '@react-navigation/stack';
 import {RoundsStackParamList} from './TabRoundsScreen';
 import {RouteProp} from '@react-navigation/native';
 import RoundForm from '../../../common/RoundForm';
-import {HomeStackParamList} from '../Home/TabHomeScreen';
+import {LeagueHomeStackParamList} from '../Home/TabLeagueHomeScreen';
 import {Round} from '../../../../interfaces/league.interface';
 
-type ScreenNavigationProps = StackNavigationProp<RoundsStackParamList, "RoundDetail"> | StackNavigationProp<HomeStackParamList, "RoundDetail">;
-type ScreenRouteProp = RouteProp<RoundsStackParamList, "RoundDetail"> | RouteProp<HomeStackParamList, "RoundDetail">;
+type ScreenNavigationProps = StackNavigationProp<RoundsStackParamList, "RoundDetail"> | StackNavigationProp<LeagueHomeStackParamList, "RoundDetail">;
+type ScreenRouteProp = RouteProp<RoundsStackParamList, "RoundDetail"> | RouteProp<LeagueHomeStackParamList, "RoundDetail">;
 
 interface Props {
     navigation: ScreenNavigationProps;

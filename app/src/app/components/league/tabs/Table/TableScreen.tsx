@@ -12,7 +12,8 @@ import {ILeagueInfo, LeagueInfo, Round} from "../../../../interfaces/league.inte
 import RoundTable from './RoundTable';
 import {TableStackParamList} from './TabTableScreen';
 import league from '../../../../api/league';
-import {UserRow} from './UserRow';
+import {TableUserRow} from './TableUserRow';
+import {useTranslation} from 'react-i18next';
 
 type ScreenNavigationProps = StackNavigationProp<TableStackParamList, "Table">;
 type ScreenRouteProp = RouteProp<TableStackParamList, "Table">;
@@ -25,6 +26,7 @@ interface Props {
 
 const TableScreen: FC<Props> = ({navigation, route, leagueInfo}) => {
 
+    const {t} = useTranslation();
     const tabBarHeight = useBottomTabBarHeight();
     const [showGlobal, setShowGlobal] = React.useState(true);
     const currentUser = useSelector((state: RootState) => state.user.currentUser);
@@ -48,16 +50,22 @@ const TableScreen: FC<Props> = ({navigation, route, leagueInfo}) => {
                              onSelect={value => setShowGlobal(value)}/>
                 {showGlobal ?
                     <View style={styles.table}>
-                        {leagueInfo.table.global.map((user, i) => <UserRow key={i} userId={user.userId}
-                                                                           points={user.totalPoints}
-                                                                           clickable={false}
-                                                                           position={i + 1}
-                                                                           isCurrentUser={user.userId === currentUser.id}
-                                                                           userGroups={leagueInfo.groupInfo.userGroups}/>)}
+                        {leagueInfo.table.global.map((user, i) => <TableUserRow key={i} userId={user.userId}
+                                                                                points={user.totalPoints}
+                                                                                clickable={false}
+                                                                                position={i + 1}
+                                                                                isCurrentUser={user.userId === currentUser.id}
+                                                                                userGroups={leagueInfo.groupInfo.userGroups}/>)}
                     </View>
                     :
                     <View style={styles.table}>
-                        <RoundTable currentUser={currentUser} leagueInfo={leagueInfo} onRowClick={getRoundDetail}/>
+                        {leagueInfo.leagueInfo.rounds.length > 0 ?
+                            <RoundTable currentUser={currentUser} leagueInfo={leagueInfo} onRowClick={getRoundDetail}/>
+                            :
+                            <View style={{alignItems: 'center', marginTop: 30}}>
+                                <Text style={{fontSize: 20}}>{t('TABLE.NO_ROUNDS')}</Text>
+                            </View>
+                        }
                     </View>
                 }
 

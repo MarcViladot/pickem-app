@@ -73,6 +73,7 @@ const AddLeagueTypeScreen: FC<Props> = ({navigation, route}) => {
                 <CheckBox
                     disabled={false}
                     value={selected}
+                    tintColors={{false: 'gray' }}
                     onValueChange={(newValue) => {
                         onPress();
                     }}

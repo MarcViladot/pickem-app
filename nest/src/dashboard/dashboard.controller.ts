@@ -1,11 +1,11 @@
-import { Controller, Get, UseGuards } from '@nestjs/common';
+import { Controller, Get, Req, UseGuards } from "@nestjs/common";
 import { DashboardService } from './dashboard.service';
-import { JwtAuthGuard } from '../auth/guards/jwt/jwt-auth.guard';
+import { JwtAuthGuard, RequestWithUid } from "../auth/guards/jwt/jwt-auth.guard";
 import { RolesGuard } from '../auth/guards/roles.guard';
 import { Roles } from '../auth/decorators/roles.decorator';
 import { UserRole } from '../user/entities/user.entity';
 import { ResponseApi, ResponseApiSuccess } from '../utils/ResponseApi';
-import { DashboardInfo, IDashboardInfo } from './interfaces/dashboard.interface';
+import { DashboardInfo, IAppDashboard, IDashboardInfo } from "./interfaces/dashboard.interface";
 
 @Controller('dashboard')
 /*@UseGuards(JwtAuthGuard, RolesGuard)
@@ -26,6 +26,16 @@ export class DashboardController {
     const predictionsCount = await this.dashboardService.getTotalPredictionsCount();
     const liveMatchList = await this.dashboardService.getLiveMatches();
     const dashboardInfo = new DashboardInfo(groupCount, userCount, liveMatchList, leaguesCount, teamsCount, predictionsCount);
+    return new ResponseApiSuccess(dashboardInfo);
+  }
+
+  @Get('app')
+  @UseGuards(JwtAuthGuard)
+  async getAppDashboard(@Req() req: RequestWithUid): Promise<ResponseApi<IAppDashboard>> {
+    const nextRounds = await this.dashboardService.getNextRounds(req.user.userId);
+    const dashboardInfo: IAppDashboard = {
+      nextRounds
+    };
     return new ResponseApiSuccess(dashboardInfo);
   }
 

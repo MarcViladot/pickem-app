@@ -40,7 +40,15 @@ const TabMoreScreen: FC<Props> = ({navigation, route, leagueInfo}) => {
     return (
         <View style={{marginTop: tabBarHeight, flex: 1}}>
             <View style={{padding: 10, paddingTop: 20, flex: 1, justifyContent: "space-between"}}>
-                <RoundList rounds={leagueInfo.leagueInfo.rounds} defaultRoundIndex={defaultRoundIndex}/>
+                <View style={{flex: 1}}>
+                    {leagueInfo.leagueInfo.rounds.length > 0 ?
+                        <RoundList rounds={leagueInfo.leagueInfo.rounds} defaultRoundIndex={defaultRoundIndex}/>
+                        :
+                        <View style={{alignItems: 'center', marginTop: 30}}>
+                            <Text style={{fontSize: 20}}>{t('TABLE.NO_ROUNDS')}</Text>
+                        </View>
+                    }
+                </View>
                 <View>
                     <TextContainer>
                         <TouchableOpacity activeOpacity={.5}>
@@ -53,7 +61,12 @@ const TabMoreScreen: FC<Props> = ({navigation, route, leagueInfo}) => {
                         </View>
                     </TextContainer>
                     <TextContainer>
-                        <TouchableOpacity activeOpacity={.5} style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%'}}>
+                        <TouchableOpacity activeOpacity={.5} style={{
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            justifyContent: 'space-between',
+                            width: '100%'
+                        }}>
                             <ThemeText style={{fontSize: 15}}>{t("LEAGUE.GROUP_CONFIG")}</ThemeText>
                             <FontAwesomeIcon icon={faUsersCog} color={"#96A6B6"} style={{marginRight: 10}} size={20}/>
                         </TouchableOpacity>

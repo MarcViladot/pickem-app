@@ -90,6 +90,7 @@ const SettingsListScreen: FC<Props> = ({route, navigation}) => {
                     <CheckBox
                         disabled={false}
                         value={theme === 'dark'}
+                        tintColors={{false: 'gray' }}
                         onValueChange={(newValue) => {
                             changeTheme(newValue ? 'dark' : 'light')
                         }}

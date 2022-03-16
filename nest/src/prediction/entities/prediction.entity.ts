@@ -1,10 +1,11 @@
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, Unique } from "typeorm";
 import { User } from '../../user/entities/user.entity';
 import { Match } from '../../match/entities/match.entity';
 import { Group } from "../../group/entities/group.entity";
 import { LeagueType } from "../../league-type/entities/LeagueType.entity";
 
 @Entity()
+@Unique('user_per_match', ['userId', 'matchId'])
 export class Prediction {
 
   @PrimaryGeneratedColumn()

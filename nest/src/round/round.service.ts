@@ -149,14 +149,14 @@ export class RoundService {
       .getMany();
   }
 
-  async getLeagueHistory(leagueId: number): Promise<Round[]> {
+  async getLeagueHistory(leagueId: number, userIds: number[]): Promise<Round[]> {
     return this.roundRepository.createQueryBuilder("round")
       .where("round.leagueTypeId = :leagueId", { leagueId: leagueId })
       .andWhere("round.finished = true")
       .andWhere("round.visible = true")
       .leftJoinAndSelect('round.translationGroup', 'translationGroup')
       .leftJoinAndSelect('translationGroup.roundNames', 'roundNames')
-      .leftJoinAndSelect("round.roundResults", "roundResult", "roundResult.roundId = round.id")
+      .leftJoinAndSelect("round.roundResults", "roundResult", "roundResult.roundId = round.id AND roundResult.userId IN (:userIds)", { userIds })
       .leftJoinAndSelect('roundResult.user', 'user', 'roundResult.userId = user.id')
       .leftJoinAndSelect("round.league", "league", "round.leagueTypeId = league.id")
       .orderBy("round.startingDate", "DESC")
