@@ -6,10 +6,11 @@ import { Prediction } from './entities/prediction.entity';
 import { AuthModule } from '../auth/auth.module';
 import { Match } from '../match/entities/match.entity';
 import { RoundModule } from "../round/round.module";
+import { Round } from "../round/entities/round.entity";
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Prediction, Match]),
+    TypeOrmModule.forFeature([Prediction, Match, Round]),
     AuthModule,
     RoundModule
   ],

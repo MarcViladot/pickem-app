@@ -44,11 +44,13 @@ const EditMatchDialog: FC<Props> = ({
       date: new Date(match.startDate),
       doublePoints: match.doublePoints,
       finished: match.finished,
+      postponed: match.postponed
     },
     validationSchema: Yup.object({
       date: Yup.date().required(`Required`),
       doublePoints: Yup.boolean().required(`Required`),
       finished: Yup.boolean().required(`Required`),
+      postponed: Yup.boolean().required(`Required`),
     }),
     onSubmit: (values) => {
       editMatch({
@@ -133,6 +135,23 @@ const EditMatchDialog: FC<Props> = ({
                     value={formik.values.doublePoints}
                   />
                 }
+              />
+            </FormGroup>
+            <FormGroup>
+              <FormControlLabel
+                  label="Match Postponed"
+                  control={
+                    <Checkbox
+                        name="postponed"
+                        color={`error`}
+                        onChange={() =>
+                            formik.setFieldValue(`postponed`, !formik.values.postponed)
+                        }
+                        onBlur={formik.handleBlur}
+                        checked={formik.values.postponed}
+                        value={formik.values.postponed}
+                    />
+                  }
               />
             </FormGroup>
             <FormGroup>

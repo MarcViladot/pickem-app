@@ -48,6 +48,7 @@ export interface Match {
   startDate: string;
   finished: boolean;
   doublePoints: boolean;
+  postponed: boolean;
   teams: TeamMatch[];
 }
 

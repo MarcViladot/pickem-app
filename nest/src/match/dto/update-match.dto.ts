@@ -12,4 +12,7 @@ export class UpdateMatchDto {
 
   @ApiProperty()
   finished: boolean;
+
+  @ApiProperty()
+  postponed: boolean;
 }

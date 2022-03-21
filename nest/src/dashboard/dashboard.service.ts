@@ -46,6 +46,7 @@ export class DashboardService {
       .leftJoinAndSelect('match.teams', 'teamMatch', 'teamMatch.matchId = match.id')
       .leftJoinAndSelect('teamMatch.team', 'team', 'teamMatch.teamId = team.Id')
       .where('match.finished = 0 AND match.startDate <= :currentDate', {currentDate: new Date()})
+      .andWhere('match.postponed = 0')
       .orderBy('match.startDate', 'ASC')
       .getMany();
   }

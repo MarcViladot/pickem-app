@@ -4,12 +4,12 @@ import {RoundLeagueEvent, UserLeagueEvent} from '../../interfaces/event.interfac
 import {useTheme} from '@react-navigation/native';
 import {useTranslation} from 'react-i18next';
 import {CommonUtils} from '../../utils/CommonUtils';
-import {format} from 'date-fns';
+import {formatDistance} from 'date-fns';
 import {LeagueInfo} from '../../interfaces/league.interface';
 import {TableUserRow} from '../league/tabs/Table/TableUserRow';
 import {useSelector} from 'react-redux';
 import {RootState} from '../../reducers';
-
+import * as Locales from 'date-fns/locale';
 interface Props {
     event: RoundLeagueEvent;
     leagueInfo: LeagueInfo;
@@ -20,7 +20,12 @@ interface Props {
 const RoundEvent: FC<Props> = ({event, leagueInfo, onRowClick, showLeagueIcon}) => {
     const {t, i18n} = useTranslation();
     const {colors} = useTheme();
-    const formattedDate = useMemo(() => format(new Date(event.date), 'dd/MM HH:mm'), [event.date]);
+    const formattedDate = useMemo(() => formatDistance(new Date(event.date), new Date(), {
+        addSuffix: true,
+        locale: Locales[i18n.language === 'en' ? 'enUS' : i18n.language]
+    }), [event.date]);
+
+
     const currentUser = useSelector((state: RootState) => state.user.currentUser);
     return (
         <View style={[styles.container, {backgroundColor: colors.card}]}>
@@ -30,7 +35,7 @@ const RoundEvent: FC<Props> = ({event, leagueInfo, onRowClick, showLeagueIcon}) 
                     <Text style={{marginTop: 3, color: 'gray', fontSize: 12}}>{formattedDate}</Text>
                 </View>
                 {showLeagueIcon && (
-                    <Image source={{uri: leagueInfo.leagueInfo.logo}} style={{width: 32, height: 32}} />
+                    <Image source={{uri: leagueInfo.leagueInfo.logo}} style={{width: 32, height: 32}}/>
                 )}
             </View>
             <View style={styles.divider}/>
@@ -40,7 +45,7 @@ const RoundEvent: FC<Props> = ({event, leagueInfo, onRowClick, showLeagueIcon}) 
                                                                       isCurrentUser={currentUser.id === result.userId}
                                                                       userGroups={leagueInfo.groupInfo.userGroups}
                                                                       roundId={result.roundId}
-                                                                      clickable={true} onRowClick={onRowClick} key={i} />
+                                                                      clickable={true} onRowClick={onRowClick} key={i}/>
                 )}
             </View>
         </View>

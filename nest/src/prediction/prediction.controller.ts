@@ -43,7 +43,7 @@ export class PredictionController {
   @UseGuards(JwtAuthGuard)
   async updatePrediction(@Body() updatePredictionDto: UpdatePredictionDto, @Req() req: RequestWithUser): Promise<ResponseApi<Prediction>> {
     try {
-      const prediction = this.predictionService.updatePrediction(updatePredictionDto, req.user.userId);
+      const prediction = this.predictionService.updatePrediction(updatePredictionDto);
       return new ResponseApiSuccess(prediction);
     } catch (error) {
       throw new WebApiException(WebApiResponseCode.Unexpected, [], error);

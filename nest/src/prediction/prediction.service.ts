@@ -6,12 +6,16 @@ import { CreatePredictionDto } from "./dto/create-prediction.dto";
 import { TeamMatch } from "../match/entities/team-match.entity";
 import { Match } from "../match/entities/match.entity";
 import { UpdatePredictionDto } from "./dto/update-prediction.dto";
+import { Round } from "../round/entities/round.entity";
+import { WebApiException } from "../utils/WebApiException";
+import { WebApiResponseCode } from "../utils/ResponseApi";
 
 @Injectable()
 export class PredictionService {
 
   constructor(@InjectRepository(Prediction) private predictionRepository: Repository<Prediction>,
-              @InjectRepository(Match) private matchRepository: Repository<Match>) {
+              @InjectRepository(Match) private matchRepository: Repository<Match>,
+              @InjectRepository(Round) private roundRepository: Repository<Round>) {
   }
 
   async createPrediction(createPredictionDto: CreatePredictionDto, userId: number): Promise<Prediction> {
@@ -26,6 +30,10 @@ export class PredictionService {
   }
 
   async createRoundPrediction(createPredictionsDto: CreatePredictionDto[], userId: number): Promise<Prediction[]> {
+    const roundHasStarted = await this.roundHasStarted(createPredictionsDto[0].roundId);
+    if (roundHasStarted) {
+      throw new WebApiException(WebApiResponseCode.RoundHasStarted, [createPredictionsDto[0].roundId]);
+    }
     const predictions: Prediction[] = createPredictionsDto.map(createPredictionDto => {
       return {
         localTeamResult: createPredictionDto.localTeamResult,
@@ -37,7 +45,11 @@ export class PredictionService {
     return this.predictionRepository.save<Prediction>(predictions);
   }
 
-  async updatePrediction(updatePredictionDto: UpdatePredictionDto, userId: number): Promise<UpdateResult> {
+  async updatePrediction(updatePredictionDto: UpdatePredictionDto): Promise<UpdateResult> {
+    const roundHasStarted = await this.roundHasStarted(updatePredictionDto[0].roundId);
+    if (roundHasStarted) {
+      throw new WebApiException(WebApiResponseCode.RoundHasStarted, [updatePredictionDto.roundId]);
+    }
     return this.predictionRepository.update({ id: updatePredictionDto.id }, {
       localTeamResult: updatePredictionDto.localTeamResult,
       awayTeamResult: updatePredictionDto.awayTeamResult
@@ -60,8 +72,8 @@ export class PredictionService {
     // TODO PENDING TO TEST
     if ((realLocalResult === predLocalResult) && (realAwayResult === predAwayResult)) {
       return 4;
-    } else if (realLocalResult === realAwayResult) {
-      return 0;
+    } else if ((realLocalResult === realAwayResult) && (predAwayResult === predLocalResult)) {
+      return 2;
     } else if ((realLocalResult > realAwayResult) === (predLocalResult > predAwayResult)) {
       return 2;
     }
@@ -69,10 +81,15 @@ export class PredictionService {
   }
 
   async getTotalPointsFromRound(roundId: number, userId: number): Promise<{ totalPoints: number }> {
-    return await this.predictionRepository.createQueryBuilder("prediction")
+    return await this.matchRepository.createQueryBuilder("match")
       .select("SUM(prediction.points) AS totalPoints")
-      .leftJoin("prediction.match", "match", "prediction.matchId = match.id AND match.roundId = :roundId", { roundId: roundId })
-      .where("prediction.userId = :userId", { userId: userId })
+      .where('match.roundId = :roundId', { roundId })
+      .leftJoin("match.predictions", "prediction", "prediction.matchId = match.id AND prediction.userId = :userId", { userId })
       .getRawOne();
+  }
+
+  private async roundHasStarted(roundId: number): Promise<boolean> {
+    const round = await this.roundRepository.findOne(roundId);
+    return round.startingDate.getTime() < new Date().getTime();
   }
 }

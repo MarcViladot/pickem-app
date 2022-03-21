@@ -12,7 +12,7 @@ import {GroupTools} from '../../utils/GroupTools';
 import clsx from 'clsx';
 import { makeStyles } from "@material-ui/styles";
 import { Outlet } from 'react-router-dom';
-
+import '../../App.css'
 
 interface Props {
     children: React.ReactNode;

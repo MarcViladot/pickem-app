@@ -1,7 +1,7 @@
 import React, {FC, useMemo, useState} from 'react';
 import {Animated, Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import {faBroadcastTower, faChevronLeft, faChevronRight} from '@fortawesome/free-solid-svg-icons';
+import {faBroadcastTower, faChevronLeft, faChevronRight, faMinus} from '@fortawesome/free-solid-svg-icons';
 import {ThemeText} from '../../../common/ThemeText';
 import {CommonUtils} from '../../../../utils/CommonUtils';
 import {Match, Round} from '../../../../interfaces/league.interface';
@@ -113,13 +113,18 @@ export const MatchComponent: FC<{ match: Match }> = ({match}) => {
                            testID={"finalResult"}>{match.teams[0].finalResult} · {match.teams[1].finalResult}</ThemeText>
             ) : (
                 <>
-                    {hasStarted ?
-                        <Animated.View style={{opacity: fadeAnim}}>
-                            <FontAwesomeIcon icon={faBroadcastTower} size={20} color={'red'}/>
-                        </Animated.View>
+                    {match.postponed ?
+                        <View testID={"postponedIcon"}>
+                            <FontAwesomeIcon icon={faMinus} size={20} color={'gray'}/>
+                        </View>
                         :
-                        <ThemeText style={styles.matchDate}
-                                   testID={"startDate"}>{format(new Date(match.startDate), 'dd/MM HH:mm')}</ThemeText>}
+                        hasStarted ?
+                            <Animated.View style={{opacity: fadeAnim}} testID={"liveIcon"}>
+                                <FontAwesomeIcon icon={faBroadcastTower} size={20} color={'red'}/>
+                            </Animated.View>
+                            :
+                            <ThemeText style={styles.matchDate}
+                                       testID={"startDate"}>{format(new Date(match.startDate), 'dd/MM HH:mm')}</ThemeText>}
                 </>
 
             )}

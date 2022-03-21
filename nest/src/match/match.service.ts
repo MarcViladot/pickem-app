@@ -83,6 +83,7 @@ export class MatchService {
       },
     });
     const { totalPoints } = await this.predictionService.getTotalPointsFromRound(round.id, user.id);
+    console.log('totalPoints: ', totalPoints);
     if (roundResult) {
       return this.roundResultRepository.save({
         ...roundResult,
@@ -108,12 +109,12 @@ export class MatchService {
   }
 
   async updateMatch(updateMatchDto: UpdateMatchDto, match: Match): Promise<Match> {
-    console.log(updateMatchDto.startDate);
     const updatedMatch = {
       ...match,
       finished: updateMatchDto.finished,
       doublePoints: updateMatchDto.doublePoints,
-      startDate: updateMatchDto.startDate
+      startDate: updateMatchDto.startDate,
+      postponed: updateMatchDto.postponed
     };
     return this.matchRepository.save(updatedMatch);
   }

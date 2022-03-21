@@ -48,6 +48,7 @@ export enum WebApiResponseCode {
   LeagueNotFound = 200,           // id
 
   RoundNotFound = 300,            // id
+  RoundHasStarted,
 
   MatchNotFound = 400,             // id
   MatchAlreadyFinished = 401,

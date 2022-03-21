@@ -104,6 +104,9 @@ export interface Match {
     doublePoints: boolean;
     teams: TeamMatch[];
     predictions: Prediction[];
+    postponed: boolean;
+    roundId: number;
+    updatedAt: string;
 }
 
 export interface Prediction {
@@ -113,12 +116,14 @@ export interface Prediction {
     correct: boolean;
     points: number;
     userId: number;
+    matchId: number;
 }
 
 export interface TeamMatch {
     id: number;
     finalResult: number;
     teamPosition: TeamPosition;
+    teamId: number;
     team: Team;
 }
 

@@ -43,7 +43,7 @@ export class RoundEvent implements LeagueEvent {
   }
 
   private getAllUsersResults(round: Round, users: User[]): RoundResult[] {
-    const missingUsers = users.filter(u => users.some(user => user.id === u.id));
+    const missingUsers = users.filter(u => !round.roundResults.some(result => result.userId === u.id));
     const resultsOfMissingUsers = missingUsers.map(user => {
       return {
         id: -1,

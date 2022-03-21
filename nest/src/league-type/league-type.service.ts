@@ -99,6 +99,7 @@ export class LeagueTypeService {
     getClassificationTableInfo(users: User[]): ClassificationTableInfo {
         const roundResultsMatrix: RoundResult[][] = users.map(user => user.roundResults);
         const rounds = this.getRoundResultsGrouped(roundResultsMatrix);
+        // console.log(rounds);
         const parsedWithAllUsers = this.getRoundResultsWithAllUsers(rounds, users.map(r => r.id));
         return {
             byRounds: parsedWithAllUsers,
@@ -143,14 +144,16 @@ export class LeagueTypeService {
         };
     }
 
-    private getRoundResultsGrouped(roundResults: RoundResult[][]): GroupedRounds {
-        return roundResults.reduce((acc, roundResults) => {
+    private getRoundResultsGrouped(roundResultsMatrix: RoundResult[][]): GroupedRounds {
+        return roundResultsMatrix.reduce((acc, roundResults) => {
             if (roundResults.length > 0) {
-                const roundId = roundResults[0].roundId;
-                if (!acc[roundId]) {
-                    acc[roundId] = [];
-                }
-                return this.addAndSort(acc, roundResults, roundId);
+                roundResults.forEach(roundResult => {
+                    if (!acc[roundResult.roundId]) {
+                        acc[roundResult.roundId] = [];
+                    }
+                    acc[roundResult.roundId].push(roundResult);
+                    acc[roundResult.roundId].sort((a, b) => b.points - a.points);
+                });
             }
             return acc;
         }, {});

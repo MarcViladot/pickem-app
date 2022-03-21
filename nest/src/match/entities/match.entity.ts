@@ -40,5 +40,8 @@ export class Match {
 
   @UpdateDateColumn()
   updatedAt: Date;
+
+  @Column({ default: false })
+  postponed: boolean;
   
 }

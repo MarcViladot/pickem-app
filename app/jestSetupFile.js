@@ -1,6 +1,7 @@
 import mockAsyncStorage from '@react-native-async-storage/async-storage/jest/async-storage-mock';
 import './i18n';
 import './src/app/api/api';
+jest.mock('react-native/Libraries/Animated/NativeAnimatedHelper');
 jest.mock('@react-native-async-storage/async-storage', () => mockAsyncStorage);
 jest.mock('@react-native-firebase/app', () => {
     return () => ({

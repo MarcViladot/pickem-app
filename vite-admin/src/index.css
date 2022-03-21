@@ -1,3 +1,8 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.MuiSelect-select {
+    display: flex !important;
+    align-items: center !important;
+}
